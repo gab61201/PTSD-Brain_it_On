@@ -11,7 +11,26 @@ void App::Start() {
 }
 
 void App::Update() {
-    
+    if (Util::Input::IsKeyPressed(Util::Keycode::MOUSE_LB)) {
+        if (new_drawing == nullptr){
+            new_drawing = new DrawnObject(Util::Input::GetCursorPosition());
+        }
+        else{
+            new_drawing->next_stroke(Util::Input::GetCursorPosition());
+        }
+    }
+    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        if (new_drawing != nullptr){
+            drawn_objects.push_back(new_drawing);
+            new_drawing = nullptr;
+        }
+    }
+    if (new_drawing != nullptr){
+        new_drawing->render();
+    }
+    for (auto& object : drawn_objects){
+        object->render();
+    }
     //TODO: do your things here and delete this line <3
     
     /*
