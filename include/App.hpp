@@ -2,6 +2,7 @@
 #define APP_HPP
 
 #include "pch.hpp" // IWYU pragma: export
+#include "DrawnObject.hpp"
 
 class App {
 public:
@@ -18,6 +19,9 @@ public:
     void Update();
 
     void End(); // NOLINT(readability-convert-member-functions-to-static)
+
+    std::vector<DrawnObject*> drawn_objects;
+    DrawnObject* new_drawing = nullptr;
 
 private:
     void ValidTask();
