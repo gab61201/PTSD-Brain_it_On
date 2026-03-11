@@ -1,10 +1,13 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "pch.hpp" // IWYU pragma: export
+#include "PhysicsWorld.hpp"
+#include "Util/GameObject.hpp"
+#include "Util/Renderer.hpp"
+#include "pch.hpp"  // IWYU pragma: export
 
 class App {
-public:
+   public:
     enum class State {
         START,
         UPDATE,
@@ -19,11 +22,14 @@ public:
 
     void End(); // NOLINT(readability-convert-member-functions-to-static)
 
-private:
-    void ValidTask();
-
-private:
+   private:
     State m_CurrentState = State::START;
+
+   public:
+    std::shared_ptr<Util::GameObject> m_Circle;
+    std::shared_ptr<Util::GameObject> m_Floor;
+    Util::Renderer m_Root;
+    PhysicsWorld m_PhysicsWorld;
 };
 
 #endif
