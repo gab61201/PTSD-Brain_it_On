@@ -11,18 +11,22 @@ class UIManager {
         SETTINGS
     };
 
-    UIState GetCurrentPhase() const { return m_CurrentPhase; }
+    UIState GetCurrentUI() const { return m_CurrentUI; }
 
-    void Lobby();
+    void Update();
+    
+    void RenderLobby();
 
-    void Menu();
+    void RenderMenu();
 
     void Game();
 
-    void Settings();
+    void RenderSettings();
 
    private:
-    UIState m_CurrentPhase = UIState::LOBBY;
+    // 當前顯示的 UI
+    UIState m_CurrentUI = UIState::LOBBY;
+    // 當前 UI 元件快取，切換 UI 時清除
     std::vector<std::shared_ptr<Core::Drawable>> m_Drawables;
     std::vector<std::shared_ptr<Util::GameObject>> m_GameObjects;
 };

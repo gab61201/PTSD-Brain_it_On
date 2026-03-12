@@ -9,26 +9,7 @@ void App::Start() {
 }
 
 void App::Update() {
-    switch (ui.GetCurrentPhase()) {
-        case UIManager::UIState::LOBBY:
-            ui.Lobby();
-            break;
-
-        case UIManager::UIState::MENU:
-            ui.Menu();
-            break;
-
-        case UIManager::UIState::GAME:
-            ui.Game();
-            break;
-
-        case UIManager::UIState::SETTINGS:
-            ui.Settings();
-            break;
-
-        default:
-            break;
-    }
+    ui.Update();
 
     if (Util::Input::IfExit()) {
         m_CurrentState = State::END;

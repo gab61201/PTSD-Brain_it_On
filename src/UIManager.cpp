@@ -1,74 +1,103 @@
 #include "UIManager.hpp"
+
+#include "Util/Image.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
-#include "Util/Image.hpp"
 #include "Util/Text.hpp"
 #include "Util/TransformUtils.hpp"
 
-void UIManager::Lobby() {
-    // Draw Lobby UI Here
-    if (m_GameObjects.empty()){
+// UI 切換器
+void UIManager::Update() {
+    switch (m_CurrentUI) {
+        case UIState::LOBBY:
+            RenderLobby();
+            break;
+        case UIState::MENU:
+            RenderMenu();
+            break;
+        case UIState::GAME:
+            Game();
+            break;
+        case UIState::SETTINGS:
+            RenderSettings();
+            break;
+        default:
+            break;
+    }
+}
+
+void UIManager::RenderLobby() {
+    // 建立 UI 物件
+    if (m_GameObjects.empty()) {
         auto title = std::make_shared<Util::GameObject>();
         title->SetDrawable(std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "TITLE"));
         m_GameObjects.push_back(title);
     }
+    // 渲染 UI 物件
     for (auto object : m_GameObjects) {
         object->Draw();
     }
+    // 偵測事件並切換 UI
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         m_GameObjects.clear();
         m_Drawables.clear();
-        m_CurrentPhase = UIState::MENU;
+        m_CurrentUI = UIState::MENU;
     }
 }
 
-void UIManager::Menu() {
-    // Draw Menu UI Here
-    if (m_GameObjects.empty()){
+void UIManager::RenderMenu() {
+    // 建立 UI 物件
+    if (m_GameObjects.empty()) {
         auto title = std::make_shared<Util::GameObject>();
         title->SetDrawable(std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "Menu"));
         m_GameObjects.push_back(title);
     }
+    // 渲染 UI 物件
     for (auto object : m_GameObjects) {
         object->Draw();
     }
+    // 偵測事件並切換 UI
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         m_GameObjects.clear();
         m_Drawables.clear();
-        m_CurrentPhase = UIState::GAME;
+        m_CurrentUI = UIState::GAME;
     }
 }
 
 void UIManager::Game() {
-    // Draw Game UI Here
-    if (m_GameObjects.empty()){
+    // 建立 UI 物件
+    if (m_GameObjects.empty()) {
         auto title = std::make_shared<Util::GameObject>();
         title->SetDrawable(std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "Game"));
         m_GameObjects.push_back(title);
     }
+    // 渲染 UI 物件
     for (auto object : m_GameObjects) {
         object->Draw();
     }
+    // 偵測事件並切換 UI
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
         m_GameObjects.clear();
         m_Drawables.clear();
-        m_CurrentPhase = UIState::SETTINGS;
+        m_CurrentUI = UIState::SETTINGS;
     }
 }
 
-void UIManager::Settings() {
-    // Draw Settings UI Here
-    if (m_GameObjects.empty()){
+void UIManager::RenderSettings() {
+    // 建立 UI 物件
+    if (m_GameObjects.empty()) {
         auto title = std::make_shared<Util::GameObject>();
         title->SetDrawable(std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "Settings"));
         m_GameObjects.push_back(title);
     }
+    // 渲染 UI 物件
     for (auto object : m_GameObjects) {
         object->Draw();
     }
+    // 偵測事件並切換 UI
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
         m_GameObjects.clear();
         m_Drawables.clear();
-        m_CurrentPhase = UIState::GAME;
+        m_CurrentUI = UIState::GAME;
     }
 }
