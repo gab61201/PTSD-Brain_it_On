@@ -13,10 +13,10 @@ class DrawnObject {
 
    private:
     // 圓的座標
-    std::vector<glm::vec2> m_Points;
+    std::vector<glm::vec2> m_CirclePosition;
 
     // 方形的位置、座標、比例
-    std::vector<Util::Transform> m_Path;
+    std::vector<Util::Transform> m_RectangleTransform;
 };
 
 #endif
