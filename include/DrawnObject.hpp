@@ -8,11 +8,15 @@ class DrawnObject {
     DrawnObject(glm::vec2);
     ~DrawnObject() = default;
 
-    void render();
-    void next_stroke(glm::vec2);
+    void Render();
+    void NextStroke(glm::vec2);
+
    private:
-    std::vector<glm::vec2> m_points;        // for circles
-    std::vector<Util::Transform> m_path;    // for squares
+    // 圓的座標
+    std::vector<glm::vec2> m_Points;
+
+    // 方形的位置、座標、比例
+    std::vector<Util::Transform> m_Path;
 };
 
 #endif

@@ -16,7 +16,7 @@ void App::Update() {
             new_drawing = new DrawnObject(Util::Input::GetCursorPosition());
         }
         else{
-            new_drawing->next_stroke(Util::Input::GetCursorPosition());
+            new_drawing->NextStroke(Util::Input::GetCursorPosition());
         }
     }
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
@@ -26,10 +26,10 @@ void App::Update() {
         }
     }
     if (new_drawing != nullptr){
-        new_drawing->render();
+        new_drawing->Render();
     }
     for (auto& object : drawn_objects){
-        object->render();
+        object->Render();
     }
     //TODO: do your things here and delete this line <3
     
