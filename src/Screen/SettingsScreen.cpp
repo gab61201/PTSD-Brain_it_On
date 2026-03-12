@@ -1,4 +1,4 @@
-#include "GameScreen.hpp"
+#include "Screen/SettingsScreen.hpp"
 
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -13,19 +13,18 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 }
 }  // namespace
 
-GameScreen::GameScreen(LevelManager& level)
-    : m_Level(level) {}
+namespace UI {
 
-void GameScreen::Enter() {
-    AddGameObject(CreateTitle("Game"));
+void SettingsScreen::Enter() {
+    AddGameObject(CreateTitle("Settings"));
 }
 
-UIScreenType GameScreen::Update() {
-    m_Level.Update();
-
+ScreenType SettingsScreen::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
-        return UIScreenType::SETTINGS;
+        return ScreenType::GAME;
     }
 
-    return UIScreenType::GAME;
+    return ScreenType::SETTINGS;
 }
+
+}  // namespace UI

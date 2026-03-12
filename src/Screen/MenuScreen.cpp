@@ -1,4 +1,4 @@
-#include "MenuScreen.hpp"
+#include "Screen/MenuScreen.hpp"
 
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -13,6 +13,8 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 }
 }  // namespace
 
+namespace UI {
+
 MenuScreen::MenuScreen(LevelManager& level)
     : m_Level(level) {}
 
@@ -20,11 +22,13 @@ void MenuScreen::Enter() {
     AddGameObject(CreateTitle("Menu"));
 }
 
-UIScreenType MenuScreen::Update() {
+ScreenType MenuScreen::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::NUM_1)) {
         m_Level.m_CurrentLevel = LevelManager::LevelState::LEVEL_1;
-        return UIScreenType::GAME;
+        return ScreenType::GAME;
     }
 
-    return UIScreenType::MENU;
+    return ScreenType::MENU;
 }
+
+}  // namespace UI

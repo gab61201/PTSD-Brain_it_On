@@ -1,13 +1,17 @@
 #ifndef LOBBY_SCREEN_HPP
 #define LOBBY_SCREEN_HPP
 
-#include "UIScreen.hpp"
+#include "Screen/UIScreen.hpp"
+
+namespace UI {
 
 class LobbyScreen : public UIScreen {
    public:
     void Enter() override;
 
-    UIScreenType Update() override;
+    ScreenType Update() override;
 };
+
+} // namespace UI
 
 #endif

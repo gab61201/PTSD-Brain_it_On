@@ -2,18 +2,22 @@
 #define GAME_SCREEN_HPP
 
 #include "LevelManager.hpp"
-#include "UIScreen.hpp"
+#include "Screen/UIScreen.hpp"
+
+namespace UI {
 
 class GameScreen : public UIScreen {
    public:
-    explicit GameScreen(LevelManager& level);
+    explicit GameScreen(LevelManager &level);
 
     void Enter() override;
 
-    UIScreenType Update() override;
+    ScreenType Update() override;
 
    private:
-    LevelManager& m_Level;
+    LevelManager &m_Level;
 };
+
+} // namespace UI
 
 #endif

@@ -2,20 +2,20 @@
 #define UI_MANAGER_HPP
 
 #include "LevelManager.hpp"
-#include "UIScreen.hpp"
+#include "Screen/UIScreen.hpp"
 
 class UIManager {
    public:
     void Update();
 
    private:
-    UIScreenType m_CurrentUI = UIScreenType::LOBBY;
+    UI::ScreenType m_CurrentUI = UI::ScreenType::LOBBY;
     LevelManager m_Level;
-    std::unique_ptr<UIScreen> m_CurrentScreen;
+    std::unique_ptr<UI::UIScreen> m_CurrentScreen;
 
-    void ChangeUI(UIScreenType nextUI);
+    void ChangeUI(UI::ScreenType nextUI);
 
-    std::unique_ptr<UIScreen> CreateScreen(UIScreenType screenType);
+    std::unique_ptr<UI::UIScreen> CreateScreen(UI::ScreenType screenType);
 };
 
 #endif

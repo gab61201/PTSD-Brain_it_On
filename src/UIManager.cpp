@@ -1,26 +1,26 @@
 #include "UIManager.hpp"
 
-#include "GameScreen.hpp"
-#include "LobbyScreen.hpp"
-#include "MenuScreen.hpp"
-#include "SettingsScreen.hpp"
+#include "Screen/GameScreen.hpp"
+#include "Screen/LobbyScreen.hpp"
+#include "Screen/MenuScreen.hpp"
+#include "Screen/SettingsScreen.hpp"
 
-std::unique_ptr<UIScreen> UIManager::CreateScreen(UIScreenType screenType) {
+std::unique_ptr<UI::UIScreen> UIManager::CreateScreen(UI::ScreenType screenType) {
     switch (screenType) {
-        case UIScreenType::LOBBY:
-            return std::make_unique<LobbyScreen>();
-        case UIScreenType::MENU:
-            return std::make_unique<MenuScreen>(m_Level);
-        case UIScreenType::GAME:
-            return std::make_unique<GameScreen>(m_Level);
-        case UIScreenType::SETTINGS:
-            return std::make_unique<SettingsScreen>();
+        case UI::ScreenType::LOBBY:
+            return std::make_unique<UI::LobbyScreen>();
+        case UI::ScreenType::MENU:
+            return std::make_unique<UI::MenuScreen>(m_Level);
+        case UI::ScreenType::GAME:
+            return std::make_unique<UI::GameScreen>(m_Level);
+        case UI::ScreenType::SETTINGS:
+            return std::make_unique<UI::SettingsScreen>();
     }
 
-    return std::make_unique<LobbyScreen>();
+    return std::make_unique<UI::LobbyScreen>();
 }
 
-void UIManager::ChangeUI(UIScreenType nextUI) {
+void UIManager::ChangeUI(UI::ScreenType nextUI) {
     if (m_CurrentScreen != nullptr) {
         m_CurrentScreen->Exit();
     }
@@ -35,7 +35,7 @@ void UIManager::Update() {
         ChangeUI(m_CurrentUI);
     }
 
-    const UIScreenType nextUI = m_CurrentScreen->Update();
+    const UI::ScreenType nextUI = m_CurrentScreen->Update();
     if (nextUI != m_CurrentUI) {
         ChangeUI(nextUI);
     }

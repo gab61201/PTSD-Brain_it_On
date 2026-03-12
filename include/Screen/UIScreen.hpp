@@ -3,7 +3,9 @@
 
 #include "Util/GameObject.hpp"
 
-enum class UIScreenType {
+namespace UI {
+
+enum class ScreenType {
     LOBBY,
     MENU,
     GAME,
@@ -16,10 +18,10 @@ class UIScreen {
 
     virtual void Enter() {}
 
-    virtual UIScreenType Update() = 0;
+    virtual ScreenType Update() = 0;
 
     virtual void Render() {
-        for (const auto& object : m_GameObjects) {
+        for (const auto &object : m_GameObjects) {
             if (object != nullptr) {
                 object->Draw();
             }
@@ -29,11 +31,13 @@ class UIScreen {
     virtual void Exit() { m_GameObjects.clear(); }
 
    protected:
-    void AddGameObject(const std::shared_ptr<Util::GameObject>& object) {
+    void AddGameObject(const std::shared_ptr<Util::GameObject> &object) {
         m_GameObjects.push_back(object);
     }
 
     std::vector<std::shared_ptr<Util::GameObject>> m_GameObjects;
 };
+
+} // namespace UI
 
 #endif

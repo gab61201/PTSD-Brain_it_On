@@ -1,4 +1,4 @@
-#include "SettingsScreen.hpp"
+#include "Screen/LobbyScreen.hpp"
 
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -13,14 +13,18 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 }
 }  // namespace
 
-void SettingsScreen::Enter() {
-    AddGameObject(CreateTitle("Settings"));
+namespace UI {
+
+void LobbyScreen::Enter() {
+    AddGameObject(CreateTitle("TITLE"));
 }
 
-UIScreenType SettingsScreen::Update() {
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
-        return UIScreenType::GAME;
+ScreenType LobbyScreen::Update() {
+    if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
+        return ScreenType::MENU;
     }
 
-    return UIScreenType::SETTINGS;
+    return ScreenType::LOBBY;
 }
+
+}  // namespace UI
