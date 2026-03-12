@@ -2,23 +2,12 @@
 
 #include <box2d/box2d.h>
 
+#include "CoordinateHelper.hpp"
+
 namespace {
-constexpr float kPixelsPerMeter = 50.0F;
 constexpr float kTimeStep = 1.0F / 60.0F;
 constexpr int kVelocityIterations = 8;
 constexpr int kPositionIterations = 3;
-
-// --- Coordinate conversion helpers ---
-
-b2Vec2 PixelsToMeters(glm::vec2 pixels) {
-    return {pixels.x / kPixelsPerMeter, pixels.y / kPixelsPerMeter};
-}
-
-glm::vec2 MetersToPixels(b2Vec2 meters) {
-    return {meters.x * kPixelsPerMeter, meters.y * kPixelsPerMeter};
-}
-
-float PixelsToMeters(float pixels) { return pixels / kPixelsPerMeter; }
 }  // namespace
 
 struct PhysicsWorld::Impl {
@@ -106,4 +95,46 @@ float PhysicsWorld::GetCircleRotationRadians() const {
     }
 
     return m_Impl->circleBody->GetAngle();
+}
+
+b2Body* PhysicsWorld::CreateCircle(
+    glm::vec2 posPixels, float radiusPixels, float rotationRadians, bool isDynamic) {
+    b2BodyDef bodyDef;
+    bodyDef.type = isDynamic ? b2_dynamicBody : b2_staticBody;
+    bodyDef.position = PixelsToMeters(posPixels);
+    bodyDef.angle = rotationRadians;
+    auto* body = m_Impl->world.CreateBody(&bodyDef);
+
+    b2CircleShape shape;
+    shape.m_radius = PixelsToMeters(radiusPixels);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 1.0F;
+    fixtureDef.friction = 0.3F;
+    fixtureDef.restitution = 0.5F;
+    body->CreateFixture(&fixtureDef);
+
+    return body;
+}
+
+b2Body* PhysicsWorld::CreateBox(
+    glm::vec2 posPixels, glm::vec2 halfSizePixels, float rotationRadians, bool isDynamic) {
+    b2BodyDef bodyDef;
+    bodyDef.type = isDynamic ? b2_dynamicBody : b2_staticBody;
+    bodyDef.position = PixelsToMeters(posPixels);
+    bodyDef.angle = rotationRadians;
+    auto* body = m_Impl->world.CreateBody(&bodyDef);
+
+    b2PolygonShape shape;
+    shape.SetAsBox(PixelsToMeters(halfSizePixels.x), PixelsToMeters(halfSizePixels.y));
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 1.0F;
+    fixtureDef.friction = 0.3F;
+    fixtureDef.restitution = 0.5F;
+    body->CreateFixture(&fixtureDef);
+
+    return body;
 }
