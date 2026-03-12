@@ -1,9 +1,13 @@
 #ifndef UI_MANAGER_HPP
 #define UI_MANAGER_HPP
+#include "LevelManager.hpp"
 #include "Util/GameObject.hpp"
 
 class UIManager {
    public:
+    void Update();
+
+   private:
     enum class UIState {
         LOBBY,
         MENU,
@@ -11,24 +15,24 @@ class UIManager {
         SETTINGS
     };
 
-    UIState GetCurrentUI() const { return m_CurrentUI; }
+    // 當前顯示的 UI
+    UIState m_CurrentUI = UIState::LOBBY;
 
-    void Update();
-    
+    LevelManager level;
+
+    // 當前 UI 物件暫存，切換 UI 時清除
+    std::vector<std::shared_ptr<Core::Drawable>> m_Drawables;
+    std::vector<std::shared_ptr<Util::GameObject>> m_GameObjects;
+
+    void ChangeUI(UIState ui_);
+
     void RenderLobby();
 
     void RenderMenu();
 
-    void Game();
-
     void RenderSettings();
 
-   private:
-    // 當前顯示的 UI
-    UIState m_CurrentUI = UIState::LOBBY;
-    // 當前 UI 元件快取，切換 UI 時清除
-    std::vector<std::shared_ptr<Core::Drawable>> m_Drawables;
-    std::vector<std::shared_ptr<Util::GameObject>> m_GameObjects;
+    void Game();
 };
 
 #endif
