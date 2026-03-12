@@ -1,10 +1,11 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "pch.hpp" // IWYU pragma: export
+#include "pch.hpp"  // IWYU pragma: export
+#include "UIManager.hpp"
 
 class App {
-public:
+   public:
     enum class State {
         START,
         UPDATE,
@@ -17,13 +18,14 @@ public:
 
     void Update();
 
-    void End(); // NOLINT(readability-convert-member-functions-to-static)
+    void End();  // NOLINT(readability-convert-member-functions-to-static)
 
-private:
+   private:
     void ValidTask();
 
-private:
+   private:
     State m_CurrentState = State::START;
+    UIManager ui;
 };
 
 #endif

@@ -1,6 +1,4 @@
 #include "App.hpp"
-
-#include "Util/Image.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -11,19 +9,32 @@ void App::Start() {
 }
 
 void App::Update() {
-    
-    //TODO: do your things here and delete this line <3
-    
-    /*
-     * Do not touch the code below as they serve the purpose for
-     * closing the window.
-     */
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
-        Util::Input::IfExit()) {
+    switch (ui.GetCurrentPhase()) {
+        case UIManager::UIState::LOBBY:
+            ui.Lobby();
+            break;
+
+        case UIManager::UIState::MENU:
+            ui.Menu();
+            break;
+
+        case UIManager::UIState::GAME:
+            ui.Game();
+            break;
+
+        case UIManager::UIState::SETTINGS:
+            ui.Settings();
+            break;
+
+        default:
+            break;
+    }
+
+    if (Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }
 }
 
-void App::End() { // NOLINT(this method will mutate members in the future)
+void App::End() {  // NOLINT(this method will mutate members in the future)
     LOG_TRACE("End");
 }
