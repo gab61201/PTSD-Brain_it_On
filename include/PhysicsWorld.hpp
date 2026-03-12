@@ -21,6 +21,7 @@ class PhysicsWorld {
     [[nodiscard]] glm::vec2 GetCirclePositionPixels() const;
     [[nodiscard]] float GetCircleRotationRadians() const;
 
+    void SetCirclePosition(glm::vec2 pixelPos);
     void ResetCircle();
 
    private:
