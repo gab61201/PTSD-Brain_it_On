@@ -8,8 +8,7 @@ class LevelManager {
         LEVEL_2,
         LEVEL_3,
     };
-    // 當前的關卡
-    LevelState m_CurrentLevel;
+    LevelState m_CurrentLevel = LevelState::LEVEL_1;
 
     void Start();
 
