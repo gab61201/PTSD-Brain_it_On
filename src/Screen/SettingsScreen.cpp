@@ -15,7 +15,7 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 
 namespace UI {
 
-void SettingsScreen::Initialize() {
+SettingsScreen::SettingsScreen() {
     AddGameObject(CreateTitle("Settings"));
 }
 

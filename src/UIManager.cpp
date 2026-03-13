@@ -20,32 +20,31 @@ std::unique_ptr<UI::UIScreen> UIManager::CreateScreen(UI::ScreenType screenType)
     return std::make_unique<UI::LobbyScreen>();
 }
 
-void UIManager::ChangeUI(UI::ScreenType nextUI) {
+void UIManager::ChangeUI(UI::ScreenType nextUIType) {
     if (m_CurrentScreen != nullptr) {
         m_CurrentScreen->Exit();
     }
 
-    m_CurrentUI = nextUI;
-    m_CurrentScreen = CreateScreen(m_CurrentUI);
-    m_CurrentScreen->Initialize();
+    m_CurrentScreenType = nextUIType;
+    m_CurrentScreen = CreateScreen(m_CurrentScreenType);
 }
 
 void UIManager::Update() {
     if (m_CurrentScreen == nullptr) {
-        ChangeUI(m_CurrentUI);
+        ChangeUI(m_CurrentScreenType);
     }
 
-    const UI::ScreenType nextUI = m_CurrentScreen->Update();
-    if (m_CurrentUI == UI::ScreenType::MENU &&
-        nextUI == UI::ScreenType::GAME) {
+    const UI::ScreenType nextUIType = m_CurrentScreen->Update();
+    if (m_CurrentScreenType == UI::ScreenType::MENU &&
+        nextUIType == UI::ScreenType::GAME) {
         auto* menu = dynamic_cast<UI::MenuScreen*>(m_CurrentScreen.get());
         if (menu != nullptr) {
             m_SelectedLevelId = menu->GetSelectedLevelType();
         }
     }
 
-    if (nextUI != m_CurrentUI) {
-        ChangeUI(nextUI);
+    if (nextUIType != m_CurrentScreenType) {
+        ChangeUI(nextUIType);
     }
 
     m_CurrentScreen->Render();

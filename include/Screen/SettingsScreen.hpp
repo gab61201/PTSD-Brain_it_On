@@ -7,7 +7,7 @@ namespace UI {
 
 class SettingsScreen : public UIScreen {
    public:
-    void Initialize() override;
+    SettingsScreen();
 
     ScreenType Update() override;
 };

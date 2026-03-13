@@ -15,7 +15,7 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 
 namespace UI {
 
-void LobbyScreen::Initialize() {
+LobbyScreen::LobbyScreen() {
     AddGameObject(CreateTitle("TITLE"));
 }
 

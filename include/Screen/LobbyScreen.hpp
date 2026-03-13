@@ -7,7 +7,7 @@ namespace UI {
 
 class LobbyScreen : public UIScreen {
    public:
-    void Initialize() override;
+    LobbyScreen();
 
     ScreenType Update() override;
 };

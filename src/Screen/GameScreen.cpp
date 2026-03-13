@@ -15,19 +15,16 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 
 namespace UI {
 
-GameScreen::GameScreen(LevelId levelId)
-    : m_LevelId(levelId) {}
-
-void GameScreen::Initialize() {
-    m_Level.Initilalize();
+GameScreen::GameScreen(LevelId levelId) {
     AddGameObject(CreateTitle("Game"));
+    // m_Level = Level(levelId);
 }
 
 ScreenType GameScreen::Update() {
-    m_Level.Update();
+    // m_Level.Update();
 
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
-        return ScreenType::SETTINGS;
+        return ScreenType::MENU;
     }
 
     return ScreenType::GAME;

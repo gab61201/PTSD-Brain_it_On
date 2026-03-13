@@ -1,7 +1,7 @@
 #ifndef PASS_CONDITION_HPP
-#define PASS_CONDITION
+#define PASS_CONDITION_HPP
 
-#include "PhysicalObject.hpp"
+#include "Physics/PhysicalObject.hpp"
 #include "Util/GameObject.hpp"
 
 enum class Condition {

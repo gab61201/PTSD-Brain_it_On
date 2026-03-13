@@ -9,12 +9,12 @@ class UIManager {
     void Update();
 
    private:
-    UI::ScreenType m_CurrentUI = UI::ScreenType::LOBBY;
+    UI::ScreenType m_CurrentScreenType = UI::ScreenType::LOBBY;
     LevelId m_SelectedLevelId;
 
     std::unique_ptr<UI::UIScreen> m_CurrentScreen;
 
-    void ChangeUI(UI::ScreenType nextUI);
+    void ChangeUI(UI::ScreenType nextScreenType);
 
     std::unique_ptr<UI::UIScreen> CreateScreen(UI::ScreenType screenType);
 };

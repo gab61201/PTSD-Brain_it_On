@@ -16,8 +16,6 @@ class UIScreen {
    public:
     virtual ~UIScreen() = default;
 
-    virtual void Initialize() {}
-
     virtual ScreenType Update() = 0;
 
     virtual void Render() {

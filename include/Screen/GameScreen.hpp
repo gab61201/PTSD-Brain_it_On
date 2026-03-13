@@ -10,13 +10,10 @@ class GameScreen : public UIScreen {
    public:
     explicit GameScreen(LevelId levelId);
 
-    void Initialize() override;
-
     ScreenType Update() override;
 
    private:
     Level m_Level;
-    LevelId m_LevelId;
 };
 
 }  // namespace UI

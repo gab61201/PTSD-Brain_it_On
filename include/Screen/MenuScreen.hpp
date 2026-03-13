@@ -8,7 +8,7 @@ namespace UI {
 
 class MenuScreen : public UIScreen {
    public:
-    void Initialize() override;
+    MenuScreen();
 
     ScreenType Update() override;
 

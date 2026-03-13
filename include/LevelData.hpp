@@ -2,7 +2,7 @@
 #define LEVEL_DATA_HPP
 
 #include <map>
-#include "PhysicalObject.hpp"
+#include "Physics/PhysicalObject.hpp"
 #include "PassCondition.hpp"
 
 enum class LevelId {
@@ -10,6 +10,7 @@ enum class LevelId {
     LEVEL_2,
     LEVEL_3,
     LEVEL_4,
+    LEVEL_5
 };
 
 struct LevelData {

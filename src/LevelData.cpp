@@ -1,4 +1,20 @@
 #include "LevelData.hpp"
+#include "Util/Text.hpp"
+
+static LevelData LevelData_1() {
+}
+
+static LevelData LevelData_2() {
+}
+
+static LevelData LevelData_3() {
+}
+
+static LevelData LevelData_4() {
+}
+
+static LevelData LevelData_5() {
+}
 
 LevelData GetLevelData(LevelId levelId) {
     switch (levelId) {
@@ -14,20 +30,9 @@ LevelData GetLevelData(LevelId levelId) {
         case LevelId::LEVEL_4:
             return LevelData_4();
             break;
+        case LevelId::LEVEL_5:
+            return LevelData_5();
+            break;
+        
     }
-}
-
-static LevelData LevelData_1() {
-}
-
-static LevelData LevelData_2() {
-}
-
-static LevelData LevelData_3() {
-}
-
-static LevelData LevelData_4() {
-}
-
-static LevelData LevelData_5() {
 }
