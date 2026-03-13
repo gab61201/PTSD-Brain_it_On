@@ -25,12 +25,9 @@ class App {
 
     void End();  // NOLINT(readability-convert-member-functions-to-static)
 
-    std::shared_ptr<Util::GameObject> m_Circle;
-    std::shared_ptr<Util::GameObject> m_Floor;
+    // Compound demo
     Util::Renderer m_Root;
     PhysicsWorld m_PhysicsWorld;
-
-    // Compound demo
     std::shared_ptr<CompoundPhysicalObject> m_Compound;
     std::shared_ptr<PhysicalObject> m_PhysFloor;
 
