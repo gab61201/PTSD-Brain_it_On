@@ -2,8 +2,7 @@
 
 namespace UI {
 
-GameScreen::GameScreen(LevelId *levelId) {
-    m_Level = Level(*levelId);
+GameScreen::GameScreen(LevelId *levelId) : m_Level(*levelId) {
     auto title = std::make_shared<Util::GameObject>();
     title->SetDrawable(
         std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "GameScreen"));

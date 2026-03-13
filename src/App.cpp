@@ -30,6 +30,7 @@ void App::Update() {
                 m_CurrentScreen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
                 break;
         }
+        m_CurrentScreenType = nextUIType;
     }
 
     if (Util::Input::IfExit()) {
