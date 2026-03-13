@@ -138,3 +138,47 @@ b2Body* PhysicsWorld::CreateBox(
 
     return body;
 }
+
+// --- Compound body 用 ---
+
+b2Body* PhysicsWorld::CreateEmptyBody(
+    glm::vec2 posPixels, float rotationRadians, bool isDynamic) {
+    b2BodyDef bodyDef;
+    bodyDef.type = isDynamic ? b2_dynamicBody : b2_staticBody;
+    bodyDef.position = PixelsToMeters(posPixels);
+    bodyDef.angle = rotationRadians;
+    return m_Impl->world.CreateBody(&bodyDef);
+}
+
+void PhysicsWorld::AddCircleFixture(
+    b2Body* body, glm::vec2 localOffsetPixels, float radiusPixels) {
+    b2CircleShape shape;
+    shape.m_radius = PixelsToMeters(radiusPixels);
+    shape.m_p = PixelsToMeters(localOffsetPixels);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 1.0F;
+    fixtureDef.friction = 0.3F;
+    fixtureDef.restitution = 0.5F;
+    body->CreateFixture(&fixtureDef);
+}
+
+void PhysicsWorld::AddBoxFixture(
+    b2Body* body, glm::vec2 localOffsetPixels, glm::vec2 halfSizePixels, float localRotation) {
+    b2PolygonShape shape;
+    b2Vec2 center = PixelsToMeters(localOffsetPixels);
+    shape.SetAsBox(
+        PixelsToMeters(halfSizePixels.x),
+        PixelsToMeters(halfSizePixels.y),
+        center,
+        localRotation);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.density = 1.0F;
+    fixtureDef.friction = 0.3F;
+    fixtureDef.restitution = 0.5F;
+    body->CreateFixture(&fixtureDef);
+}
+

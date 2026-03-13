@@ -10,6 +10,7 @@ set(SRC_FILES
     PassCondition.cpp
     Physics/PhysicsWorld.cpp
     Physics/PhysicalObject.cpp
+    Physics/CompoundPhysicalObject.cpp
 )
 
 set(INCLUDE_FILES
@@ -25,6 +26,7 @@ set(INCLUDE_FILES
     Screen/UIScreen.hpp
     Physics/PhysicsWorld.hpp
     Physics/PhysicalObject.hpp
+    Physics/CompoundPhysicalObject.hpp
 )
 
 set(TEST_FILES

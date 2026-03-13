@@ -34,7 +34,7 @@ class PhysicalObject {
     std::shared_ptr<Util::GameObject> GetVisual() const;
 
     // 單向同步 Box2D -> PTSD
-    void Sync();
+    virtual void Sync();
 
     // --- setter / getter 是 debug 用，實務上應該不需要 ---
 
