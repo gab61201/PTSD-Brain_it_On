@@ -10,6 +10,8 @@ set(SRC_FILES
     PassCondition.cpp
     Physics/PhysicsWorld.cpp
     Physics/PhysicalObject.cpp
+    Physics/PhysicalCircle.cpp
+    Physics/PhysicalRectangle.cpp
     Physics/CompoundPhysicalObject.cpp
 )
 
@@ -26,6 +28,8 @@ set(INCLUDE_FILES
     Screen/UIScreen.hpp
     Physics/PhysicsWorld.hpp
     Physics/PhysicalObject.hpp
+    Physics/PhysicalCircle.hpp
+    Physics/PhysicalRectangle.hpp
     Physics/CompoundPhysicalObject.hpp
 )
 
