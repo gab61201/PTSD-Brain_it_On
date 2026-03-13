@@ -35,8 +35,7 @@ void App::Start() {
         m_PhysicsWorld,
         {0.0F, 40.0F},        // 本地偏移：往上
         {30.0F, 150.0F},      // 寬高
-        0.0f,                 // 旋轉
-        RESOURCE_DIR "/Images/square.png"
+        0.0f                  // 旋轉
     );
 
     // L 型的橫條部分
@@ -44,8 +43,7 @@ void App::Start() {
         m_PhysicsWorld,
         {45.0F, -20.0F},      // 本地偏移
         {120.0F, 30.0F},      // 寬高
-        0.0f,                 // 旋轉
-        RESOURCE_DIR "/Images/square.png"
+        0.0f                  // 旋轉
     );
 
     // 把 compound 的 root visual（含子物件）加入 renderer

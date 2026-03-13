@@ -19,8 +19,8 @@ public:
     void Sync() override;
 
     // 添加不同的子物件 (碰撞體 + 視覺)
-    void AddCircle(PhysicsWorld& world, glm::vec2 localOffsetPixels, float radiusPixels, const std::string& imagePath);
-    void AddRectangle(PhysicsWorld& world, glm::vec2 localOffsetPixels, glm::vec2 sizePixels, float localRotationRadians, const std::string& imagePath);
+    void AddCircle(PhysicsWorld& world, glm::vec2 localOffsetPixels, float radiusPixels, const std::string& imagePath = RESOURCE_DIR "/Images/circle.png");
+    void AddRectangle(PhysicsWorld& world, glm::vec2 localOffsetPixels, glm::vec2 sizePixels, float localRotationRadians, const std::string& imagePath = RESOURCE_DIR "/Images/square.png");
 
 private:
     std::vector<std::shared_ptr<Util::GameObject>> m_ChildVisuals;
