@@ -8,14 +8,14 @@ namespace UI {
 
 class MenuScreen : public UIScreen {
    public:
-    MenuScreen();
+    explicit MenuScreen(LevelId* levelId);
 
     ScreenType Update() override;
 
-    LevelId GetSelectedLevelType() const { return m_LevelId; }
+    ScreenType GetScreenType() const override { return ScreenType::MENU; };
 
    private:
-    LevelId m_LevelId;
+    LevelId *m_LevelId;
 };
 
 }  // namespace UI

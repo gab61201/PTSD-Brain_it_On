@@ -10,6 +10,8 @@ class SettingsScreen : public UIScreen {
     SettingsScreen();
 
     ScreenType Update() override;
+    
+    ScreenType GetScreenType() const override { return ScreenType::SETTINGS; };
 };
 
 }  // namespace UI

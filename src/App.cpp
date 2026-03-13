@@ -1,7 +1,5 @@
 #include "App.hpp"
 
-#include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -9,27 +7,30 @@
 void App::Start() {
     LOG_TRACE("Start");
 
-    // --- 之前為了測試 Box2D 的程式碼 ---
-    // m_PhysicsWorld.InitializeScene();
-
-    // m_Circle = std::make_shared<Util::GameObject>();
-    // m_Circle->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/white_circle.png"));
-    // m_Circle->m_Transform.scale = {0.1f, 0.1f};
-    // m_Circle->SetZIndex(50);
-    // m_Root.AddChild(m_Circle);
-
-    // m_Floor = std::make_shared<Util::GameObject>();
-    // m_Floor->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/white_floor.png"));
-    // m_Floor->m_Transform.translation = {0, -225};
-    // m_Floor->SetZIndex(0);
-    // m_Root.AddChild(m_Floor);
-    // --- END ---
-
     m_CurrentState = State::UPDATE;
+
+    m_CurrentScreenType = UI::ScreenType::LOBBY;
+    m_CurrentScreen = std::make_unique<UI::LobbyScreen>();
 }
 
 void App::Update() {
-    ui.Update();
+    UI::ScreenType nextUIType = m_CurrentScreen->Update();
+    if (m_CurrentScreenType != nextUIType) {
+        switch (nextUIType) {
+            case UI::ScreenType::LOBBY:
+                m_CurrentScreen = std::make_unique<UI::LobbyScreen>();
+                break;
+            case UI::ScreenType::SETTINGS:
+                m_CurrentScreen = std::make_unique<UI::SettingsScreen>();
+                break;
+            case UI::ScreenType::MENU:
+                m_CurrentScreen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
+                break;
+            case UI::ScreenType::GAME:
+                m_CurrentScreen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
+                break;
+        }
+    }
 
     if (Util::Input::IfExit()) {
         m_CurrentState = State::END;
