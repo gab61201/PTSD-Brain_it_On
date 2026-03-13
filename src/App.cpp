@@ -1,5 +1,8 @@
 #include "App.hpp"
 
+#include "Physics/CompoundPhysicalObject.hpp"
+#include "Physics/PhysicalObject.hpp"
+#include "Physics/PhysicalRectangle.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include "Util/Input.hpp"
@@ -9,46 +12,61 @@
 void App::Start() {
     LOG_TRACE("Start");
 
-    m_PhysicsWorld.InitializeScene();
+    // === 靜態地板 ===
+    m_PhysFloor = PhysicalRectangle::Create(
+        m_PhysicsWorld,
+        {0.0F, -225.0F},  // 位置
+        {300.0F, 50.0F},  // 寬高
+        0.0F,             // 旋轉
+        false             // 靜態
+    );
+    m_Root.AddChild(m_PhysFloor->GetVisual());
 
-    m_Circle = std::make_shared<Util::GameObject>();
-    m_Circle->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/white_circle.png"));
-    m_Circle->m_Transform.scale = {0.1f, 0.1f};
-    m_Circle->SetZIndex(50);
-    m_Root.AddChild(m_Circle);
+    // === 動態 L 型 Compound 物件 ===
+    m_Compound = CompoundPhysicalObject::Create(
+        m_PhysicsWorld,
+        {0.0F, 200.0F},  // 初始位置
+        -0.1F,            // 初始旋轉（稍微傾斜，讓掉落更有趣）
+        true             // 動態
+    );
 
-    m_Floor = std::make_shared<Util::GameObject>();
-    m_Floor->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/white_floor.png"));
-    m_Floor->m_Transform.translation = {0, -225};
-    m_Floor->SetZIndex(0);
-    m_Root.AddChild(m_Floor);
+    // L 型的直條部分
+    m_Compound->AddRectangle(
+        m_PhysicsWorld,
+        {0.0F, 40.0F},        // 本地偏移：往上
+        {30.0F, 150.0F},      // 寬高
+        0.0f                  // 旋轉
+    );
+
+    // L 型的橫條部分
+    m_Compound->AddRectangle(
+        m_PhysicsWorld,
+        {45.0F, -20.0F},      // 本地偏移
+        {120.0F, 30.0F},      // 寬高
+        0.0f                  // 旋轉
+    );
+
+    // 把 compound 的 root visual（含子物件）加入 renderer
+    m_Root.AddChild(m_Compound->GetVisual());
 
     m_CurrentState = State::UPDATE;
 }
 
 void App::Update() {
-    // Step physics simulation
+    // 物理模擬
     m_PhysicsWorld.Step();
 
-    // Sync physics to visual
-    m_Circle->m_Transform.translation = m_PhysicsWorld.GetCirclePositionPixels();
-    m_Circle->m_Transform.rotation = m_PhysicsWorld.GetCircleRotationRadians();
+    // 同步 Box2D → PTSD 視覺
+    m_PhysFloor->Sync();
+    m_Compound->Sync();
 
-    // Render scene
+    // 渲染
     m_Root.Update();
 
-    if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
-        m_PhysicsWorld.ResetCircle();
-    }
+    // UI
+    ui.Update();
 
-    // TODO: do your things here and delete this line <3
-
-    /*
-     * Do not touch the code below as they serve the purpose for
-     * closing the window.
-     */
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
-        Util::Input::IfExit()) {
+    if (Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }
 }

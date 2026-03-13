@@ -1,13 +1,36 @@
 set(SRC_FILES
     App.cpp
-    PhysicsWorld.cpp
-    PhysicalObject.cpp
+    Screen/GameScreen.cpp
+    Screen/LobbyScreen.cpp
+    Screen/MenuScreen.cpp
+    Screen/SettingsScreen.cpp
+    UIManager.cpp
+    Level.cpp
+    LevelData.cpp
+    PassCondition.cpp
+    Physics/PhysicsWorld.cpp
+    Physics/PhysicalObject.cpp
+    Physics/PhysicalCircle.cpp
+    Physics/PhysicalRectangle.cpp
+    Physics/CompoundPhysicalObject.cpp
 )
 
 set(INCLUDE_FILES
     App.hpp
-    PhysicsWorld.hpp
-    PhysicalObject.hpp
+    UIManager.hpp
+    Level.hpp
+    LevelData.hpp
+    PassCondition.hpp
+    Screen/GameScreen.hpp
+    Screen/LobbyScreen.hpp
+    Screen/MenuScreen.hpp
+    Screen/SettingsScreen.hpp
+    Screen/UIScreen.hpp
+    Physics/PhysicsWorld.hpp
+    Physics/PhysicalObject.hpp
+    Physics/PhysicalCircle.hpp
+    Physics/PhysicalRectangle.hpp
+    Physics/CompoundPhysicalObject.hpp
 )
 
 set(TEST_FILES

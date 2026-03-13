@@ -1,7 +1,10 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "PhysicsWorld.hpp"
+#include "Physics/CompoundPhysicalObject.hpp"
+#include "Physics/PhysicalObject.hpp"
+#include "Physics/PhysicsWorld.hpp"
+#include "UIManager.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Renderer.hpp"
 #include "pch.hpp"  // IWYU pragma: export
@@ -20,16 +23,17 @@ class App {
 
     void Update();
 
-    void End(); // NOLINT(readability-convert-member-functions-to-static)
+    void End();  // NOLINT(readability-convert-member-functions-to-static)
+
+    // Compound demo
+    Util::Renderer m_Root;
+    PhysicsWorld m_PhysicsWorld;
+    std::shared_ptr<CompoundPhysicalObject> m_Compound;
+    std::shared_ptr<PhysicalObject> m_PhysFloor;
 
    private:
     State m_CurrentState = State::START;
-
-   public:
-    std::shared_ptr<Util::GameObject> m_Circle;
-    std::shared_ptr<Util::GameObject> m_Floor;
-    Util::Renderer m_Root;
-    PhysicsWorld m_PhysicsWorld;
+    UIManager ui;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define COORDINATE_HELPER_HPP
 
 #include <box2d/box2d.h>
+
 #include <glm/vec2.hpp>
 
 constexpr float kPixelsPerMeter = 50.0F;

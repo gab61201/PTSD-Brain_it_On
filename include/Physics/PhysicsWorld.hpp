@@ -23,6 +23,11 @@ class PhysicsWorld {
     b2Body* CreateCircle(glm::vec2 posPixels, float radiusPixels, float rotationRadians, bool isDynamic);
     b2Body* CreateBox(glm::vec2 posPixels, glm::vec2 halfSizePixels, float rotationRadians, bool isDynamic);
 
+    // Compound body 用：建立不帶 fixture 的 body，再動態掛 fixture
+    b2Body* CreateEmptyBody(glm::vec2 posPixels, float rotationRadians, bool isDynamic);
+    void AddCircleFixture(b2Body* body, glm::vec2 localOffsetPixels, float radiusPixels);
+    void AddBoxFixture(b2Body* body, glm::vec2 localOffsetPixels, glm::vec2 halfSizePixels, float localRotation);
+
     [[nodiscard]] glm::vec2 GetCirclePositionPixels() const;
     [[nodiscard]] float GetCircleRotationRadians() const;
 

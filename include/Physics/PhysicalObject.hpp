@@ -14,27 +14,19 @@ class PhysicalObject {
    public:
     virtual ~PhysicalObject() = default;
 
-    static std::shared_ptr<PhysicalObject> CreateCircle(
-        PhysicsWorld& world,    // 物理世界
-        glm::vec2 posPixels,    // PTSD 像素座標
-        glm::vec2 sizePixels,   // 長寬像素
-        float rotationRadians,  // 旋轉（弧度）
-        bool isDynamic          // 會不會動
-    );
+    // 將交由子類別去實作對應的建構/初始化邏輯
+    // std::shared_ptr<Util::GameObject> GetVisual() const;
+    // ...
 
-    static std::shared_ptr<PhysicalObject> CreateRectangle(
-        PhysicsWorld& world,    // 物理世界
-        glm::vec2 posPixels,    // PTSD 像素座標
-        glm::vec2 sizePixels,   // 長寬像素
-        float rotationRadians,  // 旋轉（弧度）
-        bool isDynamic          // 會不會動
-    );
+protected:
+    PhysicalObject() = default; // 確保不能直接實例化
 
+public:
     // 拿到 PTSD 的 GameObject
     std::shared_ptr<Util::GameObject> GetVisual() const;
 
     // 單向同步 Box2D -> PTSD
-    void Sync();
+    virtual void Sync();
 
     // --- setter / getter 是 debug 用，實務上應該不需要 ---
 
@@ -44,7 +36,7 @@ class PhysicalObject {
     void SetRotation(float angleRadians);
     float GetRotation() const;
 
-   protected:
+protected:
     b2Body* m_Body = nullptr;                    // Box2D
     std::shared_ptr<Util::GameObject> m_Visual;  // PTSD 畫面
 };
