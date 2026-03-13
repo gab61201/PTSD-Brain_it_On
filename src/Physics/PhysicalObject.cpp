@@ -6,42 +6,7 @@
 #include "Util/Image.hpp"
 
 #define IMAGE_SIZE 417.0F
-// --- 工廠方法 ---
-
-std::shared_ptr<PhysicalObject> PhysicalObject::CreateCircle(
-    PhysicsWorld& world, glm::vec2 posPixels, glm::vec2 sizePixels, float rotationRadians, bool isDynamic) {
-    auto obj = std::make_shared<PhysicalObject>();
-
-    // 建立 Box2D 物理圓形
-    float radiusPixels = sizePixels.x / 2.0F;
-    obj->m_Body = world.CreateCircle(posPixels, radiusPixels, rotationRadians, isDynamic);
-
-    // 建立 PTSD 視覺物件
-    obj->m_Visual = std::make_shared<Util::GameObject>();
-    obj->m_Visual->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/Images/circle.png"));
-    obj->m_Visual->m_Transform.translation = posPixels;
-    obj->m_Visual->m_Transform.rotation = rotationRadians;
-    obj->m_Visual->m_Transform.scale = sizePixels / IMAGE_SIZE;
-
-    return obj;
-}
-
-std::shared_ptr<PhysicalObject> PhysicalObject::CreateRectangle(
-    PhysicsWorld& world, glm::vec2 posPixels, glm::vec2 sizePixels, float rotationRadians, bool isDynamic) {
-    auto obj = std::make_shared<PhysicalObject>();
-
-    // 建立 Box2D 物理矩形（halfSize = sizePixels / 2）
-    obj->m_Body = world.CreateBox(posPixels, sizePixels / 2.0F, rotationRadians, isDynamic);
-
-    // 建立 PTSD 視覺物件
-    obj->m_Visual = std::make_shared<Util::GameObject>();
-    obj->m_Visual->SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/Images/square.png"));
-    obj->m_Visual->m_Transform.translation = posPixels;
-    obj->m_Visual->m_Transform.rotation = rotationRadians;
-    obj->m_Visual->m_Transform.scale = sizePixels / IMAGE_SIZE;
-
-    return obj;
-}
+// 工廠方法已移至各個子類別 (PhysicalCircle, PhysicalRectangle 等) 中
 
 // --- 每幀同步 ---
 
