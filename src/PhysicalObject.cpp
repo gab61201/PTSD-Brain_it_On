@@ -83,3 +83,20 @@ void PhysicalObject::SetPosition(glm::vec2 posPixels) {
         m_Visual->m_Transform.translation = posPixels;
     }
 }
+
+float PhysicalObject::GetRotation() const {
+    if (m_Body == nullptr) {
+        return 0.0F;
+    }
+    return m_Body->GetAngle();
+}
+
+void PhysicalObject::SetRotation(float angleRadians) {
+    if (m_Body) {
+        m_Body->SetTransform(m_Body->GetPosition(), angleRadians);
+        m_Body->SetAwake(true);
+    }
+    if (m_Visual) {
+        m_Visual->m_Transform.rotation = angleRadians;
+    }
+}

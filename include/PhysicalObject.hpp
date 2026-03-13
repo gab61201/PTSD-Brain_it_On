@@ -33,10 +33,16 @@ class PhysicalObject {
     // 拿到 PTSD 的 GameObject
     std::shared_ptr<Util::GameObject> GetVisual() const;
 
+    // 單向同步 Box2D -> PTSD
     void Sync();
+
+    // --- setter / getter 是 debug 用，實務上應該不需要 ---
 
     void SetPosition(glm::vec2 posPixels);
     glm::vec2 GetPosition() const;
+
+    void SetRotation(float angleRadians);
+    float GetRotation() const;
 
    protected:
     b2Body* m_Body = nullptr;                    // Box2D
