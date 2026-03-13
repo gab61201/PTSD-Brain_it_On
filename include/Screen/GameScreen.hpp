@@ -8,16 +8,16 @@ namespace UI {
 
 class GameScreen : public UIScreen {
    public:
-    explicit GameScreen(LevelManager &level);
+    explicit GameScreen(LevelManager& level);
 
-    void Enter() override;
+    void Initialize() override;
 
     ScreenType Update() override;
 
    private:
-    LevelManager &m_Level;
+    LevelManager& m_Level;
 };
 
-} // namespace UI
+}  // namespace UI
 
 #endif

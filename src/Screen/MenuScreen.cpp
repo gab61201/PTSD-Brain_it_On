@@ -18,7 +18,7 @@ namespace UI {
 MenuScreen::MenuScreen(LevelManager& level)
     : m_Level(level) {}
 
-void MenuScreen::Enter() {
+void MenuScreen::Initialize() {
     AddGameObject(CreateTitle("Menu"));
 }
 

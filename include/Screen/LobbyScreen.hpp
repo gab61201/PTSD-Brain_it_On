@@ -7,11 +7,11 @@ namespace UI {
 
 class LobbyScreen : public UIScreen {
    public:
-    void Enter() override;
+    void Initialize() override;
 
     ScreenType Update() override;
 };
 
-} // namespace UI
+}  // namespace UI
 
 #endif

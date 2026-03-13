@@ -27,7 +27,7 @@ void UIManager::ChangeUI(UI::ScreenType nextUI) {
 
     m_CurrentUI = nextUI;
     m_CurrentScreen = CreateScreen(m_CurrentUI);
-    m_CurrentScreen->Enter();
+    m_CurrentScreen->Initialize();
 }
 
 void UIManager::Update() {

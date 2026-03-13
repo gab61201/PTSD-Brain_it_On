@@ -8,16 +8,16 @@ namespace UI {
 
 class MenuScreen : public UIScreen {
    public:
-    explicit MenuScreen(LevelManager &level);
+    explicit MenuScreen(LevelManager& level);
 
-    void Enter() override;
+    void Initialize() override;
 
     ScreenType Update() override;
 
    private:
-    LevelManager &m_Level;
+    LevelManager& m_Level;
 };
 
-} // namespace UI
+}  // namespace UI
 
 #endif

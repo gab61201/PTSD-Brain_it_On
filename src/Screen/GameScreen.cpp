@@ -18,7 +18,7 @@ namespace UI {
 GameScreen::GameScreen(LevelManager& level)
     : m_Level(level) {}
 
-void GameScreen::Enter() {
+void GameScreen::Initialize() {
     AddGameObject(CreateTitle("Game"));
 }
 
