@@ -1,8 +1,8 @@
 set(SRC_FILES
     App.cpp
-    Level.cpp
-    LevelData.cpp
-    PassCondition.cpp
+    Level/Level.cpp
+    Level/LevelData.cpp
+    Level/PassCondition.cpp
     Screen/LobbyScreen.cpp
     Screen/SettingsScreen.cpp
     Screen/MenuScreen.cpp
@@ -14,9 +14,9 @@ set(SRC_FILES
 
 set(INCLUDE_FILES
     App.hpp
-    Level.hpp
-    LevelData.hpp
-    PassCondition.hpp
+    Level/Level.hpp
+    Level/LevelData.hpp
+    Level/PassCondition.hpp
     Screen/SettingsScreen.hpp
     Screen/LobbyScreen.hpp
     Screen/MenuScreen.hpp

@@ -2,7 +2,7 @@
 #define GAME_SCREEN_HPP
 
 #include "Screen/UIScreen.hpp"
-#include "Level.hpp"
+#include "Level/Level.hpp"
 
 namespace UI {
 

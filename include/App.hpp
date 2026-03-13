@@ -9,8 +9,6 @@
 #include "Screen/GameScreen.hpp"
 #include "Screen/SettingsScreen.hpp"
 
-
-
 class App {
    public:
     enum class State {

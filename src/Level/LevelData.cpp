@@ -1,4 +1,4 @@
-#include "LevelData.hpp"
+#include "Level/LevelData.hpp"
 #include "Util/Text.hpp"
 
 static LevelData LevelData_1() {
