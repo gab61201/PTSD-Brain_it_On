@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(REPLACE_WITH_YOUR_PROJECT_NAME)
+project(PTSD-Brain_it_On)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -7,6 +7,16 @@ cmake_policy(SET CMP0135 NEW)
 
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
+
+FetchContent_Declare(
+    box2d
+    URL         https://github.com/erincatto/box2d/archive/refs/tags/v2.4.1.zip
+    SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/lib/box2d
+)
+
+set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "" FORCE)
+set(BOX2D_BUILD_TESTBED OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(box2d)
 
 FetchContent_Declare(
     ptsd
@@ -51,10 +61,12 @@ else()
 endif()
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${DEPENDENCY_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lib/box2d/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/PTSD/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}
     SDL2::SDL2main
     PTSD
+    box2d
 )
