@@ -28,7 +28,6 @@ class Level {
 
     // 遊戲限制時間
     float m_Timeout;
-
     std::vector<std::shared_ptr<PhysicalObject>> m_objects;
     std::vector<std::shared_ptr<Util::GameObject>> m_banned_areas;
     std::vector<PassCondition> m_pass_conditions;

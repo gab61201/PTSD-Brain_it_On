@@ -13,6 +13,25 @@ void Level::Start() {
 }
 
 void Level::Update() {
+    // 繪製物體
+    for (auto& object : m_objects) {
+        object->Sync();
+    }
+    // 繪製區域
+    for (auto& area : m_banned_areas) {
+        area->Draw();
+    }
+    // 檢查通關條件
+    bool isPass = true;
+    for (auto& condition : m_pass_conditions) {
+        if (condition.isPassed()) {
+            isPass = false;
+            break;
+        }
+    }
+    if (isPass) {
+        End();
+    }
 }
 
 void Level::End() {
