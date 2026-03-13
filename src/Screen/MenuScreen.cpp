@@ -19,6 +19,8 @@ void MenuScreen::Initialize() {
     AddGameObject(CreateTitle("Menu"));
 }
 
+
+// 關卡入口加在這
 ScreenType MenuScreen::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::NUM_1)) {
         m_LevelType = LevelType::LEVEL_1;
