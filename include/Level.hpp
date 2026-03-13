@@ -5,10 +5,10 @@
 
 class Level {
    public:
-    ~Level() = default;
-
     // 生成關卡物件
-    void Initilalize();
+    Level(LevelId);
+
+    ~Level() = default;
 
     // 開始計時、物理模擬
     void Start();
@@ -20,19 +20,18 @@ class Level {
     void End();
 
    private:
-    // std::vector<PhysicalObject> m_PhysicalObjects;
+    LevelId m_LevelId;
 
     // 遊戲進行時間
-    float m_Time;
+    float m_Time = 0.0F;
 
     // 遊戲限制時間
     float m_Timeout;
-
-    // 過關條件
-    // PassCondition m_PassCondition;
-};
-
-class LevelManager {
+    
+    std::vector<std::shared_ptr<PhysicalObject>> m_objects;
+    std::vector<std::shared_ptr<Util::GameObject>> m_banned_areas;
+    std::vector<PassCondition> m_pass_conditions;
+    float m_pass_condition_check_duration;  // 通關檢測持續多久才算過關
 };
 
 #endif

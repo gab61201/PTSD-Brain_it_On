@@ -2,6 +2,8 @@
 #define LEVEL_DATA_HPP
 
 #include <map>
+#include "PhysicalObject.hpp"
+#include "PassCondition.hpp"
 
 enum class LevelId {
     LEVEL_1,
@@ -12,10 +14,12 @@ enum class LevelId {
 
 struct LevelData {
     float timeout;
-    // std::vector<ObjectData> initialObjects; // 例如所有箱子的座標、長寬
-    // PassConditionType condition;
+    std::vector<std::shared_ptr<PhysicalObject>> objects;
+    std::vector<std::shared_ptr<Util::GameObject>> banned_areas;
+    std::vector<PassCondition> pass_conditions;
+    float pass_condition_check_duration;  // 通關檢測持續多久才算過關
 };
 
-const std::map<LevelId, LevelData>& GetAllLevelData();
+LevelData GetLevelData(LevelId);
 
 #endif
