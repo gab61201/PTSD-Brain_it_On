@@ -6,5 +6,5 @@ PassCondition::PassCondition(Util::GameObject g_obj, PhysicalObject p_obj, Condi
 PassCondition::PassCondition(PhysicalObject, PhysicalObject, Condition) {
 }
 
-bool PassCondition::isPassed() {
+bool PassCondition::Check() {
 }
