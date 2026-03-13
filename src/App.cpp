@@ -14,25 +14,25 @@ void App::Start() {
 }
 
 void App::Update() {
-    m_CurrentScreen->Update();
     UI::ScreenType nextScreenType = m_CurrentScreen->GetNextScreenType();
     if (m_CurrentScreenType != nextScreenType) {
         switch (nextScreenType) {
             case UI::ScreenType::LOBBY:
-                m_CurrentScreen = std::make_unique<UI::LobbyScreen>();
-                break;
+            m_CurrentScreen = std::make_unique<UI::LobbyScreen>();
+            break;
             case UI::ScreenType::SETTINGS:
-                m_CurrentScreen = std::make_unique<UI::SettingsScreen>();
-                break;
+            m_CurrentScreen = std::make_unique<UI::SettingsScreen>();
+            break;
             case UI::ScreenType::MENU:
-                m_CurrentScreen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
-                break;
+            m_CurrentScreen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
+            break;
             case UI::ScreenType::GAME:
-                m_CurrentScreen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
-                break;
+            m_CurrentScreen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
+            break;
         }
         m_CurrentScreenType = nextScreenType;
     }
+    m_CurrentScreen->Update();
 
     if (Util::Input::IfExit()) {
         m_CurrentState = State::END;
