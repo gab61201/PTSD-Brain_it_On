@@ -8,7 +8,7 @@ namespace UI {
 
 class GameScreen : public UIScreen {
    public:
-    explicit GameScreen(LevelType levelType);
+    explicit GameScreen(LevelId levelId);
 
     void Initialize() override;
 
@@ -16,7 +16,7 @@ class GameScreen : public UIScreen {
 
    private:
     Level m_Level;
-    LevelType m_LevelType;
+    LevelId m_LevelId;
 };
 
 }  // namespace UI

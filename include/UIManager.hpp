@@ -10,7 +10,7 @@ class UIManager {
 
    private:
     UI::ScreenType m_CurrentUI = UI::ScreenType::LOBBY;
-    LevelType m_SelectedLevelType;
+    LevelId m_SelectedLevelId;
 
     std::unique_ptr<UI::UIScreen> m_CurrentScreen;
 

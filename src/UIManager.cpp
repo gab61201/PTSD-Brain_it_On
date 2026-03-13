@@ -12,7 +12,7 @@ std::unique_ptr<UI::UIScreen> UIManager::CreateScreen(UI::ScreenType screenType)
         case UI::ScreenType::MENU:
             return std::make_unique<UI::MenuScreen>();
         case UI::ScreenType::GAME:
-            return std::make_unique<UI::GameScreen>(m_SelectedLevelType);
+            return std::make_unique<UI::GameScreen>(m_SelectedLevelId);
         case UI::ScreenType::SETTINGS:
             return std::make_unique<UI::SettingsScreen>();
     }
@@ -40,7 +40,7 @@ void UIManager::Update() {
         nextUI == UI::ScreenType::GAME) {
         auto* menu = dynamic_cast<UI::MenuScreen*>(m_CurrentScreen.get());
         if (menu != nullptr) {
-            m_SelectedLevelType = menu->GetSelectedLevelType();
+            m_SelectedLevelId = menu->GetSelectedLevelType();
         }
     }
 

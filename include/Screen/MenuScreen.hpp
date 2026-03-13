@@ -12,10 +12,10 @@ class MenuScreen : public UIScreen {
 
     ScreenType Update() override;
 
-    LevelType GetSelectedLevelType() const { return m_LevelType; }
+    LevelId GetSelectedLevelType() const { return m_LevelId; }
 
    private:
-    LevelType m_LevelType;
+    LevelId m_LevelId;
 };
 
 }  // namespace UI

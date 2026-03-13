@@ -1,7 +1,7 @@
 #ifndef LEVEL_MANAGER_HPP
 #define LEVEL_MANAGER_HPP
 
-enum class LevelType {
+enum class LevelId {
     LEVEL_1,
     LEVEL_2,
     LEVEL_3,
