@@ -26,7 +26,7 @@ class UIScreen {
         }
     }
 
-    virtual void Exit() { m_GameObjects.clear(); }
+    virtual void Clear() { m_GameObjects.clear(); }
 
    protected:
     void AddGameObject(const std::shared_ptr<Util::GameObject>& object) {

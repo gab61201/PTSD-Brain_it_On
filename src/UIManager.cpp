@@ -22,7 +22,7 @@ std::unique_ptr<UI::UIScreen> UIManager::CreateScreen(UI::ScreenType screenType)
 
 void UIManager::ChangeUI(UI::ScreenType nextUIType) {
     if (m_CurrentScreen != nullptr) {
-        m_CurrentScreen->Exit();
+        m_CurrentScreen->Clear();
     }
 
     m_CurrentScreenType = nextUIType;
