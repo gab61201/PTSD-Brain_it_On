@@ -1,12 +1,7 @@
-#ifndef LEVEL_MANAGER_HPP
-#define LEVEL_MANAGER_HPP
+#ifndef LEVEL_HPP
+#define LEVEL_HPP
 
-enum class LevelId {
-    LEVEL_1,
-    LEVEL_2,
-    LEVEL_3,
-    LEVEL_4,
-};
+#include "LevelData.hpp"
 
 class Level {
    public:
