@@ -1,7 +1,10 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "pch.hpp"  // IWYU pragma: export
+#include "PhysicsWorld.hpp"
+#include "Util/GameObject.hpp"
+#include "Util/Renderer.hpp"
+#include "pch.hpp"   // IWYU pragma: export
 #include "UIManager.hpp"
 
 class App {
@@ -20,8 +23,10 @@ class App {
 
     void End();  // NOLINT(readability-convert-member-functions-to-static)
 
-   private:
-    void ValidTask();
+    std::shared_ptr<Util::GameObject> m_Circle;
+    std::shared_ptr<Util::GameObject> m_Floor;
+    Util::Renderer m_Root;
+    PhysicsWorld m_PhysicsWorld;
 
    private:
     State m_CurrentState = State::START;
