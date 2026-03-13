@@ -10,7 +10,6 @@ enum class LevelType {
 
 class Level {
    public:
-
     ~Level() = default;
 
     // 生成關卡物件

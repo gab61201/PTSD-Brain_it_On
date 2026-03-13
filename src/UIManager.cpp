@@ -38,7 +38,7 @@ void UIManager::Update() {
     const UI::ScreenType nextUI = m_CurrentScreen->Update();
     if (m_CurrentUI == UI::ScreenType::MENU &&
         nextUI == UI::ScreenType::GAME) {
-        auto *menu = dynamic_cast<UI::MenuScreen *>(m_CurrentScreen.get());
+        auto* menu = dynamic_cast<UI::MenuScreen*>(m_CurrentScreen.get());
         if (menu != nullptr) {
             m_SelectedLevelType = menu->GetSelectedLevelType();
         }

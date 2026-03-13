@@ -2,10 +2,10 @@
 #define APP_HPP
 
 #include "PhysicsWorld.hpp"
+#include "UIManager.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Renderer.hpp"
-#include "pch.hpp"   // IWYU pragma: export
-#include "UIManager.hpp"
+#include "pch.hpp"  // IWYU pragma: export
 
 class App {
    public:

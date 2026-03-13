@@ -8,17 +8,17 @@ namespace UI {
 
 class GameScreen : public UIScreen {
    public:
-	 explicit GameScreen(LevelType levelType);
+    explicit GameScreen(LevelType levelType);
 
-	 void Initialize() override;
+    void Initialize() override;
 
-	 ScreenType Update() override;
+    ScreenType Update() override;
 
    private:
-	 Level m_Level;
-	 LevelType m_LevelType;
+    Level m_Level;
+    LevelType m_LevelType;
 };
 
-} // namespace UI
+}  // namespace UI
 
 #endif
