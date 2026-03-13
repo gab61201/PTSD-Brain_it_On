@@ -6,8 +6,8 @@ set(SRC_FILES
     UIManager.cpp
     Level.cpp
     Screen/SettingsScreen.cpp
-    PhysicsWorld.cpp
-    PhysicalObject.cpp
+    Physics/PhysicsWorld.cpp
+    Physics/PhysicalObject.cpp
 )
 
 set(INCLUDE_FILES
@@ -19,8 +19,8 @@ set(INCLUDE_FILES
     Screen/MenuScreen.hpp
     Screen/SettingsScreen.hpp
     Screen/UIScreen.hpp
-    PhysicsWorld.hpp
-    PhysicalObject.hpp
+    Physics/PhysicsWorld.hpp
+    Physics/PhysicalObject.hpp
 )
 
 set(TEST_FILES

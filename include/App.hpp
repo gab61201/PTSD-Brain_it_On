@@ -1,7 +1,7 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "PhysicsWorld.hpp"
+#include "Physics/PhysicsWorld.hpp"
 #include "UIManager.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Renderer.hpp"

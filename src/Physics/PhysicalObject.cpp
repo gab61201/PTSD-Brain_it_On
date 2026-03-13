@@ -1,9 +1,8 @@
-#include "PhysicalObject.hpp"
-
+#include "Physics/PhysicalObject.hpp"
 #include <box2d/box2d.h>
 
-#include "CoordinateHelper.hpp"
-#include "PhysicsWorld.hpp"
+#include "Physics/CoordinateHelper.hpp"
+#include "Physics/PhysicsWorld.hpp"
 #include "Util/Image.hpp"
 
 // --- 工廠方法 ---

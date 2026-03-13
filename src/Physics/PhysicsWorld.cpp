@@ -1,8 +1,8 @@
-#include "PhysicsWorld.hpp"
+#include "Physics/PhysicsWorld.hpp"
 
 #include <box2d/box2d.h>
 
-#include "CoordinateHelper.hpp"
+#include "Physics/CoordinateHelper.hpp"
 
 namespace {
 constexpr float kTimeStep = 1.0F / 60.0F;
