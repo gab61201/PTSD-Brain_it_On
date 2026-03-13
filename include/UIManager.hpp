@@ -1,7 +1,7 @@
 #ifndef UI_MANAGER_HPP
 #define UI_MANAGER_HPP
 
-#include "LevelManager.hpp"
+#include "Level.hpp"
 #include "Screen/UIScreen.hpp"
 
 class UIManager {
@@ -10,7 +10,8 @@ class UIManager {
 
    private:
     UI::ScreenType m_CurrentUI = UI::ScreenType::LOBBY;
-    LevelManager m_Level;
+    LevelType m_SelectedLevelType = LevelType::LEVEL_1;
+
     std::unique_ptr<UI::UIScreen> m_CurrentScreen;
 
     void ChangeUI(UI::ScreenType nextUI);

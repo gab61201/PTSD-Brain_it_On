@@ -15,16 +15,13 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 
 namespace UI {
 
-MenuScreen::MenuScreen(LevelManager& level)
-    : m_Level(level) {}
-
 void MenuScreen::Initialize() {
     AddGameObject(CreateTitle("Menu"));
 }
 
 ScreenType MenuScreen::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::NUM_1)) {
-        m_Level.m_CurrentLevel = LevelManager::LevelState::LEVEL_1;
+        m_LevelType = LevelType::LEVEL_1;
         return ScreenType::GAME;
     }
 

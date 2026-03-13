@@ -10,9 +10,9 @@ std::unique_ptr<UI::UIScreen> UIManager::CreateScreen(UI::ScreenType screenType)
         case UI::ScreenType::LOBBY:
             return std::make_unique<UI::LobbyScreen>();
         case UI::ScreenType::MENU:
-            return std::make_unique<UI::MenuScreen>(m_Level);
+            return std::make_unique<UI::MenuScreen>();
         case UI::ScreenType::GAME:
-            return std::make_unique<UI::GameScreen>(m_Level);
+            return std::make_unique<UI::GameScreen>(m_SelectedLevelType);
         case UI::ScreenType::SETTINGS:
             return std::make_unique<UI::SettingsScreen>();
     }
@@ -36,6 +36,14 @@ void UIManager::Update() {
     }
 
     const UI::ScreenType nextUI = m_CurrentScreen->Update();
+    if (m_CurrentUI == UI::ScreenType::MENU &&
+        nextUI == UI::ScreenType::GAME) {
+        auto *menu = dynamic_cast<UI::MenuScreen *>(m_CurrentScreen.get());
+        if (menu != nullptr) {
+            m_SelectedLevelType = menu->GetSelectedLevelType();
+        }
+    }
+
     if (nextUI != m_CurrentUI) {
         ChangeUI(nextUI);
     }

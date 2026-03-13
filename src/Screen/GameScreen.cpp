@@ -15,10 +15,11 @@ std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
 
 namespace UI {
 
-GameScreen::GameScreen(LevelManager& level)
-    : m_Level(level) {}
+GameScreen::GameScreen(LevelType levelType)
+    : m_LevelType(levelType) {}
 
 void GameScreen::Initialize() {
+    m_Level.Initilalize();
     AddGameObject(CreateTitle("Game"));
 }
 

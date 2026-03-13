@@ -4,7 +4,7 @@ set(SRC_FILES
     Screen/LobbyScreen.cpp
     Screen/MenuScreen.cpp
     UIManager.cpp
-    LevelManager.cpp
+    Level.cpp
     Screen/SettingsScreen.cpp
     PhysicsWorld.cpp
     PhysicalObject.cpp
@@ -13,7 +13,7 @@ set(SRC_FILES
 set(INCLUDE_FILES
     App.hpp
     UIManager.hpp
-    LevelManager.hpp
+    Level.hpp
     Screen/GameScreen.hpp
     Screen/LobbyScreen.hpp
     Screen/MenuScreen.hpp
