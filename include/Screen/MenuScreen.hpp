@@ -10,9 +10,9 @@ class MenuScreen : public UIScreen {
    public:
     explicit MenuScreen(LevelId* levelId);
 
-    ScreenType Update() override;
+    void Update() override;
 
-    ScreenType GetScreenType() const override { return ScreenType::MENU; };
+    ScreenType GetNextScreenType() const override;
 
    private:
     LevelId *m_LevelId;

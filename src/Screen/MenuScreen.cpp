@@ -10,9 +10,11 @@ MenuScreen::MenuScreen(LevelId* levelId) : m_LevelId(levelId) {
 }
 
 // 關卡入口加在這
-ScreenType MenuScreen::Update() {
+void MenuScreen::Update() {
     m_Renderer.Update();
+}
 
+ScreenType MenuScreen::GetNextScreenType() const {
     if (Util::Input::IsKeyUp(Util::Keycode::NUM_1)) {
         *m_LevelId = LevelId::LEVEL_1;
         return ScreenType::GAME;
@@ -29,7 +31,6 @@ ScreenType MenuScreen::Update() {
         *m_LevelId = LevelId::LEVEL_5;
         return ScreenType::GAME;
     }
-
     return ScreenType::MENU;
 }
 

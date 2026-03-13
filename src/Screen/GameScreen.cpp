@@ -9,15 +9,17 @@ GameScreen::GameScreen(LevelId *levelId) : m_Level(*levelId) {
     m_Renderer.AddChild(title);
 }
 
-ScreenType GameScreen::Update() {
+void GameScreen::Update() {
     m_Renderer.Update();
     m_Level.Update();
+}
 
+ScreenType GameScreen::GetNextScreenType() const {
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
         return ScreenType::MENU;
     }
-
     return ScreenType::GAME;
 }
+
 
 }  // namespace UI

@@ -9,14 +9,16 @@ LobbyScreen::LobbyScreen() {
     m_Renderer.AddChild(title);
 }
 
-ScreenType LobbyScreen::Update() {
+void LobbyScreen::Update() {
     m_Renderer.Update();
+}
 
+ScreenType LobbyScreen::GetNextScreenType() const {
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         return ScreenType::MENU;
     }
-
     return ScreenType::LOBBY;
 }
+
 
 }  // namespace UI

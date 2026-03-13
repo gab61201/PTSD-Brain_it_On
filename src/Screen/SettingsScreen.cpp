@@ -9,13 +9,14 @@ SettingsScreen::SettingsScreen() {
     m_Renderer.AddChild(title);
 }
 
-ScreenType SettingsScreen::Update() {
+void SettingsScreen::Update() {
     m_Renderer.Update();
+}
 
+ScreenType SettingsScreen::GetNextScreenType() const {
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         return ScreenType::MENU;
     }
-
     return ScreenType::LOBBY;
 }
 

@@ -1,8 +1,16 @@
 #include "Level/LevelData.hpp"
 #include "Util/Text.hpp"
 
+// TESTING
 static LevelData LevelData_1() {
-    
+    LevelData levelData;
+    levelData.timeout = 60.0F;
+    auto title = std::make_shared<Util::GameObject>();
+    title->SetDrawable(
+        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "LEVEL_1"));
+    levelData.banned_areas.push_back(title);
+    levelData.pass_condition_check_duration = 1.0F;
+    return levelData;
 }
 
 static LevelData LevelData_2() {
