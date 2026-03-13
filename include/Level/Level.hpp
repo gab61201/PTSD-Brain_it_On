@@ -11,27 +11,20 @@ class Level {
 
     ~Level() = default;
 
-    // 開始計時、物理模擬
-    void Start();
-
-    // 更新畫面
-    void Update();
-
-    // 結算畫面
-    void End();
+    void Update();  // 更新畫面
 
    private:
+    void Start();   // 開始計時、物理模擬
+    void End();     // 結算畫面
+
     LevelId m_LevelId;
 
-    // 遊戲進行時間
-    float m_Time = 0.0F;
-
-    // 遊戲限制時間
-    float m_Timeout;
+    float m_Time = 0.0F;    // 遊戲進行時間
+    float m_Timeout;        // 遊戲限制時間
+    float m_pass_condition_check_duration;  // 通關檢測持續多久才算過關
     std::vector<std::shared_ptr<PhysicalObject>> m_objects;
     std::vector<std::shared_ptr<Util::GameObject>> m_banned_areas;
     std::vector<PassCondition> m_pass_conditions;
-    float m_pass_condition_check_duration;  // 通關檢測持續多久才算過關
 };
 
 #endif

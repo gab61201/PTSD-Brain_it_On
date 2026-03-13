@@ -12,6 +12,10 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
 void Level::Start() {
 }
 
+
+void Level::End() {
+}
+
 void Level::Update() {
     // 繪製物體
     for (auto& object : m_objects) {
@@ -32,7 +36,4 @@ void Level::Update() {
     if (isPass) {
         End();
     }
-}
-
-void Level::End() {
 }
