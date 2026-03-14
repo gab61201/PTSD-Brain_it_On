@@ -3,12 +3,6 @@
 
 #include "LevelData.hpp"
 
-enum class state {
-    WAITING,
-    PLAYING,
-    FINISHED
-};
-
 class Level {
    public:
     // 生成關卡物件
@@ -20,6 +14,11 @@ class Level {
     void Update();  // 更新畫面
 
    private:
+    enum class state {
+        WAITING,
+        PLAYING,
+        FINISHED
+    };
     LevelId m_LevelId;
     state m_state = state::WAITING;
     void Waiting();     // 等待玩家繪製
