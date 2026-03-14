@@ -1,13 +1,12 @@
 set(SRC_FILES
     App.cpp
-    Screen/GameScreen.cpp
+    Level/Level.cpp
+    Level/LevelData.cpp
+    Level/PassCondition.cpp
     Screen/LobbyScreen.cpp
-    Screen/MenuScreen.cpp
     Screen/SettingsScreen.cpp
-    UIManager.cpp
-    Level.cpp
-    LevelData.cpp
-    PassCondition.cpp
+    Screen/MenuScreen.cpp
+    Screen/GameScreen.cpp
     Physics/PhysicsWorld.cpp
     Physics/PhysicalObject.cpp
     Physics/PhysicalCircle.cpp
@@ -17,14 +16,13 @@ set(SRC_FILES
 
 set(INCLUDE_FILES
     App.hpp
-    UIManager.hpp
-    Level.hpp
-    LevelData.hpp
-    PassCondition.hpp
-    Screen/GameScreen.hpp
+    Level/Level.hpp
+    Level/LevelData.hpp
+    Level/PassCondition.hpp
+    Screen/SettingsScreen.hpp
     Screen/LobbyScreen.hpp
     Screen/MenuScreen.hpp
-    Screen/SettingsScreen.hpp
+    Screen/GameScreen.hpp
     Screen/UIScreen.hpp
     Physics/PhysicsWorld.hpp
     Physics/PhysicalObject.hpp

@@ -1,30 +1,23 @@
 #include "Screen/SettingsScreen.hpp"
 
-#include "Util/Input.hpp"
-#include "Util/Keycode.hpp"
-#include "Util/Text.hpp"
-
-namespace {
-std::shared_ptr<Util::GameObject> CreateTitle(const std::string& text) {
-    auto title = std::make_shared<Util::GameObject>();
-    title->SetDrawable(
-        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, text));
-    return title;
-}
-}  // namespace
-
 namespace UI {
 
 SettingsScreen::SettingsScreen() {
-    AddGameObject(CreateTitle("Settings"));
+    auto title = std::make_shared<Util::GameObject>();
+    title->SetDrawable(
+        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "SettingsScreen"));
+    m_Renderer.AddChild(title);
 }
 
-ScreenType SettingsScreen::Update() {
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
-        return ScreenType::GAME;
-    }
+void SettingsScreen::Update() {
+    m_Renderer.Update();
+}
 
-    return ScreenType::SETTINGS;
+ScreenType SettingsScreen::GetNextScreenType() const {
+    if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
+        return ScreenType::MENU;
+    }
+    return ScreenType::LOBBY;
 }
 
 }  // namespace UI

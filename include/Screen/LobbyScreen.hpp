@@ -9,7 +9,12 @@ class LobbyScreen : public UIScreen {
    public:
     LobbyScreen();
 
-    ScreenType Update() override;
+    void Update() override;
+
+    ScreenType GetNextScreenType() const override;
+
+   private:
+    // 放需要設定偵測的物件
 };
 
 }  // namespace UI

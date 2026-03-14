@@ -1,21 +1,21 @@
 #ifndef MENU_SCREEN_HPP
 #define MENU_SCREEN_HPP
 
-#include "Level.hpp"
+#include "Level/Level.hpp"
 #include "Screen/UIScreen.hpp"
 
 namespace UI {
 
 class MenuScreen : public UIScreen {
    public:
-    MenuScreen();
+    explicit MenuScreen(LevelId* levelId);
 
-    ScreenType Update() override;
+    void Update() override;
 
-    LevelId GetSelectedLevelType() const { return m_LevelId; }
+    ScreenType GetNextScreenType() const override;
 
    private:
-    LevelId m_LevelId;
+    LevelId *m_LevelId;
 };
 
 }  // namespace UI

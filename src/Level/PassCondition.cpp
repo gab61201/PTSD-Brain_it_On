@@ -1,4 +1,4 @@
-#include "PassCondition.hpp"
+#include "Level/PassCondition.hpp"
 
 PassCondition::PassCondition(Util::GameObject g_obj, PhysicalObject p_obj, Condition condition) {
 }
@@ -6,5 +6,5 @@ PassCondition::PassCondition(Util::GameObject g_obj, PhysicalObject p_obj, Condi
 PassCondition::PassCondition(PhysicalObject, PhysicalObject, Condition) {
 }
 
-bool PassCondition::isPassed() {
+bool PassCondition::Check() {
 }

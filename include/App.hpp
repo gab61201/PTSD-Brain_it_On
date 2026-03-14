@@ -1,13 +1,13 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "Physics/CompoundPhysicalObject.hpp"
-#include "Physics/PhysicalObject.hpp"
-#include "Physics/PhysicsWorld.hpp"
-#include "UIManager.hpp"
-#include "Util/GameObject.hpp"
-#include "Util/Renderer.hpp"
 #include "pch.hpp"  // IWYU pragma: export
+
+#include "Screen/UIScreen.hpp"
+#include "Screen/LobbyScreen.hpp"
+#include "Screen/MenuScreen.hpp"
+#include "Screen/GameScreen.hpp"
+#include "Screen/SettingsScreen.hpp"
 
 class App {
    public:
@@ -25,15 +25,13 @@ class App {
 
     void End();  // NOLINT(readability-convert-member-functions-to-static)
 
-    // Compound demo
-    Util::Renderer m_Root;
-    PhysicsWorld m_PhysicsWorld;
-    std::shared_ptr<CompoundPhysicalObject> m_Compound;
-    std::shared_ptr<PhysicalObject> m_PhysFloor;
-
    private:
     State m_CurrentState = State::START;
-    UIManager ui;
+    
+    // UI
+    UI::ScreenType m_CurrentScreenType;
+    std::unique_ptr<UI::UIScreen> m_CurrentScreen;
+    LevelId m_SelectedLevelId;
 };
 
 #endif

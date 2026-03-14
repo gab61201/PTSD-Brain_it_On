@@ -14,7 +14,7 @@ class PassCondition {
    public:
     PassCondition(Util::GameObject, PhysicalObject, Condition);
     PassCondition(PhysicalObject, PhysicalObject, Condition);
-    bool isPassed();
+    bool Check();
 };
 
 #endif
