@@ -14,28 +14,34 @@ static LevelData LevelData_1() {
 }
 
 static LevelData LevelData_2() {
+    return LevelData{};
 }
 
 static LevelData LevelData_3() {
+    return LevelData{};
 }
 
 static LevelData LevelData_4() {
+    return LevelData{};
 }
 
 static LevelData LevelData_5() {
+    return LevelData{};
 }
 
 LevelData GetLevelData(LevelId levelId) {
-    switch (levelId) {
-        case LevelId::LEVEL_1:
-            return LevelData_1();
-        case LevelId::LEVEL_2:
-            return LevelData_2();
-        case LevelId::LEVEL_3:
-            return LevelData_3();
-        case LevelId::LEVEL_4:
-            return LevelData_4();
-        case LevelId::LEVEL_5:
-            return LevelData_5();
+    static constexpr LevelData (*level_funcs[])() = {
+        LevelData_1,
+        LevelData_2,
+        LevelData_3,
+        LevelData_4,
+        LevelData_5
+    };
+
+    auto index = static_cast<std::size_t>(levelId);
+    if (index < std::size(level_funcs)) {
+        return level_funcs[index]();
     }
+
+    return LevelData{};
 }
