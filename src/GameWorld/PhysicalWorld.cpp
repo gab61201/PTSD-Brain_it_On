@@ -1,16 +1,16 @@
-#include "GameWorld/PhysicalWorld.hpp"  // 請確認你的標頭檔名稱
+#include "GameWorld/PhysicalWorld.hpp"
+#include "GameWorld/BaseObject.hpp"
 
-// ==========================================
-// 建構子 (Constructor)
-// ==========================================
+#include "Util/Input.hpp"
+#include "Util/Keycode.hpp"
+
+#define STROKE_WIDTH 10.0F
+
+
 PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
-    // 1. 初始化 Box2D 世界，並設定重力。
-    // 💡 提示：Box2D 預設 Y 軸向上。如果你的遊戲畫面 Y 軸是朝下的，請改成正數 (例如 0.0f, 9.8f)
-    : m_b2World(b2Vec2(0.0f, -9.8f)),
-      m_CompositeObject(std::move(compositeObjects)),
-      m_state(state::PAUSE)  // 遊戲初始狀態設為暫停
-{
-    // 2. 在世界建立的瞬間，把所有初始的物件掛載到物理引擎裡
+: m_b2World(b2Vec2(0.0f, -9.8f)),
+m_CompositeObject(std::move(compositeObjects)),
+m_state(state::PAUSE) {
     for (auto& obj : m_CompositeObject) {
         if (obj) {
             obj->AttachToWorld(&m_b2World);
@@ -18,51 +18,19 @@ PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compo
     }
 }
 
-// ==========================================
-// 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
-// ==========================================
-void PhysicalWorld::Update() {
-    // 1. 只有在「遊玩中」的狀態，時間才會流動，物理引擎才會運作
-    if (m_state == state::PLAYING) {
-        // Box2D 官方建議的模擬參數
-        float timeStep = 1.0f / 60.0f;  // 假設遊戲以 60 FPS 運行
-        int32 velocityIterations = 8;   // 速度迭代次數 (越高越精準，但較耗效能)
-        int32 positionIterations = 3;   // 位置迭代次數 (解決物體重疊)
-
-        // 🚀 讓物理世界往前推演一步！
-        m_b2World.Step(timeStep, velocityIterations, positionIterations);
-    }
-
-    // 2. 同步畫面座標
-    // 💡 提示：就算在 PAUSE 或 PLAYER_DRAWING 狀態，我們還是要呼叫 Update()，
-    // 這樣畫面上的物件才不會消失，只是它們會停在原地不動。
-    for (auto& obj : m_CompositeObject) {
-        if (obj) {
-            obj->Update();
-        }
+void PhysicalWorld::Playing() {
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+        m_state = state::PLAYER_DRAWING;
+    } else if (Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
+        m_state = state::PAUSE;
     }
 }
 
-// ==========================================
-// 開始遊戲 (Start)
-// ==========================================
-void PhysicalWorld::Start() {
-    m_state = state::PLAYING;
-}
-
-// ==========================================
-// 暫停遊戲 (Stop)
-// ==========================================
-void PhysicalWorld::Stop() {
-    m_state = state::PAUSE;
-}
-
-// ==========================================
-// 玩家繪圖模式 (PlayerDrawObject)
-// ==========================================
 void PhysicalWorld::PlayerDrawObject() {
-    // 切換狀態，此時 Update() 裡的 m_b2World.Step() 會停止，畫面凍結
-    m_state = state::PLAYER_DRAWING;
+    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)){
+        m_state = state::PLAYING;
+        return;
+    }
 
     // TODO: 這裡未來要實作「玩家滑鼠畫線」的邏輯。
     // 大致流程會是：
@@ -71,4 +39,41 @@ void PhysicalWorld::PlayerDrawObject() {
     // 3. 把這些 BaseObject 包裝成一個新的 CompositeObject。
     // 4. newCompositeObj->AttachToWorld(&m_b2World);
     // 5. m_CompositeObject.push_back(newCompositeObj);
+}
+
+void PhysicalWorld::Pause() {
+    if (Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
+        m_state = state::PLAYING;
+    }
+}
+
+// ==========================================
+// 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
+// ==========================================
+void PhysicalWorld::Update() {
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+        m_state = state::PLAYER_DRAWING;
+    }
+    float timeStep = 1.0f / 60.0f;  // 假設遊戲以 60 FPS 運行
+    int32 velocityIterations = 8;   // 速度迭代次數 (越高越精準，但較耗效能)
+    int32 positionIterations = 3;   // 位置迭代次數 (解決物體重疊)
+    switch (m_state) {
+        case state::PLAYING:
+            Playing();
+            m_b2World.Step(timeStep, velocityIterations, positionIterations);
+            break;
+        case state::PLAYER_DRAWING:
+            PlayerDrawObject();
+            m_b2World.Step(timeStep, velocityIterations, positionIterations);
+            break;
+        case state::PAUSE:
+            Pause();
+            break;
+    }
+    // 2. 同步畫面座標
+    for (auto& obj : m_CompositeObject) {
+        if (obj) {
+            obj->Update();
+        }
+    }
 }

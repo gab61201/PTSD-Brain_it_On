@@ -15,7 +15,6 @@ void Level::Waiting() {
     // 檢查使用者是否開始繪圖
     if (m_World && Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
         m_state = state::PLAYING;
-        m_World->Start();
     }
 }
 
