@@ -90,21 +90,3 @@ void CompositeObject::Update() {
         }
     }
 }
-
-std::vector<std::shared_ptr<Util::GameObject>> CompositeObject::GetVisuals() const {
-    std::vector<std::shared_ptr<Util::GameObject>> visuals;
-    visuals.reserve(m_BaseObjects.size());
-
-    for (const auto& baseObj : m_BaseObjects) {
-        if (!baseObj) {
-            continue;
-        }
-
-        auto visual = baseObj->GetVisual();
-        if (visual) {
-            visuals.push_back(visual);
-        }
-    }
-
-    return visuals;
-}

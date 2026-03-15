@@ -49,11 +49,3 @@ void Level::Update() {
         m_World->Update();
     }
 }
-
-std::vector<std::shared_ptr<Util::GameObject>> Level::GetVisuals() const {
-    if (!m_World) {
-        return {};
-    }
-
-    return m_World->GetVisuals();
-}

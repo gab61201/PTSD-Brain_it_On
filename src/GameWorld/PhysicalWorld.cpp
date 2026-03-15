@@ -72,18 +72,3 @@ void PhysicalWorld::PlayerDrawObject() {
     // 4. newCompositeObj->AttachToWorld(&m_b2World);
     // 5. m_CompositeObject.push_back(newCompositeObj);
 }
-
-std::vector<std::shared_ptr<Util::GameObject>> PhysicalWorld::GetVisuals() const {
-    std::vector<std::shared_ptr<Util::GameObject>> visuals;
-
-    for (const auto& obj : m_CompositeObject) {
-        if (!obj) {
-            continue;
-        }
-
-        auto objectVisuals = obj->GetVisuals();
-        visuals.insert(visuals.end(), objectVisuals.begin(), objectVisuals.end());
-    }
-
-    return visuals;
-}

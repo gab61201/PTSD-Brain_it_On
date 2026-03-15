@@ -30,8 +30,6 @@ class CompositeObject {
 
     void AttachToWorld(b2World* world);
 
-    std::vector<std::shared_ptr<Util::GameObject>> GetVisuals() const;
-
    private:
     std::vector<std::shared_ptr<BaseObject>> m_BaseObjects;
     b2Body* m_Body = nullptr;

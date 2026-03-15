@@ -19,8 +19,6 @@ class PhysicalWorld {
     // 玩家繪圖
     void PlayerDrawObject();
 
-    std::vector<std::shared_ptr<Util::GameObject>> GetVisuals() const;
-
    private:
     enum class state {
         PAUSE,
