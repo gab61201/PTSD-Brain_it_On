@@ -7,9 +7,11 @@ set(SRC_FILES
     Screen/SettingsScreen.cpp
     Screen/MenuScreen.cpp
     Screen/GameScreen.cpp
-    GameWorld/Physics.cpp
+    # GameWorld/Physics.cpp
+    GameWorld/CompositeObject.cpp
     GameWorld/BaseObject.cpp
-    GameWorld/CompoundObject.cpp
+    GameWorld/PhysicalWorld.cpp
+    # GameWorld/CompoundObject.cpp
 )
 
 set(INCLUDE_FILES
@@ -23,9 +25,11 @@ set(INCLUDE_FILES
     Screen/GameScreen.hpp
     Screen/UIScreen.hpp
     GameWorld/CoordinateHelper.hpp
-    GameWorld/Physics.hpp
+    # GameWorld/Physics.hpp
+    GameWorld/CompositeObject.hpp
     GameWorld/BaseObject.hpp
-    GameWorld/CompoundObject.hpp
+    GameWorld/PhysicalWorld.hpp
+    # GameWorld/CompoundObject.hpp
 )
 
 set(TEST_FILES

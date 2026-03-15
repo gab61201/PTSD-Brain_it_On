@@ -1,65 +1,46 @@
-#ifndef GAMEWORLD_BASE_OBJECT_HPP
-#define GAMEWORLD_BASE_OBJECT_HPP
+#ifndef BASE_OBJECT_HPP
+#define BASE_OBJECT_HPP
 
-#include <glm/vec2.hpp>
+#include <box2d/b2_body.h>
+#include <box2d/b2_circle_shape.h>
+#include <box2d/b2_fixture.h>
+#include <box2d/b2_polygon_shape.h>
+
+#include <glm/glm.hpp>
 #include <memory>
-#include <string>
 
 #include "Util/GameObject.hpp"
 
-class b2Body;
-
-namespace GameWorld {
-
-class Physics;
-
-enum class Shape {
-    RECTANGLE,
+enum class ShapeType {
     CIRCLE,
+    RECTANGLE,
     TRIANGLE
-};
-
-enum class BodyType {
-    STATIC,
-    DYNAMIC,
-    KINEMATIC
 };
 
 class BaseObject {
    public:
     BaseObject(
-        Physics& physics,
-        Shape shape,
+        ShapeType shape,
         glm::vec2 size,
         glm::vec2 position,
-        float rotation,
-        BodyType bodyType,
+        float rotation = 0.0F,
         bool isSensor = false);
 
-    BaseObject() = default;
+    ~BaseObject() = default;
 
-    // 將 Box2D 的狀態單向同步到 PTSD 視覺元件
-    void Sync();
+    void Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation);
 
-    std::shared_ptr<Util::GameObject> GetVisual() const;
-
-    glm::vec2 GetPosition() const;
-    void SetPosition(glm::vec2 posPixels);
-    float GetRotation() const;
-    void SetRotation(float angleRadians);
-
-    // 這些主要是給 CompoundObject 使用，讓它能存取內部的 Body
-    b2Body* GetBody() const { return m_Body; }
-    Shape GetShape() const { return m_Shape; }
-    glm::vec2 GetSize() const { return m_Size; }
+    void AttachToBody(b2Body* body);
 
    private:
     std::shared_ptr<Util::GameObject> m_Visual;
-    b2Body* m_Body = nullptr;
-    Shape m_Shape;
+    b2Fixture* m_Fixture;
+
+    ShapeType m_ShapeType;
     glm::vec2 m_Size;
+    glm::vec2 m_RelativePosition;
+    float m_RelativeRotation;
+    bool m_IsSensor;
 };
 
-}  // namespace GameWorld
-
-#endif  // GAMEWORLD_BASE_OBJECT_HPP
+#endif  // BASE_OBJECT_HPP
