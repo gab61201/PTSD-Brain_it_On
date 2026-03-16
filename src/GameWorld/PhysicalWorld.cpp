@@ -1,16 +1,15 @@
 #include "GameWorld/PhysicalWorld.hpp"
-#include "GameWorld/BaseObject.hpp"
 
+#include "GameWorld/BaseObject.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 
 #define STROKE_WIDTH 10.0F
 
-
 PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
-: m_b2World(b2Vec2(0.0f, -9.8f)),
-m_CompositeObject(std::move(compositeObjects)),
-m_state(state::PAUSE) {
+    : m_state(state::PAUSE),
+      m_b2World(b2Vec2(0.0f, -9.8f)),
+      m_CompositeObject(std::move(compositeObjects)) {
     for (auto& obj : m_CompositeObject) {
         if (obj) {
             obj->AttachToWorld(&m_b2World);
@@ -27,7 +26,7 @@ void PhysicalWorld::Playing() {
 }
 
 void PhysicalWorld::PlayerDrawObject() {
-    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)){
+    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         m_state = state::PLAYING;
         return;
     }

@@ -5,7 +5,6 @@
 
 class PhysicalWorld {
    public:
-    PhysicalWorld() = default;
     PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects);
     ~PhysicalWorld() = default;
 
@@ -26,7 +25,6 @@ class PhysicalWorld {
     state m_state = state::PAUSE;
     b2World m_b2World;
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
-    
 };
 
 #endif  // WORLD_HPP
