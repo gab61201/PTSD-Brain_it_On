@@ -11,6 +11,8 @@
 
 #include "Util/GameObject.hpp"
 
+namespace GameWorld {
+
 enum class ShapeType {
     CIRCLE,
     RECTANGLE,
@@ -42,5 +44,7 @@ class BaseObject {
     float m_RelativeRotation;
     bool m_IsSensor;
 };
+
+}  // namespace GameWorld
 
 #endif  // BASE_OBJECT_HPP

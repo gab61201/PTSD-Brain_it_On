@@ -30,7 +30,7 @@ class Level {
     float m_Time = 0.0F;                    // 遊戲進行時間
     float m_Timeout;                        // 遊戲限制時間
     float m_pass_condition_check_duration;  // 通關檢測持續多久才算過關
-    std::shared_ptr<PhysicalWorld> m_World;
+    std::shared_ptr<GameWorld::PhysicalWorld> m_World;
     std::vector<PassCondition> m_pass_conditions;
 };
 

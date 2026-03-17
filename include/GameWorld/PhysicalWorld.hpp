@@ -3,6 +3,8 @@
 
 #include "GameWorld/CompositeObject.hpp"
 
+namespace GameWorld {
+
 class PhysicalWorld {
    public:
     PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects);
@@ -26,5 +28,7 @@ class PhysicalWorld {
     b2World m_b2World;
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
 };
+
+}  // namespace GameWorld
 
 #endif  // WORLD_HPP

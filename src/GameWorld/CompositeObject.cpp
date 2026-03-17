@@ -2,6 +2,8 @@
 
 #include "GameWorld/CoordinateHelper.hpp"
 
+namespace GameWorld {
+
 // 💡 假設你的像素與公尺轉換工具寫在這個標頭檔，請依照你的專案架構調整
 // #include "GameWorld/GameWorld.hpp"
 
@@ -90,3 +92,5 @@ void CompositeObject::Update() {
         }
     }
 }
+
+}  // namespace GameWorld

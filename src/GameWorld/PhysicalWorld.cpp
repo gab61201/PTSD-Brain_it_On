@@ -6,6 +6,8 @@
 
 #define STROKE_WIDTH 10.0F
 
+namespace GameWorld {
+
 PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
     : m_state(state::PAUSE),
       m_b2World(b2Vec2(0.0f, -9.8f)),
@@ -76,3 +78,5 @@ void PhysicalWorld::Update() {
         }
     }
 }
+
+}  // namespace GameWorld

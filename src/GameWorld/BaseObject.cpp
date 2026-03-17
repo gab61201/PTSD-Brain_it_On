@@ -8,6 +8,8 @@
 
 #define IMAGE_SIZE 417.0F
 
+namespace GameWorld {
+
 // ==========================================
 // 建構子 (Constructor)
 // ==========================================
@@ -110,3 +112,5 @@ void BaseObject::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotati
     m_Visual->m_Transform.rotation = globalRotation;
     m_Visual->Draw();
 }
+
+}  // namespace GameWorld

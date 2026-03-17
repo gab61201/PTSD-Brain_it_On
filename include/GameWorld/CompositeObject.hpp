@@ -9,6 +9,8 @@
 
 #include "GameWorld/BaseObject.hpp"
 
+namespace GameWorld {
+
 enum class BodyType {
     STATIC,
     DYNAMIC,
@@ -37,5 +39,7 @@ class CompositeObject {
     glm::vec2 m_Position;
     float m_Rotation;
 };
+
+}  // namespace GameWorld
 
 #endif
