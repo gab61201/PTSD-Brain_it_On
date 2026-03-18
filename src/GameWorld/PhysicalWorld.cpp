@@ -22,16 +22,27 @@ PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compo
 void PhysicalWorld::Playing() {
     if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
         m_state = state::PLAYER_DRAWING;
+        auto newDrawnObject = std::make_shared<DrawnObject>(Util::Input::GetCursorPosition());
+        newDrawnObject->AttachToWorld(&m_b2World);
+        m_DrawnObjects.push_back(newDrawnObject);
     } else if (Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
         m_state = state::PAUSE;
     }
 }
 
 void PhysicalWorld::PlayerDrawObject() {
-    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+    if (m_DrawnObjects.empty()) {
         m_state = state::PLAYING;
         return;
     }
+
+    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        m_DrawnObjects.back()->EndDrawing();
+        m_state = state::PLAYING;
+        return;
+    }
+    auto nowDrawingObject = m_DrawnObjects.back();
+    nowDrawingObject->DrawNextPoint(Util::Input::GetCursorPosition());
 
     // TODO: 這裡未來要實作「玩家滑鼠畫線」的邏輯。
     // 大致流程會是：
@@ -46,15 +57,18 @@ void PhysicalWorld::Pause() {
     if (Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
         m_state = state::PLAYING;
     }
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB) && m_DrawnObjects.empty()) {
+        m_state = state::PLAYER_DRAWING;
+        auto newDrawnObject = std::make_shared<DrawnObject>(Util::Input::GetCursorPosition());
+        newDrawnObject->AttachToWorld(&m_b2World);
+        m_DrawnObjects.push_back(newDrawnObject);
+    }
 }
 
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
 // ==========================================
 void PhysicalWorld::Update() {
-    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
-        m_state = state::PLAYER_DRAWING;
-    }
     float timeStep = 1.0f / 60.0f;  // 假設遊戲以 60 FPS 運行
     int32 velocityIterations = 8;   // 速度迭代次數 (越高越精準，但較耗效能)
     int32 positionIterations = 3;   // 位置迭代次數 (解決物體重疊)
@@ -77,6 +91,12 @@ void PhysicalWorld::Update() {
             obj->Update();
         }
     }
+    for (auto& obj : m_DrawnObjects) {
+        if (obj) {
+            obj->Update();
+        }
+    }
+    
 }
 
 }  // namespace GameWorld

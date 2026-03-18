@@ -20,6 +20,7 @@ enum class BodyType {
 class CompositeObject {
    public:
     // 傳入多個 BaseObject 作為子物件
+    CompositeObject() = default;
     CompositeObject(
         std::vector<std::shared_ptr<BaseObject>> baseObjects,
         BodyType bodyType = BodyType::STATIC,
@@ -32,12 +33,12 @@ class CompositeObject {
 
     void AttachToWorld(b2World* world);
 
-   private:
+   protected:
     std::vector<std::shared_ptr<BaseObject>> m_BaseObjects;
-    b2Body* m_Body = nullptr;
-    BodyType m_BodyType;
     glm::vec2 m_Position;
+    BodyType m_BodyType;
     float m_Rotation;
+    b2Body* m_Body = nullptr;
 };
 
 }  // namespace GameWorld

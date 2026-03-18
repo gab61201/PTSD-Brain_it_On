@@ -2,6 +2,7 @@
 #define PHYSICAL_WORLD_HPP
 
 #include "GameWorld/CompositeObject.hpp"
+#include "GameWorld/DrawnObject.hpp"
 
 namespace GameWorld {
 
@@ -27,6 +28,7 @@ class PhysicalWorld {
     state m_state = state::PAUSE;
     b2World m_b2World;
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
+    std::vector<std::shared_ptr<DrawnObject>> m_DrawnObjects;
 };
 
 }  // namespace GameWorld
