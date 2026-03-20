@@ -12,23 +12,18 @@ class PhysicalWorld {
     ~PhysicalWorld() = default;
 
     // 更新碰撞並渲染
+    void Start();
+    void DrawObject(glm::vec2 position);
+    void EndDrawing();
     void Update();
 
    private:
-    // 玩家繪圖
-    void Playing();
-    void PlayerDrawObject();
-    void Pause();
-
-    enum class state {
-        PAUSE,
-        PLAYING,
-        PLAYER_DRAWING
-    };
-    state m_state = state::PAUSE;
     b2World m_b2World;
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
     std::vector<std::shared_ptr<DrawnObject>> m_DrawnObjects;
+
+    std::shared_ptr<DrawnObject> m_DrawingObject;
+    bool m_IsActive = false;
 };
 
 }  // namespace GameWorld
