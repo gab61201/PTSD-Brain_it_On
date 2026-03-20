@@ -19,10 +19,12 @@ class PhysicalWorld {
 
    private:
     b2World m_b2World;
+    // 地圖原有的物件
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
+    // 玩家畫的物件
     std::vector<std::shared_ptr<DrawnObject>> m_DrawnObjects;
 
-    std::shared_ptr<DrawnObject> m_DrawingObject;
+    std::shared_ptr<DrawnObject> m_LastDrawingObject;
     bool m_IsActive = false;
 };
 
