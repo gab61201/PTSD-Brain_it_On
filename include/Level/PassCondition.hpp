@@ -1,8 +1,9 @@
 #ifndef PASS_CONDITION_HPP
 #define PASS_CONDITION_HPP
 
-#include <box2d/b2_fixture.h>
 #include <box2d/b2_world_callbacks.h>
+
+#include "GameWorld/BaseObject.hpp"
 
 enum class Condition {
     TOUCHING,
@@ -11,7 +12,12 @@ enum class Condition {
 
 class PassCondition : public b2ContactListener {
    public:
-    PassCondition(b2Fixture* fixtureA, b2Fixture* fixtureB, int time, Condition condition);
+    PassCondition(
+        std::shared_ptr<GameWorld::BaseObject> objectA,
+        std::shared_ptr<GameWorld::BaseObject> objectB,
+        Condition condition,
+        int time
+    );
     ~PassCondition() = default;
 
     void BeginContact(b2Contact* contact) override;
@@ -20,10 +26,10 @@ class PassCondition : public b2ContactListener {
     bool Check() const;
 
    private:
-    b2Fixture* m_Fixture_A;
-    b2Fixture* m_Fixture_B;
-    int m_Time;
+    std::shared_ptr<GameWorld::BaseObject> m_ObjectA;
+    std::shared_ptr<GameWorld::BaseObject> m_ObjectB;
     Condition m_Condition;
+    int m_Time;
 
     bool m_IsPassed = false;
     int m_Counter = 0;

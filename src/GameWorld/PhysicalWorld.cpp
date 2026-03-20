@@ -1,6 +1,6 @@
 #include "GameWorld/PhysicalWorld.hpp"
-
 #include "GameWorld/BaseObject.hpp"
+#include "Level/PassCondition.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 
@@ -24,16 +24,24 @@ class DrawingRayCastCallback : public b2RayCastCallback {
     }
 };
 
-PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
+PhysicalWorld::PhysicalWorld(
+    std::vector<std::shared_ptr<CompositeObject>> compositeObjects,
+    PassCondition* passCondition)
     : m_b2World(b2Vec2(0.0f, -9.8f)),
-      m_CompositeObject(std::move(compositeObjects)) {
+      m_CompositeObject(std::move(compositeObjects)),
+      m_PassCondition(passCondition) {
     for (auto& obj : m_CompositeObject) {
         obj->AttachToWorld(&m_b2World);
     }
+    m_b2World.SetContactListener(m_PassCondition);
 }
 
 void PhysicalWorld::Start() {
     m_IsActive = true;
+}
+
+void PhysicalWorld::Stop() {
+    m_IsActive = false;
 }
 
 void PhysicalWorld::DrawObject(glm::vec2 position) {
@@ -53,6 +61,10 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
 void PhysicalWorld::EndDrawing() {
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
+}
+
+bool PhysicalWorld::IsPassed() {
+    return m_PassCondition->Check();
 }
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡

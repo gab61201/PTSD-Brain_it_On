@@ -4,8 +4,12 @@
 
 #define FPS 60
 
-PassCondition::PassCondition(b2Fixture* fixtureA, b2Fixture* fixtureB, int time, Condition condition)
-    : m_Fixture_A(fixtureA), m_Fixture_B(fixtureB), m_Time(time * FPS), m_Condition(condition) {}
+PassCondition::PassCondition(
+    std::shared_ptr<GameWorld::BaseObject> objectA,
+    std::shared_ptr<GameWorld::BaseObject> objectB,
+    Condition condition,
+    int time
+) : m_ObjectA(objectA), m_ObjectB(objectB), m_Condition(condition), m_Time(time) {}
 
 bool PassCondition::Check() const {
     return m_IsPassed;
@@ -16,15 +20,15 @@ void PassCondition::BeginContact(b2Contact* contact) {
         return;
     }
 
-    if ((m_Fixture_A == contact->GetFixtureA() && m_Fixture_B == contact->GetFixtureB()) ||
-        (m_Fixture_A == contact->GetFixtureB() && m_Fixture_B == contact->GetFixtureA())) {
+    if ((m_ObjectA->m_Fixture == contact->GetFixtureA() && m_ObjectB->m_Fixture == contact->GetFixtureB()) ||
+        (m_ObjectA->m_Fixture == contact->GetFixtureB() && m_ObjectB->m_Fixture == contact->GetFixtureA())) {
         if (m_Condition == Condition::TOUCHING) {
             m_Counter++;
         } else if (m_Condition == Condition::SEPERATED) {
             m_Counter = 0;
         }
         
-        if (m_Counter >= m_Time) {
+        if (m_Counter >= m_Time * FPS) {
             m_IsPassed = true;
         }
     }
@@ -35,15 +39,15 @@ void PassCondition::EndContact(b2Contact * contact) {
         return;
     }
 
-    if ((m_Fixture_A == contact->GetFixtureA() && m_Fixture_B == contact->GetFixtureB()) ||
-        (m_Fixture_A == contact->GetFixtureB() && m_Fixture_B == contact->GetFixtureA())) {
+if ((m_ObjectA->m_Fixture == contact->GetFixtureA() && m_ObjectB->m_Fixture == contact->GetFixtureB()) ||
+    (m_ObjectA->m_Fixture == contact->GetFixtureB() && m_ObjectB->m_Fixture == contact->GetFixtureA())) {
         if (m_Condition == Condition::TOUCHING) {
             m_Counter = 0;
         } else if (m_Condition == Condition::SEPERATED) {
             m_Counter++;
         }
 
-        if (m_Counter >= m_Time) {
+        if (m_Counter >= m_Time * FPS) {
             m_IsPassed = true;
         }
     }
