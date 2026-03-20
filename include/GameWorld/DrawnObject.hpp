@@ -12,7 +12,6 @@ class DrawnObject : public GameWorld::CompositeObject {
 
     void DrawNextPoint(glm::vec2 position);
     void EndDrawing();
-    b2BodyType GetBodyType();
 
    private:
     std::vector<glm::vec2> m_Points;
