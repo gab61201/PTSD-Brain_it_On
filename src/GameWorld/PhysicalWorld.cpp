@@ -8,6 +8,22 @@
 
 namespace GameWorld {
 
+class DrawingRayCastCallback : public b2RayCastCallback {
+   public:
+    bool hit = false;
+    b2Vec2 hitPoint;
+    b2Body* ignoreBody = nullptr;
+
+    float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& /*normal*/, float fraction) override {
+        if (fixture->GetBody() == ignoreBody) {
+            return -1.0f;  // 忽略這條線本身包含的所有 fixtures
+        }
+        hit = true;
+        hitPoint = point;
+        return fraction;
+    }
+};
+
 PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
     : m_state(state::PAUSE),
       m_b2World(b2Vec2(0.0f, -9.8f)),
@@ -96,7 +112,6 @@ void PhysicalWorld::Update() {
             obj->Update();
         }
     }
-    
 }
 
 }  // namespace GameWorld
