@@ -47,4 +47,9 @@ void DrawnObject::EndDrawing() {
     m_Body->SetType(b2_dynamicBody);
 }
 
+b2BodyType DrawnObject::GetBodyType() {
+    return m_Body->GetType();
+}
+
+
 }  // namespace GameWorld

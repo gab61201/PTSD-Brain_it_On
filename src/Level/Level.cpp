@@ -13,12 +13,27 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
 
 void Level::Waiting() {
     // 檢查使用者是否開始繪圖
-    if (m_World && Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
+    if (m_World && Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+        m_state = state::DRAWING;
+        m_World->Start();
+        m_World->DrawObject(Util::Input::GetCursorPosition());
+    }
+}
+
+void Level::Drawing() {
+    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         m_state = state::PLAYING;
+        m_World->EndDrawing();
+    } else {
+        m_World->DrawObject(Util::Input::GetCursorPosition());
     }
 }
 
 void Level::Playing() {
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+        m_state = state::DRAWING;
+        m_World->DrawObject(Util::Input::GetCursorPosition());
+    }
     // 檢查通關條件
     // for (auto& condition : m_pass_conditions) {
     //     if (!condition.Check()) {
@@ -28,13 +43,17 @@ void Level::Playing() {
 }
 
 void Level::Finished() {
-    // 渲染結算畫面
+    // 停止世界，渲染結算畫面
 }
 
 void Level::Update() {
     switch (m_state) {
         case state::WAITING:
             Waiting();
+            break;
+        case state::DRAWING:
+            Drawing();
+            Playing();
             break;
         case state::PLAYING:
             Playing();

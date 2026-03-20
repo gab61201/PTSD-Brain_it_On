@@ -17,11 +17,13 @@ class Level {
 
    private:
     void Waiting();
+    void Drawing();
     void Playing();
     void Finished();
 
     enum class state {
         WAITING,
+        DRAWING,
         PLAYING,
         FINISHED
     };
