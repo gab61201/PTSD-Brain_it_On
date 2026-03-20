@@ -41,18 +41,18 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
     // ......
 
     // 無正在畫的物件則先建立
-    if (m_DrawingObject == nullptr) {
-        m_DrawingObject = std::make_shared<DrawnObject>(position);
-        m_DrawnObjects.push_back(m_DrawingObject);
-        m_DrawingObject->AttachToWorld(&m_b2World);
+    if (m_LastDrawingObject == nullptr) {
+        m_LastDrawingObject = std::make_shared<DrawnObject>(position);
+        m_DrawnObjects.push_back(m_LastDrawingObject);
+        m_LastDrawingObject->AttachToWorld(&m_b2World);
     } else {
-        m_DrawnObjects.back()->DrawNextPoint(position);
+        m_LastDrawingObject->DrawNextPoint(position);
     }
 }
 
 void PhysicalWorld::EndDrawing() {
-    m_DrawingObject->EndDrawing();
-    m_DrawingObject = nullptr;
+    m_LastDrawingObject->EndDrawing();
+    m_LastDrawingObject = nullptr;
 }
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
