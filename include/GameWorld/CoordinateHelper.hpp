@@ -1,9 +1,11 @@
-#ifndef COORDINATE_HELPER_HPP
-#define COORDINATE_HELPER_HPP
+#ifndef GAMEWORLD_COORDINATE_HELPER_HPP
+#define GAMEWORLD_COORDINATE_HELPER_HPP
 
 #include <box2d/box2d.h>
 
 #include <glm/vec2.hpp>
+
+namespace GameWorld {
 
 constexpr float kPixelsPerMeter = 50.0F;
 
@@ -19,4 +21,6 @@ inline glm::vec2 MetersToPixels(b2Vec2 meters) {
     return {meters.x * kPixelsPerMeter, meters.y * kPixelsPerMeter};
 }
 
-#endif  // COORDINATE_HELPER_HPP
+}  // namespace GameWorld
+
+#endif  // GAMEWORLD_COORDINATE_HELPER_HPP

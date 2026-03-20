@@ -1,7 +1,7 @@
 #ifndef PASS_CONDITION_HPP
 #define PASS_CONDITION_HPP
 
-#include "Physics/PhysicalObject.hpp"
+#include "GameWorld/PhysicalWorld.hpp"
 #include "Util/GameObject.hpp"
 
 enum class Condition {
@@ -12,8 +12,7 @@ enum class Condition {
 
 class PassCondition {
    public:
-    PassCondition(Util::GameObject, PhysicalObject, Condition);
-    PassCondition(PhysicalObject, PhysicalObject, Condition);
+    PassCondition();
     bool Check();
 };
 
