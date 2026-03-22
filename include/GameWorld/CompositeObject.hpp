@@ -35,8 +35,8 @@ class CompositeObject {
 
    protected:
     std::vector<std::shared_ptr<BaseObject>> m_BaseObjects;
-    glm::vec2 m_Position;
     BodyType m_BodyType;
+    glm::vec2 m_Position;
     float m_Rotation;
     b2Body* m_Body = nullptr;
 };
