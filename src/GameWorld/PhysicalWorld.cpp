@@ -77,6 +77,7 @@ void PhysicalWorld::Update() {
     for (auto& obj : m_DrawnObjects) {
         obj->Update();
     }
+    m_PassCondition->Update();
 }
 
 }  // namespace GameWorld
