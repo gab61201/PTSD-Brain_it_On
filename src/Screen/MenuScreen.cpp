@@ -34,4 +34,8 @@ ScreenType MenuScreen::GetNextScreenType() const {
     return ScreenType::MENU;
 }
 
+ScreenType MenuScreen::GetScreenType() const{
+    return ScreenType::MENU;
+}
+
 }  // namespace UI

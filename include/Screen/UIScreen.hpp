@@ -28,6 +28,8 @@ class UIScreen {
     // 取得下一個畫面的類型(放事件偵測)
     virtual ScreenType GetNextScreenType() const = 0;
 
+    virtual ScreenType GetScreenType() const = 0;
+
    protected:
     Util::Renderer m_Renderer;
 };

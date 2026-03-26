@@ -21,4 +21,8 @@ ScreenType GameScreen::GetNextScreenType() const {
     return ScreenType::GAME;
 }
 
+ScreenType GameScreen::GetScreenType() const{
+    return ScreenType::GAME;
+}
+
 }  // namespace UI

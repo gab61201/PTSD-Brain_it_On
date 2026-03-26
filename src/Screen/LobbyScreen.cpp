@@ -20,5 +20,8 @@ ScreenType LobbyScreen::GetNextScreenType() const {
     return ScreenType::LOBBY;
 }
 
+ScreenType LobbyScreen::GetScreenType() const{
+    return ScreenType::LOBBY;
+}
 
 }  // namespace UI

@@ -13,6 +13,8 @@ class LobbyScreen : public UIScreen {
 
     ScreenType GetNextScreenType() const override;
 
+    ScreenType GetScreenType() const override;
+    
    private:
     // 放需要設定偵測的物件
 };

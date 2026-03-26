@@ -13,6 +13,8 @@ class GameScreen : public UIScreen {
     void Update() override;
 
     ScreenType GetNextScreenType() const override;
+    
+    ScreenType GetScreenType() const override;
 
    private:
     Level m_Level;
