@@ -2,24 +2,24 @@ set(SRC_FILES
     App.cpp
     Level/Level.cpp
     Level/LevelData.cpp
-    Level/PassCondition.cpp
+    Level/PassCondition/PassCondition.cpp
+    Level/PassCondition/OneToOneContactPass.cpp
     Screen/LobbyScreen.cpp
     Screen/SettingsScreen.cpp
     Screen/MenuScreen.cpp
     Screen/GameScreen.cpp
-    # GameWorld/Physics.cpp
     GameWorld/DrawnObject.cpp
     GameWorld/CompositeObject.cpp
     GameWorld/BaseObject.cpp
     GameWorld/PhysicalWorld.cpp
-    # GameWorld/CompoundObject.cpp
 )
 
 set(INCLUDE_FILES
     App.hpp
     Level/Level.hpp
     Level/LevelData.hpp
-    Level/PassCondition.hpp
+    Level/PassCondition/PassCondition.hpp
+    Level/PassCondition/OneToOneContactPass.hpp
     Screen/SettingsScreen.hpp
     Screen/LobbyScreen.hpp
     Screen/MenuScreen.hpp
@@ -27,11 +27,9 @@ set(INCLUDE_FILES
     Screen/UIScreen.hpp
     GameWorld/CoordinateHelper.hpp
     GameWorld/DrawnObject.hpp
-    # GameWorld/Physics.hpp
     GameWorld/CompositeObject.hpp
     GameWorld/BaseObject.hpp
     GameWorld/PhysicalWorld.hpp
-    # GameWorld/CompoundObject.hpp
 )
 
 set(TEST_FILES

@@ -4,7 +4,7 @@
 #include <map>
 
 #include "GameWorld/PhysicalWorld.hpp"
-#include "Level/PassCondition.hpp"
+#include "Level/PassCondition/PassCondition.hpp"
 
 enum class LevelId {
     LEVEL_1,

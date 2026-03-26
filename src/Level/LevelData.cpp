@@ -1,5 +1,6 @@
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition.hpp"
+
+#include "Level/PassCondition/OneToOneContactPass.hpp"
 #include "Util/Text.hpp"
 
 // TESTING
@@ -53,7 +54,7 @@ static LevelData LevelData_1() {
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         floorComp, boxComp, circleComp};
 
-    PassCondition* passCondition = new PassCondition(boxPart, circlePart, Condition::TOUCHING, 3);
+    PassCondition* passCondition = new OneToOneContactPass(boxPart, circlePart, TriggerType::TOUCHING, 3);
     // 實例化物理世界 (建構子會自動將這些 objects 透過 AttachToWorld 掛載到 Box2D)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, passCondition);
 

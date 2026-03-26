@@ -1,6 +1,5 @@
 #include "GameWorld/PhysicalWorld.hpp"
 #include "GameWorld/BaseObject.hpp"
-#include "Level/PassCondition.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 
@@ -33,7 +32,7 @@ PhysicalWorld::PhysicalWorld(
     for (auto& obj : m_CompositeObject) {
         obj->AttachToWorld(&m_b2World);
     }
-    m_b2World.SetContactListener(m_PassCondition);
+    m_PassCondition->AttachToWorld(&m_b2World);
 }
 
 void PhysicalWorld::Start() {
