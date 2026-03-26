@@ -30,13 +30,13 @@ LobbyScreen::LobbyScreen() {
 }
 
 void LobbyScreen::Update() {
+    m_PlayButton->OnClick([this](){
+        m_NextScreenType = ScreenType::MENU;
+    });
     m_Renderer.Update();
 }
 
 ScreenType LobbyScreen::GetNextScreenType() {
-    m_PlayButton->OnClick([this](){
-        m_NextScreenType = ScreenType::MENU;
-    });
     return m_NextScreenType;
 }
 
