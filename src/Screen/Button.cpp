@@ -2,6 +2,13 @@
 
 namespace UI {
 
+Button::Button(
+    const std::shared_ptr<Core::Drawable>& drawable,
+    const float zIndex,
+    const glm::vec2& pivot,
+    const bool visible)
+    : GameObject(drawable, zIndex, pivot, visible, {}) {}
+
 bool Button::IsCursorPointing() {
     glm::vec2 position = m_Transform.translation;
     glm::vec2 size = m_Drawable->GetSize();

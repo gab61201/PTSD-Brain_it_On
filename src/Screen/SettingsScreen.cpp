@@ -20,7 +20,7 @@ void SettingsScreen::Update() {
     m_Renderer.Update();
 }
 
-ScreenType SettingsScreen::GetNextScreenType() const {
+ScreenType SettingsScreen::GetNextScreenType() {
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         return ScreenType::MENU;
     }

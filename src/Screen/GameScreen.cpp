@@ -21,7 +21,7 @@ void GameScreen::Update() {
     m_Level.Update();
 }
 
-ScreenType GameScreen::GetNextScreenType() const {
+ScreenType GameScreen::GetNextScreenType() {
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
         return ScreenType::MENU;
     }

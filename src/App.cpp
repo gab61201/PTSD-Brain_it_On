@@ -8,8 +8,7 @@
 void App::Start() {
     LOG_TRACE("Start");
 
-    Util::BGM bgm("Resources/Audios/BGM.mp3");
-    bgm.Play();
+    Util::BGM("Resources/Audios/BGM.mp3").Play();
 
     m_CurrentState = State::UPDATE;
 

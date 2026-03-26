@@ -11,12 +11,16 @@ namespace UI {
 
 class Button : public Util::GameObject {
    public:
-    Button() = default;
+    Button(const std::shared_ptr<Core::Drawable>& drawable,
+           const float zIndex,
+           const glm::vec2& pivot = {0, 0},
+           const bool visible = true);
+
     ~Button() = default;
 
     template <typename Func>
     auto OnClick(Func func) {
-        if (IsCursorPointing() || Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        if (IsCursorPointing() && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
             return func();
         }
     }

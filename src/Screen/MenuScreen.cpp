@@ -21,7 +21,7 @@ void MenuScreen::Update() {
     m_Renderer.Update();
 }
 
-ScreenType MenuScreen::GetNextScreenType() const {
+ScreenType MenuScreen::GetNextScreenType() {
     if (Util::Input::IsKeyUp(Util::Keycode::NUM_1)) {
         *m_LevelId = LevelId::LEVEL_1;
         return ScreenType::GAME;
