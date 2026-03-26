@@ -6,6 +6,12 @@
 #include "Util/Keycode.hpp"
 #include "Util/Renderer.hpp"
 #include "Util/Text.hpp"
+#include "Util/Image.hpp"
+#include "Screen/Button.hpp"
+
+#define RESOLUTION_X 1280.0F
+#define RESOLUTION_Y 720.0F
+
 
 namespace UI {
 
