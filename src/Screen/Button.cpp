@@ -11,10 +11,10 @@ Button::Button(
 
 bool Button::IsCursorPointing() {
     glm::vec2 position = m_Transform.translation;
-    glm::vec2 size = m_Drawable->GetSize();
+    glm::vec2 imageSize = GetScaledSize();
     glm::vec2 cursorPosition = Util::Input::GetCursorPosition();
-    return (cursorPosition.x >= position.x - size.x && cursorPosition.x <= position.x + size.x &&
-            cursorPosition.y >= position.y - size.y && cursorPosition.y <= position.y + size.y);
+    return (cursorPosition.x >= position.x - imageSize.x / 2.0f && cursorPosition.x <= position.x + imageSize.x / 2.0f &&
+            cursorPosition.y >= position.y - imageSize.y / 2.0f && cursorPosition.y <= position.y + imageSize.y / 2.0f);
 }
 
 void Button::OnPressing() {
