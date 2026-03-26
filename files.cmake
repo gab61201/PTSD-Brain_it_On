@@ -2,6 +2,7 @@ set(SRC_FILES
     App.cpp
     Level/Level.cpp
     Level/LevelData.cpp
+    Level/LevelData/Level1.cpp
     Level/PassCondition/PassCondition.cpp
     Level/PassCondition/OneToOneContactPass.cpp
     Screen/LobbyScreen.cpp
