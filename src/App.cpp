@@ -3,9 +3,13 @@
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
+#include "Util/BGM.hpp"
 
 void App::Start() {
     LOG_TRACE("Start");
+
+    Util::BGM bgm("Resources/Audios/BGM.mp3");
+    bgm.Play();
 
     m_CurrentState = State::UPDATE;
 
