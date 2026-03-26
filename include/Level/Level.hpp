@@ -13,15 +13,15 @@ class Level {
 
     void Update();  // 更新畫面
 
-    std::vector<std::shared_ptr<Util::GameObject>> GetVisuals() const;
-
    private:
     void Waiting();
+    void Drawing();
     void Playing();
     void Finished();
 
     enum class state {
         WAITING,
+        DRAWING,
         PLAYING,
         FINISHED
     };
