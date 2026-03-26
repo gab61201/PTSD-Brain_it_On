@@ -10,9 +10,15 @@ LobbyScreen::LobbyScreen() {
                                      RESOLUTION_Y / backgroundImageSize.y};
     m_Renderer.AddChild(background);
 
-    auto title = std::make_shared<Util::GameObject>();
-    title->SetDrawable(
-        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "LobbyScreen"));
+    
+    auto titleTextShadow = std::make_shared<Util::Text>("Resources/Fonts/KaushanScript-Regular.ttf", 72, "Brain It On!", Util::Color::FromRGB(0, 0, 0));
+    auto titleShadow = std::make_shared<Util::GameObject>(titleTextShadow, 0);
+    titleShadow->m_Transform.translation = {1.0f, 197.0f};
+    m_Renderer.AddChild(titleShadow);
+
+    auto titleText = std::make_shared<Util::Text>("Resources/Fonts/KaushanScript-Regular.ttf", 72, "Brain It On!", Util::Color::FromRGB(255, 255, 255));
+    auto title = std::make_shared<Util::GameObject>(titleText, 1);
+    title->m_Transform.translation = {0.0f, 200.0f};
     m_Renderer.AddChild(title);
 }
 
