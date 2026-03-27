@@ -43,12 +43,14 @@ class DrawingRayCastCallback : public b2RayCastCallback {
     }
 };
 
-PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
+PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects, PassCondition* passCondition)
     : m_b2World(b2Vec2(0.0f, -9.8f)),
-      m_CompositeObject(std::move(compositeObjects)) {
+      m_CompositeObject(std::move(compositeObjects)),
+      m_PassCondition(passCondition) {
     for (auto& obj : m_CompositeObject) {
         obj->AttachToWorld(&m_b2World);
     }
+    m_b2World.SetContactListener(m_PassCondition);
 };
 
 void PhysicalWorld::Start() {
