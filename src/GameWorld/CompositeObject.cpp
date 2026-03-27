@@ -22,6 +22,9 @@ CompositeObject::CompositeObject(
       m_Rotation(rotation),
       m_Body(nullptr)  // 初始化時，真實物理骨架尚未生成
 {
+    for (auto& baseObj : m_BaseObjects) {
+        m_Renderer.AddChild(baseObj->m_Visual);
+    }
 }
 
 // ==========================================
@@ -87,10 +90,9 @@ void CompositeObject::Update() {
     // 3. 廣播更新：把最新的絕對座標與角度告訴所有子零件
     // 讓 BaseObject 內部的 2D 旋轉矩陣去計算各自圖片該擺放的位置
     for (auto& baseObj : m_BaseObjects) {
-        if (baseObj) {
-            baseObj->Update(currentPixelPos, currentRotation);
-        }
+        baseObj->Update(currentPixelPos, currentRotation);
     }
+    m_Renderer.Update();
 }
 
 }  // namespace GameWorld

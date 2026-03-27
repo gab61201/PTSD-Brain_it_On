@@ -112,7 +112,6 @@ void BaseObject::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotati
     // 4. 同步資料給你的 PTSD GameObject
     m_Visual->m_Transform.translation = globalPosition;
     m_Visual->m_Transform.rotation = globalRotation;
-    m_Visual->Draw();
 }
 
 }  // namespace GameWorld

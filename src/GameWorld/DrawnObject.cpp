@@ -13,6 +13,7 @@ DrawnObject::DrawnObject(glm::vec2 position) {
     auto first_point = std::make_shared<BaseObject>(ShapeType::CIRCLE, glm::vec2(10.0F, 10.0F), position);
     m_BaseObjects = {first_point};
     m_Points.push_back(position);
+    m_Renderer.AddChild(first_point->m_Visual);
 }
 
 void DrawnObject::DrawNextPoint(glm::vec2 position) {
@@ -28,6 +29,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
         position);
     new_point->AttachToBody(m_Body);
     m_BaseObjects.push_back(new_point);
+    m_Renderer.AddChild(new_point->m_Visual);
 
     float dx = position.x - last_point.x;
     float dy = position.y - last_point.y;
@@ -39,6 +41,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
         angle);
     new_stroke->AttachToBody(m_Body);
     m_BaseObjects.push_back(new_stroke);
+    m_Renderer.AddChild(new_stroke->m_Visual);
 
     m_Points.push_back(position);
 }

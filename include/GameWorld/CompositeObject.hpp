@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "GameWorld/BaseObject.hpp"
+#include "Util/Renderer.hpp"
 
 namespace GameWorld {
 
@@ -34,6 +35,7 @@ class CompositeObject {
     virtual void AttachToWorld(b2World* world);
 
    protected:
+    Util::Renderer m_Renderer;
     std::vector<std::shared_ptr<BaseObject>> m_BaseObjects;
     BodyType m_BodyType;
     glm::vec2 m_Position;

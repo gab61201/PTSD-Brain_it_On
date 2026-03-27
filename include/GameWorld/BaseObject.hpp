@@ -34,8 +34,9 @@ class BaseObject {
 
     void AttachToBody(b2Body* body);
 
-   private:
     std::shared_ptr<Util::GameObject> m_Visual;
+
+   protected:
     b2Fixture* m_Fixture;
 
     ShapeType m_ShapeType;
