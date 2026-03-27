@@ -15,6 +15,7 @@ set(SRC_FILES
     GameWorld/CompositeObject.cpp
     GameWorld/BaseObject.cpp
     GameWorld/PhysicalWorld.cpp
+    GameWorld/MagnetObject.cpp
 )
 
 set(INCLUDE_FILES
@@ -35,6 +36,7 @@ set(INCLUDE_FILES
     GameWorld/CompositeObject.hpp
     GameWorld/BaseObject.hpp
     GameWorld/PhysicalWorld.hpp
+    GameWorld/MagnetObject.hpp
 )
 
 set(TEST_FILES

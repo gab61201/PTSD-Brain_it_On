@@ -44,7 +44,9 @@ void BaseObject::AttachToBody(b2Body* body) {
 
     // 2. 根據儲存的形狀資料，現場宣告形狀並掛載
     if (m_ShapeType == ShapeType::CIRCLE) {
-        m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/circle.png"));
+        if (!m_IsSensor) {
+            m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/circle.png"));
+        }
 
         b2CircleShape circleShape;
 
@@ -110,7 +112,6 @@ void BaseObject::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotati
     // 4. 同步資料給你的 PTSD GameObject
     m_Visual->m_Transform.translation = globalPosition;
     m_Visual->m_Transform.rotation = globalRotation;
-    m_Visual->Draw();
 }
 
 }  // namespace GameWorld
