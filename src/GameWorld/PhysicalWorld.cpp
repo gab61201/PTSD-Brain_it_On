@@ -50,7 +50,7 @@ PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compo
     for (auto& obj : m_CompositeObject) {
         obj->AttachToWorld(&m_b2World);
     }
-    m_b2World.SetContactListener(m_PassCondition);
+    m_PassCondition->AttachToWorld(&m_b2World);
 };
 
 void PhysicalWorld::Start() {

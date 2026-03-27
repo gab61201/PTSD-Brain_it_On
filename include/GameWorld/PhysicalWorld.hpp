@@ -3,6 +3,7 @@
 
 #include "GameWorld/CompositeObject.hpp"
 #include "GameWorld/DrawnObject.hpp"
+#include "GameWorld/MagnetObject.hpp"
 #include "Level/PassCondition/PassCondition.hpp"
 
 namespace GameWorld {
