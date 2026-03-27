@@ -4,11 +4,16 @@
 namespace UI {
 
 GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
+    m_NextScreenType = ScreenType::GAME;
+
     auto background = UI::Element::Background("Resources/Images/background.png");
     m_Renderer.AddChild(background);
 
-    auto backButton = UI::Element::CircleButton([]{});
+    auto backButton = UI::Element::CircleButton([this]{
+        m_NextScreenType = ScreenType::MENU;
+    });
     backButton->m_Transform.translation ={-550.0f, -300.0f};
+    m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
     auto resetButton = UI::Element::CircleButton([this]{
@@ -17,11 +22,6 @@ GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
     resetButton->m_Transform.translation ={550.0f, -300.0f};
     m_Buttons.push_back(resetButton);
     m_Renderer.AddChild(resetButton);
-
-    auto title = std::make_shared<Util::GameObject>();
-    title->SetDrawable(
-        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "GameScreen"));
-    m_Renderer.AddChild(title);
 }
 
 void GameScreen::Update() {
@@ -30,13 +30,13 @@ void GameScreen::Update() {
     }
     m_Renderer.Update();
     m_Level.Update();
+    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
+        m_NextScreenType = ScreenType::MENU;
+    }
 }
 
 ScreenType GameScreen::GetNextScreenType() {
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
-        return ScreenType::MENU;
-    }
-    return ScreenType::GAME;
+    return m_NextScreenType;
 }
 
 ScreenType GameScreen::GetScreenType() const {
