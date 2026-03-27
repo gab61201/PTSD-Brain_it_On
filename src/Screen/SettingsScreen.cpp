@@ -3,7 +3,7 @@
 namespace UI {
 
 SettingsScreen::SettingsScreen() {
-    auto background = UI::Element::CreateBackground("Resources/Images/background.png");
+    auto background = UI::Element::Background("Resources/Images/background.png");
     m_Renderer.AddChild(background);
 
     auto title = std::make_shared<Util::GameObject>();
