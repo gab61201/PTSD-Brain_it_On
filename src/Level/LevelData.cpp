@@ -1,15 +1,14 @@
 #include "Level/LevelData.hpp"
+
 #include <stdexcept>
 
-#include "Util/Text.hpp"
-
 #include "GameWorld/MagnetObject.hpp"
+#include "Util/Text.hpp"
 
 // TESTING
 static LevelData LevelData_1() {
     LevelData data;
     data.timeout = 60.0F;  // 設定通關時間為 60 秒
-    data.pass_condition_check_duration = 3.0F;
 
     // ==========================================
     // 1. 建立「靜態地板」 (不會動，用來接住掉下來的物體)
@@ -67,7 +66,6 @@ static LevelData LevelData_1() {
 static LevelData LevelData_2() {
     LevelData data;
     data.timeout = 60.0F;  // 設定通關時間為 60 秒
-    data.pass_condition_check_duration = 3.0F;
 
     // ==========================================
     // 1. 建立「靜態地板」 (不會動，用來接住掉下來的物體)
@@ -86,21 +84,18 @@ static LevelData LevelData_2() {
     auto magnetPart = std::make_shared<GameWorld::BaseObject>(
         GameWorld::ShapeType::CIRCLE,
         glm::vec2(50.0F, 50.0F),
-        glm::vec2(0.0F, 0.0F)
-    );
+        glm::vec2(0.0F, 0.0F));
     auto magnetComp = std::make_shared<GameWorld::MagnetObject>(
         std::vector<std::shared_ptr<GameWorld::BaseObject>>{magnetPart},
         GameWorld::BodyType::DYNAMIC,
         glm::vec2(0.0F, 0.0F),
         0.0F,
-        30.0F
-    );
+        30.0F);
     // 第二個磁鐵（負極，會與第一個磁鐵相吸）
     auto magnetPart2 = std::make_shared<GameWorld::BaseObject>(
         GameWorld::ShapeType::CIRCLE,
         glm::vec2(50.0F, 50.0F),
-        glm::vec2(0.0F, 0.0F)
-    );
+        glm::vec2(0.0F, 0.0F));
     auto magnetComp2 = std::make_shared<GameWorld::MagnetObject>(
         std::vector<std::shared_ptr<GameWorld::BaseObject>>{magnetPart2},
         GameWorld::BodyType::DYNAMIC,
@@ -117,6 +112,8 @@ static LevelData LevelData_2() {
 
     // 回傳設定好的關卡資料
     return data;
+}
+
 std::unordered_map<LevelId, LevelFunction>& GetLevelRegistry() {
     static std::unordered_map<LevelId, LevelFunction> registry;
     return registry;
