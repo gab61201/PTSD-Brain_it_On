@@ -11,7 +11,9 @@ class SettingsScreen : public UIScreen {
 
     void Update() override;
     
-    ScreenType GetNextScreenType() const override;
+    ScreenType GetNextScreenType() override;
+
+    ScreenType GetScreenType() const override;
 };
 
 }  // namespace UI
