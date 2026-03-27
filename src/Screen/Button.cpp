@@ -15,8 +15,8 @@ void Button::Update(){
     }
 }
 
-void Button::OnClick(std::function<void()> func){
-    m_OnClickCallback = func;
+void Button::OnClick(std::function<void()> OnClickHandler){
+    m_OnClickCallback = OnClickHandler;
 }
 
 bool Button::IsCursorPointing() {

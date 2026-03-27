@@ -21,7 +21,7 @@ class Button : public Util::GameObject {
 
     void Update();
 
-    void OnClick(std::function<void()> func);
+    void OnClick(std::function<void()> OnClickHandler);
 
    private:
     std::function<void()> m_OnClickCallback;
