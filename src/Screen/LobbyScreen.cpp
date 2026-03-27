@@ -29,7 +29,7 @@ namespace UI {
 LobbyScreen::LobbyScreen() {
     m_NextScreenType = ScreenType::LOBBY;
 
-    auto background = UI::Template::CreateBackground("Resources/Images/background.png");
+    auto background = UI::Element::CreateBackground("Resources/Images/background.png");
     m_Renderer.AddChild(background);
 
     auto title = CreateTitle();

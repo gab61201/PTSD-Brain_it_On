@@ -3,9 +3,9 @@
 namespace UI {
 
 SettingsScreen::SettingsScreen() {
-    auto background = UI::Template::CreateBackground("Resources/Images/background.png");
+    auto background = UI::Element::CreateBackground("Resources/Images/background.png");
     m_Renderer.AddChild(background);
-    
+
     auto title = std::make_shared<Util::GameObject>();
     title->SetDrawable(
         std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "SettingsScreen"));
@@ -23,7 +23,7 @@ ScreenType SettingsScreen::GetNextScreenType() {
     return ScreenType::LOBBY;
 }
 
-ScreenType SettingsScreen::GetScreenType() const{
+ScreenType SettingsScreen::GetScreenType() const {
     return ScreenType::SETTINGS;
 }
 

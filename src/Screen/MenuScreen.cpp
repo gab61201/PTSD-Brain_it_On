@@ -3,7 +3,7 @@
 namespace UI {
 
 MenuScreen::MenuScreen(LevelId* levelId) : m_LevelId(levelId) {
-    auto background = UI::Template::CreateBackground("Resources/Images/background.png");
+    auto background = UI::Element::CreateBackground("Resources/Images/background.png");
     m_Renderer.AddChild(background);
 
     auto title = std::make_shared<Util::GameObject>();
@@ -37,7 +37,7 @@ ScreenType MenuScreen::GetNextScreenType() {
     return ScreenType::MENU;
 }
 
-ScreenType MenuScreen::GetScreenType() const{
+ScreenType MenuScreen::GetScreenType() const {
     return ScreenType::MENU;
 }
 

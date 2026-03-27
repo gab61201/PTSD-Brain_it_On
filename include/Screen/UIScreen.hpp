@@ -8,7 +8,7 @@
 #include "Util/Text.hpp"
 #include "Util/Image.hpp"
 #include "Screen/Button.hpp"
-#include "Screen/UITemplate.hpp"
+#include "Screen/UIElement.hpp"
 
 #define RESOLUTION_X 1280.0F
 #define RESOLUTION_Y 720.0F

@@ -1,9 +1,9 @@
-#include "Screen/UITemplate.hpp"
+#include "Screen/UIElement.hpp"
 
-namespace UI::Template {
+namespace UI::Element {
 
-std::shared_ptr<Util::GameObject> CreateBackground(const std::string& path){
-    auto backgroundImage = std::make_shared<Util::Image>(path); //"Resources/Images/background.png"
+std::shared_ptr<Util::GameObject> CreateBackground(const std::string& path) {
+    auto backgroundImage = std::make_shared<Util::Image>(path);  //"Resources/Images/background.png"
     auto background = std::make_shared<Util::GameObject>(backgroundImage, -1);
     glm::vec2 backgroundImageSize = backgroundImage->GetSize();
     background->m_Transform.scale = {RESOLUTION_X / backgroundImageSize.x,
@@ -11,5 +11,4 @@ std::shared_ptr<Util::GameObject> CreateBackground(const std::string& path){
     return background;
 }
 
-
-}  // namespace UI::Template
+}  // namespace UI::Element

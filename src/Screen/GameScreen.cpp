@@ -3,7 +3,7 @@
 namespace UI {
 
 GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
-    auto background = UI::Template::CreateBackground("Resources/Images/background.png");
+    auto background = UI::Element::CreateBackground("Resources/Images/background.png");
     m_Renderer.AddChild(background);
 
     auto title = std::make_shared<Util::GameObject>();
@@ -24,7 +24,7 @@ ScreenType GameScreen::GetNextScreenType() {
     return ScreenType::GAME;
 }
 
-ScreenType GameScreen::GetScreenType() const{
+ScreenType GameScreen::GetScreenType() const {
     return ScreenType::GAME;
 }
 
