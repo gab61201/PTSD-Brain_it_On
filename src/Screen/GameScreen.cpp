@@ -11,14 +11,14 @@ GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
 
     auto backButton = UI::Element::CircleButton([this]{
         m_NextScreenType = ScreenType::MENU;
-    });
+    }, "Resources/Images/Btn_Back.png");
     backButton->m_Transform.translation ={-550.0f, -300.0f};
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
     auto resetButton = UI::Element::CircleButton([this]{
         m_Level.Reset();
-    });
+    }, "Resources/Images/Btn_Retry.png");
     resetButton->m_Transform.translation ={550.0f, -300.0f};
     m_Buttons.push_back(resetButton);
     m_Renderer.AddChild(resetButton);
