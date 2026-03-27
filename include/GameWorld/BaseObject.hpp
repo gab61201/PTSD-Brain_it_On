@@ -36,8 +36,9 @@ class BaseObject {
 
     std::shared_ptr<Util::GameObject> m_Visual;
 
-   protected:
     b2Fixture* m_Fixture;
+
+   protected:
 
     ShapeType m_ShapeType;
     glm::vec2 m_Size;

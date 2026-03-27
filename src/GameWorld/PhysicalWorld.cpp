@@ -56,6 +56,9 @@ PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compo
 void PhysicalWorld::Start() {
     m_IsActive = true;
 }
+void PhysicalWorld::Stop() {
+    m_IsActive = false;
+}
 
 void PhysicalWorld::DrawObject(glm::vec2 position) {
     // 無正在畫的物件則先建立
@@ -111,6 +114,9 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
 }
 
 void PhysicalWorld::EndDrawing() {
+    if (m_LastDrawingObject == nullptr) {
+        return;
+    }
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
 }
