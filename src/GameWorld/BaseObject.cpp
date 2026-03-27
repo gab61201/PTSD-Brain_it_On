@@ -20,13 +20,13 @@ BaseObject::BaseObject(
     glm::vec2 position,
     float rotation,
     bool isSensor)
-    : m_ShapeType(shape),  // 記得在 .hpp 補上這個成員
+    : m_Visual(std::make_shared<Util::GameObject>()),
+      m_Fixture(nullptr),
+      m_ShapeType(shape),
       m_Size(size),
       m_RelativePosition(position),
       m_RelativeRotation(rotation),
-      m_IsSensor(isSensor),  // 記得在 .hpp 補上這個成員
-      m_Fixture(nullptr),
-      m_Visual(std::make_shared<Util::GameObject>()) {}
+      m_IsSensor(isSensor) {}
 
 // ==========================================
 // 實體組裝期 (AttachToBody) - 現場製造零件並掛載
