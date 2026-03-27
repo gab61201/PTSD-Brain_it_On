@@ -2,11 +2,15 @@ set(SRC_FILES
     App.cpp
     Level/Level.cpp
     Level/LevelData.cpp
-    Level/PassCondition.cpp
+    Level/LevelData/Level1.cpp
+    Level/PassCondition/PassCondition.cpp
+    Level/PassCondition/OneToOneContactPass.cpp
     Screen/LobbyScreen.cpp
     Screen/SettingsScreen.cpp
     Screen/MenuScreen.cpp
     Screen/GameScreen.cpp
+    Screen/UIElement.cpp
+    Screen/Button.cpp
     GameWorld/DrawnObject.cpp
     GameWorld/CompositeObject.cpp
     GameWorld/BaseObject.cpp
@@ -18,11 +22,14 @@ set(INCLUDE_FILES
     App.hpp
     Level/Level.hpp
     Level/LevelData.hpp
-    Level/PassCondition.hpp
+    Level/PassCondition/PassCondition.hpp
+    Level/PassCondition/OneToOneContactPass.hpp
     Screen/SettingsScreen.hpp
     Screen/LobbyScreen.hpp
     Screen/MenuScreen.hpp
     Screen/GameScreen.hpp
+    Screen/UIElement.hpp
+    Screen/Button.hpp
     Screen/UIScreen.hpp
     GameWorld/CoordinateHelper.hpp
     GameWorld/DrawnObject.hpp

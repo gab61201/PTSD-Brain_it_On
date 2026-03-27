@@ -1,4 +1,5 @@
 #include "Level/LevelData.hpp"
+#include <stdexcept>
 
 #include "Util/Text.hpp"
 
@@ -116,32 +117,22 @@ static LevelData LevelData_2() {
 
     // 回傳設定好的關卡資料
     return data;
+std::unordered_map<LevelId, LevelFunction>& GetLevelRegistry() {
+    static std::unordered_map<LevelId, LevelFunction> registry;
+    return registry;
 }
 
-static LevelData LevelData_3() {
-    return LevelData{};
+void RegisterLevel(LevelId id, LevelFunction func) {
+    GetLevelRegistry()[id] = func;
 }
 
-static LevelData LevelData_4() {
-    return LevelData{};
-}
+LevelData GetLevelData(LevelId id) {
+    auto& registry = GetLevelRegistry();
+    auto it = registry.find(id);
 
-static LevelData LevelData_5() {
-    return LevelData{};
-}
-
-LevelData GetLevelData(LevelId levelId) {
-    static constexpr LevelData (*level_funcs[])() = {
-        LevelData_1,
-        LevelData_2,
-        LevelData_3,
-        LevelData_4,
-        LevelData_5};
-
-    auto index = static_cast<std::size_t>(levelId);
-    if (index < std::size(level_funcs)) {
-        return level_funcs[index]();
+    if (it == registry.end()) {
+        throw std::runtime_error("Level not found");
     }
 
-    return LevelData{};
+    return it->second();
 }

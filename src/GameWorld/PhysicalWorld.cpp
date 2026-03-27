@@ -1,5 +1,4 @@
 #include "GameWorld/PhysicalWorld.hpp"
-
 #include "GameWorld/BaseObject.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
 #include "Util/Input.hpp"
@@ -50,7 +49,7 @@ PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compo
     for (auto& obj : m_CompositeObject) {
         obj->AttachToWorld(&m_b2World);
     }
-}
+};
 
 void PhysicalWorld::Start() {
     m_IsActive = true;
@@ -110,11 +109,12 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
 }
 
 void PhysicalWorld::EndDrawing() {
-    if (m_LastDrawingObject == nullptr) {
-        return;
-    }
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
+}
+
+bool PhysicalWorld::IsPassed() {
+    return m_PassCondition->Check();
 }
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
@@ -127,6 +127,7 @@ void PhysicalWorld::Update() {
     for (auto& obj : m_DrawnObjects) {
         obj->Update();
     }
+    m_PassCondition->Update();
 }
 
 }  // namespace GameWorld
