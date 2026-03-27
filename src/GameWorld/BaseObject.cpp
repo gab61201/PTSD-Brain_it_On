@@ -45,7 +45,7 @@ void BaseObject::AttachToBody(b2Body* body) {
     // 2. 根據儲存的形狀資料，現場宣告形狀並掛載
     if (m_ShapeType == ShapeType::CIRCLE) {
         if (!m_IsSensor) {
-            m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/circle.png"));
+            m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/BasicShapes/white_circle.png"));
         }
 
         b2CircleShape circleShape;
@@ -61,7 +61,7 @@ void BaseObject::AttachToBody(b2Body* body) {
         m_Fixture = body->CreateFixture(&fixtureDef);
 
     } else if (m_ShapeType == ShapeType::RECTANGLE) {
-        m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/square.png"));
+        m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/BasicShapes/white_square.png"));
 
         b2PolygonShape boxShape;
 

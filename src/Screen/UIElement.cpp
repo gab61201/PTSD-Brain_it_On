@@ -20,7 +20,7 @@ std::shared_ptr<UI::Button> SquareButton(std::function<void()> OnClickHandler) {
 }
 
 std::shared_ptr<UI::Button> CircleButton(std::function<void()> OnClickHandler) {
-    auto ButtonImage = std::make_shared<Util::Image>("Resources/Images/Btn_OtherButton_Circle01_d.png");
+    auto ButtonImage = std::make_shared<Util::Image>("Resources/Images/Btn_OtherButton_Circle01.png");
     auto Button = std::make_shared<UI::Button>(ButtonImage, 0);
     Button->m_Transform.scale = {0.5f, 0.5f};
     Button->OnClick(OnClickHandler);
