@@ -5,14 +5,9 @@ namespace UI {
 LobbyScreen::LobbyScreen() {
     m_NextScreenType = ScreenType::LOBBY;
 
-    auto backgroundImage = std::make_shared<Util::Image>("Resources/Images/background.png");
-    auto background = std::make_shared<Util::GameObject>(backgroundImage, -1);
-    glm::vec2 backgroundImageSize = backgroundImage->GetSize();
-    background->m_Transform.scale = {RESOLUTION_X / backgroundImageSize.x,
-                                     RESOLUTION_Y / backgroundImageSize.y};
+    auto background = UI::Template::CreateBackground("Resources/Images/background.png");
     m_Renderer.AddChild(background);
 
-    
     auto titleTextShadow = std::make_shared<Util::Text>("Resources/Fonts/KaushanScript-Regular.ttf", 72, "Brain It On!", Util::Color::FromRGB(64, 64, 64));
     auto titleShadow = std::make_shared<Util::GameObject>(titleTextShadow, 0);
     titleShadow->m_Transform.translation = {3.0f, 197.0f};
@@ -24,15 +19,19 @@ LobbyScreen::LobbyScreen() {
     m_Renderer.AddChild(title);
 
     auto playButtonImage = std::make_shared<Util::Image>("Resources/Images/Btn_MainButton_Gray.png");
-    m_PlayButton = std::make_shared<UI::Button>(playButtonImage, 0);
-    m_PlayButton->m_Transform.scale = {0.5f, 0.5f};
-    m_Renderer.AddChild(m_PlayButton);
+    auto playButton = std::make_shared<UI::Button>(playButtonImage, 0);
+    playButton->m_Transform.scale = {0.5f, 0.5f};
+    playButton->OnClick([this](){
+        m_NextScreenType = ScreenType::MENU;
+    });
+    m_Buttons.push_back(playButton);
+    m_Renderer.AddChild(playButton);
 }
 
 void LobbyScreen::Update() {
-    m_PlayButton->OnClick([this](){
-        m_NextScreenType = ScreenType::MENU;
-    });
+    for (auto button : m_Buttons){
+        button->Update();
+    }
     m_Renderer.Update();
 }
 

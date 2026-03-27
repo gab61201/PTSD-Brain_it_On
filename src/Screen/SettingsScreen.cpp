@@ -3,11 +3,7 @@
 namespace UI {
 
 SettingsScreen::SettingsScreen() {
-    auto backgroundImage = std::make_shared<Util::Image>("Resources/Images/background.png");
-    auto background = std::make_shared<Util::GameObject>(backgroundImage, -1);
-    glm::vec2 backgroundImageSize = backgroundImage->GetSize();
-    background->m_Transform.scale = {RESOLUTION_X / backgroundImageSize.x,
-                                     RESOLUTION_Y / backgroundImageSize.y};
+    auto background = UI::Template::CreateBackground("Resources/Images/background.png");
     m_Renderer.AddChild(background);
     
     auto title = std::make_shared<Util::GameObject>();

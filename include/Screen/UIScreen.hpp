@@ -8,6 +8,7 @@
 #include "Util/Text.hpp"
 #include "Util/Image.hpp"
 #include "Screen/Button.hpp"
+#include "Screen/UITemplate.hpp"
 
 #define RESOLUTION_X 1280.0F
 #define RESOLUTION_Y 720.0F
@@ -39,6 +40,7 @@ class UIScreen {
    protected:
     Util::Renderer m_Renderer;
     ScreenType m_NextScreenType;
+    std::vector<std::shared_ptr<UI::Button>> m_Buttons;
 };
 
 }  // namespace UI

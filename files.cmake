@@ -9,6 +9,7 @@ set(SRC_FILES
     Screen/SettingsScreen.cpp
     Screen/MenuScreen.cpp
     Screen/GameScreen.cpp
+    Screen/UITemplate.cpp
     Screen/Button.cpp
     GameWorld/DrawnObject.cpp
     GameWorld/CompositeObject.cpp
@@ -26,6 +27,7 @@ set(INCLUDE_FILES
     Screen/LobbyScreen.hpp
     Screen/MenuScreen.hpp
     Screen/GameScreen.hpp
+    Screen/UITemplate.hpp
     Screen/Button.hpp
     Screen/UIScreen.hpp
     GameWorld/CoordinateHelper.hpp

@@ -9,6 +9,16 @@ Button::Button(
     const bool visible)
     : GameObject(drawable, zIndex, pivot, visible, {}) {}
 
+void Button::Update(){
+    if (m_OnClickCallback && IsCursorPointing() && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        m_OnClickCallback();
+    }
+}
+
+void Button::OnClick(std::function<void()> func){
+    m_OnClickCallback = func;
+}
+
 bool Button::IsCursorPointing() {
     glm::vec2 position = m_Transform.translation;
     glm::vec2 imageSize = GetScaledSize();

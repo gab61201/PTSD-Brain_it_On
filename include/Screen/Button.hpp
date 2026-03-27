@@ -1,6 +1,7 @@
 #ifndef UI_BUTTON_HPP
 #define UI_BUTTON_HPP
 
+#include <functional>
 #include "Util/GameObject.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -18,14 +19,12 @@ class Button : public Util::GameObject {
 
     ~Button() = default;
 
-    template <typename Func>
-    auto OnClick(Func func) {
-        if (IsCursorPointing() && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
-            return func();
-        }
-    }
+    void Update();
+
+    void OnClick(std::function<void()> func);
 
    private:
+    std::function<void()> m_OnClickCallback;
     bool IsCursorPointing();
     void OnPressing();
 };
