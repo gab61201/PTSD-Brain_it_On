@@ -35,6 +35,9 @@ class DrawingRayCastCallback : public b2RayCastCallback {
         if (fixture->GetBody() == ignoreBody) {
             return -1.0f;  // 忽略這條線本身包含的所有 fixtures
         }
+        if (fixture->IsSensor()) {
+            return -1.0f;  // Sensor 不阻擋畫線
+        }
         hit = true;
         hitPoint = point;
         return fraction;
@@ -79,7 +82,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
         // 檢查射線有沒有碰到其他東西
         auto p1 = m_LastDrawingObject->m_Points.back();
         auto p2 = position;
-        if (glm::distance(p1, p2) < 1.0f) {
+        if (glm::distance(p1, p2) < 2.0f) {
             return;
         }
         DrawingRayCastCallback callback;
@@ -107,6 +110,9 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
 }
 
 void PhysicalWorld::EndDrawing() {
+    if (m_LastDrawingObject == nullptr) {
+        return;
+    }
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
 }
