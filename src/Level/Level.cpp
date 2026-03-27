@@ -47,6 +47,12 @@ void Level::Finished() {
     title->Draw();
 }
 
+void Level::Reset() {
+    m_state = state::WAITING;
+    m_World = GetLevelData(m_LevelId).world;
+    m_Time = 0.0F;
+}
+
 void Level::Update() {
     switch (m_state) {
         case state::WAITING:

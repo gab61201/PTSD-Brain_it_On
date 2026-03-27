@@ -11,6 +11,8 @@ class Level {
 
     ~Level() = default;
 
+    void Reset();
+
     void Update();  // 更新畫面
 
    private:
