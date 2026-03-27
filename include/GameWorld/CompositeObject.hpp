@@ -29,9 +29,9 @@ class CompositeObject {
 
     ~CompositeObject() = default;
 
-    void Update();
+    virtual void Update();
 
-    void AttachToWorld(b2World* world);
+    virtual void AttachToWorld(b2World* world);
 
    protected:
     std::vector<std::shared_ptr<BaseObject>> m_BaseObjects;
@@ -39,6 +39,7 @@ class CompositeObject {
     glm::vec2 m_Position;
     float m_Rotation;
     b2Body* m_Body = nullptr;
+    // float m_Magnetism = 0;
 };
 
 }  // namespace GameWorld
