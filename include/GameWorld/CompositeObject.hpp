@@ -34,13 +34,13 @@ class CompositeObject {
 
     virtual void AttachToWorld(b2World* world);
 
+    b2Body* m_Body = nullptr;
    protected:
     Util::Renderer m_Renderer;
     std::vector<std::shared_ptr<BaseObject>> m_BaseObjects;
     BodyType m_BodyType;
     glm::vec2 m_Position;
     float m_Rotation;
-    b2Body* m_Body = nullptr;
     // float m_Magnetism = 0;
 };
 
