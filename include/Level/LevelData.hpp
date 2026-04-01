@@ -2,6 +2,7 @@
 #define LEVEL_DATA_HPP
 
 #include <functional>
+#include <string>
 
 #include "GameWorld/PhysicalWorld.hpp"
 #include "Level/PassCondition/PassCondition.hpp"
@@ -16,6 +17,7 @@ enum class LevelId {
 
 struct LevelData {
     float timeout = 30.0F;
+    std::string targetText = "";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
 };
 

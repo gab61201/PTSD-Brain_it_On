@@ -7,6 +7,12 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
     LevelData data = GetLevelData(levelId);
     m_World = data.world;
     m_Timeout = data.timeout;
+
+    m_TargetText = std::make_shared<Util::GameObject>();
+    if (!data.targetText.empty()) {
+        m_TargetText->SetDrawable(std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 30, data.targetText));
+        m_TargetText->m_Transform.translation = {0.0f, 250.0f};
+    }
 }
 
 void Level::Waiting() {
@@ -57,6 +63,10 @@ void Level::Update() {
     switch (m_state) {
         case state::WAITING:
             Waiting();
+            // 玩家繪圖前（WAITING 狀態）顯示提示文字
+            if (m_TargetText) {
+                m_TargetText->Draw();
+            }
             break;
         case state::DRAWING:
             Drawing();

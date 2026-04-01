@@ -2,6 +2,7 @@
 #define LEVEL_HPP
 
 #include "Level/LevelData.hpp"
+#include "Util/GameObject.hpp"
 
 class Level {
    public:
@@ -34,6 +35,7 @@ class Level {
     float m_pass_condition_check_duration;  // 通關檢測持續多久才算過關
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
     std::vector<PassCondition> m_pass_conditions;
+    std::shared_ptr<Util::GameObject> m_TargetText;
 };
 
 #endif
