@@ -36,9 +36,9 @@ GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
     m_Renderer.AddChild(background);
 
     // ==========================================
-    // 左側 UI 靜態圖示 (精密微調)
+    // 左側 UI 靜態圖示
     // ==========================================
-    float leftUI_X = -520.0f; // 往右移一點，避免貼邊
+    float leftUI_X = -520.0f;
 
     // 1. 關卡編號外框
     auto levelFrameImage = std::make_shared<Util::Image>("Resources/Images/level_frame.png");
@@ -54,8 +54,8 @@ GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
     // 3. 計時器鬧鐘圖示
     auto alarmImage = std::make_shared<Util::Image>("Resources/Images/alarm.png");
     auto alarmIcon = std::make_shared<Util::GameObject>(alarmImage, 0.1f);
-    alarmIcon->m_Transform.translation = {leftUI_X, 160.0f}; // 往下移，拉開距離
-    alarmIcon->m_Transform.scale = {0.12f, 0.12f}; // 縮小一點，更精緻
+    alarmIcon->m_Transform.translation = {leftUI_X, 160.0f};
+    alarmIcon->m_Transform.scale = {0.12f, 0.12f};
     m_Renderer.AddChild(alarmIcon);
 
     // 4. 計時器文字
@@ -69,6 +69,7 @@ GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
     m_TargetText = TargetText(data.targetText);
     m_Renderer.AddChild(m_TargetText);
 
+    // 6. 返回按鈕
     auto backButton = UI::Element::CircleButton([this]{
         m_NextScreenType = ScreenType::MENU;
     }, "Resources/Images/Btn_Back.png");
@@ -76,6 +77,9 @@ GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
+    // ==========================================
+    // 右側 UI 靜態圖示
+    // ==========================================
     auto resetButton = UI::Element::CircleButton([this]{
         m_Level.Reset();
     }, "Resources/Images/Btn_Retry.png");
