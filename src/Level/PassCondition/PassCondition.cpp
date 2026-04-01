@@ -23,7 +23,7 @@ void PassCondition::Update() {
     if (m_Timer > 0) {
         m_Timer++;
     }
-    if (m_Timer >= m_Duration * FPS) {
+    if (m_Timer > m_Duration * FPS) {
         m_IsPassed = true;
         m_Timer = 0;
     }

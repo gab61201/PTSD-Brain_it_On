@@ -46,7 +46,7 @@ LevelData LevelData_2() {
         floorComp, leftWallComp, ballComp};
 
     // 過關條件：小球碰到左牆
-    data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, new OneToOneContactPass(ballPart, leftWallPart, TriggerType::TOUCHING, 1));
+    data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, new OneToOneContactPass(ballPart, leftWallPart, TriggerType::TOUCHING, 0));
 
     return data;
 }
