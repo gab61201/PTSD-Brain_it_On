@@ -3,6 +3,7 @@
 
 #include "Level/LevelData.hpp"
 #include "Util/GameObject.hpp"
+#include "Util/Text.hpp"
 
 class Level {
    public:
@@ -15,6 +16,8 @@ class Level {
     void Reset();
 
     void Update();  // 更新畫面
+
+    float GetRemainingTime() const { return std::max(0.0f, m_Timeout - m_Time); }
 
    private:
     void Waiting();
@@ -36,6 +39,9 @@ class Level {
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
     std::vector<PassCondition> m_pass_conditions;
     std::shared_ptr<Util::GameObject> m_TargetText;
+    std::shared_ptr<Util::GameObject> m_TimerObject;
+    std::shared_ptr<Util::Text> m_TimerText;
+    std::shared_ptr<Util::GameObject> m_LevelNumberText;
 };
 
 #endif
