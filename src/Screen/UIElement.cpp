@@ -11,16 +11,16 @@ std::shared_ptr<Util::GameObject> Background(const std::string& path) {
     return background;
 }
 
-std::shared_ptr<UI::Button> SquareButton(std::function<void()> OnClickHandler) {
-    auto ButtonImage = std::make_shared<Util::Image>("Resources/Images/Btn_MainButton_Gray.png");
+std::shared_ptr<UI::Button> SquareButton(std::function<void()> OnClickHandler, const std::string& path) {
+    auto ButtonImage = std::make_shared<Util::Image>(path);
     auto Button = std::make_shared<UI::Button>(ButtonImage, 0);
     Button->m_Transform.scale = {0.5f, 0.5f};
     Button->OnClick(OnClickHandler);
     return Button;
 }
 
-std::shared_ptr<UI::Button> CircleButton(std::function<void()> OnClickHandler) {
-    auto ButtonImage = std::make_shared<Util::Image>("Resources/Images/Btn_OtherButton_Circle01.png");
+std::shared_ptr<UI::Button> CircleButton(std::function<void()> OnClickHandler, const std::string& path) {
+    auto ButtonImage = std::make_shared<Util::Image>(path);
     auto Button = std::make_shared<UI::Button>(ButtonImage, 0);
     Button->m_Transform.scale = {0.5f, 0.5f};
     Button->OnClick(OnClickHandler);
