@@ -18,9 +18,6 @@ class GameScreen : public UIScreen {
 
    private:
     Level m_Level;
-    std::shared_ptr<Util::GameObject> m_TargetText;
-    std::shared_ptr<Util::Text> m_TimerText;
-    std::shared_ptr<Util::GameObject> m_TimerObject;
 };
 
 }  // namespace UI

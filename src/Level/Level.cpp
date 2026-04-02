@@ -13,11 +13,13 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
     LevelData data = GetLevelData(levelId);
     m_World = data.world;
     m_Timeout = data.timeout;
+    m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText);
 }
 
 void Level::Waiting() {
     // 檢查使用者是否開始繪圖
     if (m_World && Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+        m_HUD->HideTarget();
         m_state = State::DRAWING;
         m_World->Start();
         m_World->DrawObject(Util::Input::GetCursorPosition());
@@ -46,17 +48,15 @@ void Level::Playing() {
 }
 
 void Level::Finished() {
-    // 停止世界，渲染結算畫面
-    auto title = std::make_shared<Util::GameObject>();
-    title->SetDrawable(
-        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "Finished"));
-    title->Draw();
+    // 預留：未來可在此觸發結算畫面
 }
 
 void Level::Reset() {
     m_state = State::WAITING;
-    m_World = GetLevelData(m_LevelId).world;
+    LevelData data = GetLevelData(m_LevelId);
+    m_World = data.world;
     m_Time = 0.0F;
+    m_HUD->Reset(data.targetText);
 }
 
 void Level::Update() {
@@ -85,4 +85,8 @@ void Level::Update() {
     if (m_World) {
         m_World->Update();
     }
+
+    // 更新 HUD（計時器、提示文字）
+    m_HUD->UpdateTimer(GetRemainingTime());
+    m_HUD->Update();
 }
