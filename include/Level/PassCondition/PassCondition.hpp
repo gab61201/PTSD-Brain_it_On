@@ -13,7 +13,7 @@
 
 enum class TriggerType {
     TOUCHING,
-    SEPERATED
+    SEPARATED
 };
 
 class PassCondition : public b2ContactListener {

@@ -13,7 +13,7 @@ void PassCondition::BeginContact(b2Contact* contact) {
 }
 
 void PassCondition::EndContact(b2Contact* contact) {
-    OnContactEvent(contact->GetFixtureA(), contact->GetFixtureB(), TriggerType::SEPERATED);
+    OnContactEvent(contact->GetFixtureA(), contact->GetFixtureB(), TriggerType::SEPARATED);
 }
 
 void PassCondition::Update() {
