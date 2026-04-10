@@ -17,6 +17,7 @@ enum class LevelId {
 
 struct LevelData {
     float timeout = 30.0F;
+    int strokeLimit = 3;
     std::string targetText = "";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
 };
