@@ -10,6 +10,7 @@
 #include <memory>
 
 #include "Util/GameObject.hpp"
+#include "Util/Image.hpp"
 
 namespace GameWorld {
 
@@ -20,6 +21,9 @@ enum class ShapeType {
 };
 
 class BaseObject {
+   private:
+    static Util::AssetStore<std::shared_ptr<Util::Image>> s_ImageCache;
+
    public:
     BaseObject(
         ShapeType shape,

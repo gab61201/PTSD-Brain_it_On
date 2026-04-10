@@ -4,11 +4,20 @@
 
 #include "GameWorld/CoordinateHelper.hpp"
 #include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
 
 #define IMAGE_SIZE 417.0F
 
 namespace GameWorld {
+
+// ==========================================
+// 圖片快取 (Image Cache)
+// ==========================================
+
+Util::AssetStore<std::shared_ptr<Util::Image>> BaseObject::s_ImageCache(
+    [](const std::string& path) {
+        return std::make_shared<Util::Image>(path);
+    }
+);
 
 // ==========================================
 // 建構子 (Constructor)
@@ -45,7 +54,8 @@ void BaseObject::AttachToBody(b2Body* body) {
     // 2. 根據儲存的形狀資料，現場宣告形狀並掛載
     if (m_ShapeType == ShapeType::CIRCLE) {
         if (!m_IsSensor) {
-            m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/BasicShapes/white_circle.png"));
+            auto cachedImage = s_ImageCache.Get("Resources/Images/BasicShapes/white_circle.png");
+            m_Visual->SetDrawable(cachedImage);
         }
 
         b2CircleShape circleShape;
@@ -61,7 +71,8 @@ void BaseObject::AttachToBody(b2Body* body) {
         m_Fixture = body->CreateFixture(&fixtureDef);
 
     } else if (m_ShapeType == ShapeType::RECTANGLE) {
-        m_Visual->SetDrawable(std::make_shared<Util::Image>("Resources/Images/BasicShapes/white_square.png"));
+        auto cachedImage = s_ImageCache.Get("Resources/Images/BasicShapes/white_square.png");
+        m_Visual->SetDrawable(cachedImage);
 
         b2PolygonShape boxShape;
 
