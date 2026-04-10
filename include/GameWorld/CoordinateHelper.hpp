@@ -3,7 +3,7 @@
 
 #include "Physics/Physics.hpp"
 
-#include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 
 namespace GameWorld {
 
