@@ -31,7 +31,7 @@ CompositeObject::CompositeObject(
 // 掛載到物理世界 (AttachToWorld)
 // 由擁有 b2World 的類別 (例如 GameWorld 或 Level) 呼叫
 // ==========================================
-void CompositeObject::AttachToWorld(b2World* world) {
+void CompositeObject::AttachToWorld(Physics::WorldPtr world) {
     // 防呆機制：如果已經掛載過，就不再重複創建，避免記憶體洩漏
     if (m_Body != nullptr) {
         return;

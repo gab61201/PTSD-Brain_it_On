@@ -8,11 +8,11 @@ PassCondition::PassCondition(
     : m_TriggerType(triggerType),
       m_Duration(duration) {}
 
-void PassCondition::BeginContact(b2Contact* contact) {
+void PassCondition::BeginContact(Physics::ContactPtr contact) {
     OnContactEvent(contact->GetFixtureA(), contact->GetFixtureB(), TriggerType::TOUCHING);
 }
 
-void PassCondition::EndContact(b2Contact* contact) {
+void PassCondition::EndContact(Physics::ContactPtr contact) {
     OnContactEvent(contact->GetFixtureA(), contact->GetFixtureB(), TriggerType::SEPARATED);
 }
 

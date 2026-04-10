@@ -1,7 +1,7 @@
 #ifndef GAMEWORLD_COORDINATE_HELPER_HPP
 #define GAMEWORLD_COORDINATE_HELPER_HPP
 
-#include <box2d/box2d.h>
+#include "Physics/Physics.hpp"
 
 #include <glm/vec2.hpp>
 

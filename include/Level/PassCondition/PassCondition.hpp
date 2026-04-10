@@ -1,7 +1,7 @@
 #ifndef PASS_CONDITION_HPP
 #define PASS_CONDITION_HPP
 
-#include <box2d/box2d.h>
+#include "Physics/Physics.hpp"
 
 #include "GameWorld/BaseObject.hpp"
 
@@ -16,7 +16,7 @@ enum class TriggerType {
     SEPARATED
 };
 
-class PassCondition : public b2ContactListener {
+class PassCondition : public Physics::ContactListener {
    public:
     PassCondition() = default;
     PassCondition(
@@ -24,14 +24,14 @@ class PassCondition : public b2ContactListener {
         int duration);
     virtual ~PassCondition() = default;
 
-    virtual void AttachToWorld(b2World* world) = 0;
-    void BeginContact(b2Contact* contact) override;
-    void EndContact(b2Contact* contact) override;
+    virtual void AttachToWorld(Physics::WorldPtr world) = 0;
+    void BeginContact(Physics::ContactPtr contact) override;
+    void EndContact(Physics::ContactPtr contact) override;
     void Update();
     bool Check() const;
 
    protected:
-    virtual void OnContactEvent(b2Fixture* fixtureA, b2Fixture* fixtureB, TriggerType triggerType) = 0;
+    virtual void OnContactEvent(Physics::ShapePtr fixtureA, Physics::ShapePtr fixtureB, TriggerType triggerType) = 0;
     TriggerType m_TriggerType;
     int m_Duration;
 
