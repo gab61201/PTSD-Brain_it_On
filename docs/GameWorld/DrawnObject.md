@@ -30,11 +30,11 @@ DrawnObject(glm::vec2 position);
 
 結束繪製，完成多邊形的建立並生成物理碰撞體。
 
-### `b2Body* GetBody()`
+### `Physics::BodyPtr GetBody()`
 
-取得此物件的 Box2D Body 指標。
+取得此物件的 Box2D Body handle。
 
-**回傳值**: Box2D Body 指標 (非 const，可直接使用)
+**回傳值**: Box2D Body handle (可直接傳給 Box2D v3 C API)
 
 ## 成員變數
 

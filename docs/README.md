@@ -82,3 +82,4 @@ Settings   Level Select  Finished
 - [AGENTS.md](../AGENTS.md) - 開發者指南
 - [README.md](../README.md) - 專案說明
 - [CMakeLists.txt](../CMakeLists.txt) - 建置配置
+- [Box2D-v2-to-v3-mapping.md](Box2D-v2-to-v3-mapping.md) - Box2D 升級映射與注意事項

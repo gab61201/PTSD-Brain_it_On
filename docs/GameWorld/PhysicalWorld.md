@@ -62,7 +62,7 @@ PhysicalWorld(
 
 | 名稱 | 類型 | 說明 |
 |------|------|------|
-| `m_b2World` | `b2World` | Box2D 物理世界實體 |
+| `m_b2World` | `Physics::World` | Box2D v3 世界 handle |
 | `m_CompositeObject` | `std::vector<std::shared_ptr<CompositeObject>>` | 地圖預先放置的物件 |
 | `m_DrawnObjects` | `std::vector<std::shared_ptr<DrawnObject>>` | 玩家繪製的物件列表 |
 | `m_LastDrawingObject` | `std::shared_ptr<DrawnObject>` | 當前正在繪製的物件 |

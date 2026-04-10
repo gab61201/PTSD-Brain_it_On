@@ -29,12 +29,12 @@ MagnetObject(
 
 ## 方法
 
-### `void AttachToWorld(b2World* world)`
+### `void AttachToWorld(Physics::WorldPtr world)`
 
 將磁鐵掛載到物理世界。此方法會將本物件的指標存入 Box2D Body 的 UserData，以便在碰撞檢測時識別磁力來源。
 
 **參數**:
-- `world`: Box2D 世界指標
+- `world`: Box2D 世界 handle
 
 ### `void Update() override`
 

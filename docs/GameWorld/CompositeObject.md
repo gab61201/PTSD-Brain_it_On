@@ -37,7 +37,7 @@ CompositeObject(
 
 更新複合物件狀態。
 
-### `virtual void AttachToWorld(b2World* world)`
+### `virtual void AttachToWorld(Physics::WorldPtr world)`
 
 將此複合物件及其所有子物件掛載到 Box2D 世界中。
 
@@ -50,7 +50,7 @@ CompositeObject(
 | `m_BodyType` | `BodyType` | 物體類型 |
 | `m_Position` | `glm::vec2` | 位置 |
 | `m_Rotation` | `float` | 旋轉角度 |
-| `m_Body` | `b2Body*` | Box2D Body 指標 (nullptr 表示未掛載) |
+| `m_Body` | `Physics::BodyPtr` | Box2D Body handle (`b2_nullBodyId` 表示未掛載) |
 
 ## 相關類別
 
