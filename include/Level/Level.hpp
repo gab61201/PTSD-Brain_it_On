@@ -38,8 +38,9 @@ class Level {
 
     LevelId m_LevelId;
     State m_state = State::WAITING;
-    float m_Time = 0.0F;                    // 遊戲進行時間
-    float m_Timeout;                        // 遊戲限制時間
+    float m_Time = 0.0F;  // 遊戲進行時間
+    float m_Timeout;      // 遊戲限制時間
+    int m_StrokeLimit;
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
     std::vector<PassCondition> m_pass_conditions;
     std::unique_ptr<LevelHUD> m_HUD;

@@ -21,6 +21,7 @@ class PhysicalWorld {
     void EndDrawing();
     bool IsPassed();
     void Update();
+    int GetDrawnObjectCount() const;
 
    private:
     Physics::World m_b2World;

@@ -13,7 +13,9 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
     LevelData data = GetLevelData(levelId);
     m_World = data.world;
     m_Timeout = data.timeout;
-    m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText);
+    m_StrokeLimit = data.strokeLimit;
+    m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText,
+                                        m_StrokeLimit);
 }
 
 void Level::Waiting() {
@@ -56,7 +58,9 @@ void Level::Reset() {
     LevelData data = GetLevelData(m_LevelId);
     m_World = data.world;
     m_Time = 0.0F;
-    m_HUD->Reset(data.targetText);
+    m_Timeout = data.timeout;
+    m_StrokeLimit = data.strokeLimit;
+    m_HUD->Reset(data.targetText, m_StrokeLimit);
 }
 
 void Level::Update() {
@@ -88,5 +92,6 @@ void Level::Update() {
 
     // 更新 HUD（計時器、提示文字）
     m_HUD->UpdateTimer(GetRemainingTime());
+    m_HUD->UpdateStrokeLimit(m_StrokeLimit - m_World->GetDrawnObjectCount(), m_StrokeLimit);
     m_HUD->Update();
 }

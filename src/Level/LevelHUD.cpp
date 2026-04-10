@@ -35,7 +35,7 @@ std::shared_ptr<Util::GameObject> CreateLevelNumberText(LevelId id,
 
 }  // namespace
 
-LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText) {
+LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLimit) {
     // 1. 關卡編號外框
     auto levelFrameImage =
         std::make_shared<Util::Image>("Resources/Images/level_frame.png");
@@ -70,6 +70,24 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText) {
     // 5. 提示文字
     m_TargetTextObject = CreateTargetText(targetText);
     m_Renderer.AddChild(m_TargetTextObject);
+
+    // 6. 限制筆劃次數圖示
+    auto strokeLimitImage =
+        std::make_shared<Util::Image>("Resources/Images/stroke_limit.png");
+    auto strokeLimitIcon =
+        std::make_shared<Util::GameObject>(strokeLimitImage, 0.1f);
+    strokeLimitIcon->m_Transform.translation = {LEFT_UI_X - 5, 50.0f};
+    strokeLimitIcon->m_Transform.scale = {0.12f, 0.12f};
+    m_Renderer.AddChild(strokeLimitIcon);
+
+    // 7. 限制筆劃次數文字
+    m_StrokeLimitText = std::make_shared<Util::Text>(
+        "PTSD/assets/fonts/Inter.ttf", 24,
+        std::to_string(strokeLimit) + "/" + std::to_string(strokeLimit),
+        Util::Color::FromRGB(255, 255, 255));
+    m_StrokeLimitObject = std::make_shared<Util::GameObject>(m_StrokeLimitText, 0.5f);
+    m_StrokeLimitObject->m_Transform.translation = {LEFT_UI_X + 8.0f, 7.0f};
+    m_Renderer.AddChild(m_StrokeLimitObject);
 }
 
 void LevelHUD::UpdateTimer(float remainingTime) {
@@ -86,7 +104,7 @@ void LevelHUD::HideTarget() {
     }
 }
 
-void LevelHUD::Reset(const std::string& targetText) {
+void LevelHUD::Reset(const std::string& targetText, int strokeLimit) {
     // 重建提示文字
     if (m_TargetTextObject) {
         m_Renderer.RemoveChild(m_TargetTextObject);
@@ -97,6 +115,14 @@ void LevelHUD::Reset(const std::string& targetText) {
     // 重置計時器
     if (m_TimerText) {
         m_TimerText->SetText("0.0");
+    }
+
+    UpdateStrokeLimit(strokeLimit, strokeLimit);
+}
+
+void LevelHUD::UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit) {
+    if (m_StrokeLimitText) {
+        m_StrokeLimitText->SetText(std::to_string(remainingStroke) + "/" + std::to_string(totalStrokeLimit));
     }
 }
 

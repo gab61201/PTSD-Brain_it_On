@@ -11,7 +11,8 @@
 
 class LevelHUD {
    public:
-    LevelHUD(LevelId levelId, const std::string& targetText);
+    LevelHUD(LevelId levelId, const std::string& targetText,
+             int strokeLimit);
 
     /// 每幀更新計時器顯示
     void UpdateTimer(float remainingTime);
@@ -20,7 +21,10 @@ class LevelHUD {
     void HideTarget();
 
     /// 重置 HUD（重新開始關卡時呼叫）
-    void Reset(const std::string& targetText);
+    void Reset(const std::string& targetText, int strokeLimit);
+
+    /// 更新筆劃限制顯示
+    void UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit);
 
     /// 繪製所有 HUD 元素
     void Update();
@@ -30,6 +34,8 @@ class LevelHUD {
     std::shared_ptr<Util::Text> m_TimerText;
     std::shared_ptr<Util::GameObject> m_TimerObject;
     std::shared_ptr<Util::GameObject> m_TargetTextObject;
+    std::shared_ptr<Util::Text> m_StrokeLimitText;
+    std::shared_ptr<Util::GameObject> m_StrokeLimitObject;
 };
 
 #endif
