@@ -40,7 +40,7 @@ class CompositeObject {
     BodyType m_BodyType;
     glm::vec2 m_Position;
     float m_Rotation;
-    Physics::BodyPtr m_Body = nullptr;
+    Physics::BodyPtr m_Body = b2_nullBodyId;
     // float m_Magnetism = 0;
 };
 

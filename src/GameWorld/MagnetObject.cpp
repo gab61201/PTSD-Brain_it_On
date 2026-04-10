@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <glm/fwd.hpp>
+#include <vector>
 
 #include "GameWorld/BaseObject.hpp"
 
@@ -34,11 +35,10 @@ MagnetObject::MagnetObject(
 void MagnetObject::AttachToWorld(Physics::WorldPtr world) {
     CompositeObject::AttachToWorld(world);
 
-    if (m_Body != nullptr) {
+    if (B2_IS_NON_NULL(m_Body)) {
         // 將 this 指標存入 Box2D 的 UserData
         // 其他磁鐵在 Update() 中可以用這個來辨識「對方是不是磁鐵」
-        m_Body->GetUserData().pointer =
-            reinterpret_cast<uintptr_t>(this);
+        b2Body_SetUserData(m_Body, this);
     }
 }
 
@@ -47,50 +47,63 @@ void MagnetObject::Update() {
     CompositeObject::Update();
 
     // 2. 如果骨架還沒生成，就無法施加力
-    if (m_Body == nullptr) {
+    if (B2_IS_NULL(m_Body)) {
         return;
     }
 
     // 取得磁鐵自身的位置（公尺座標）
-    b2Vec2 magnetPos = m_Body->GetPosition();
+    b2Vec2 magnetPos = b2Body_GetPosition(m_Body);
+
+    int contactCapacity = b2Body_GetContactCapacity(m_Body);
+    if (contactCapacity <= 0) {
+        return;
+    }
+
+    std::vector<b2ContactData> contacts(contactCapacity);
+    int contactCount = b2Body_GetContactData(m_Body, contacts.data(), contactCapacity);
 
     // 3. 遍歷這個 Body 的所有接觸 (Contact)
-    for (b2ContactEdge* ce = m_Body->GetContactList(); ce != nullptr;
-         ce = ce->next) {
-        b2Contact* contact = ce->contact;
-
-        // 只處理正在接觸中的
-        if (!contact->IsTouching()) {
-            continue;
-        }
+    for (int i = 0; i < contactCount; i++) {
+        const b2ContactData& contact = contacts[i];
 
         // 確認這個接觸至少有一方是 Sensor（我們的磁場）
-        bool fixtureAIsSensor = contact->GetFixtureA()->IsSensor();
-        bool fixtureBIsSensor = contact->GetFixtureB()->IsSensor();
+        bool fixtureAIsSensor = b2Shape_IsSensor(contact.shapeIdA);
+        bool fixtureBIsSensor = b2Shape_IsSensor(contact.shapeIdB);
         if (!fixtureAIsSensor && !fixtureBIsSensor) {
             continue;
         }
 
         // 取得「另一個物體」的 Body
-        b2Body* otherBody = ce->other;
+        b2BodyId bodyA = b2Shape_GetBody(contact.shapeIdA);
+        b2BodyId bodyB = b2Shape_GetBody(contact.shapeIdB);
+
+        b2BodyId otherBody = b2_nullBodyId;
+        if (B2_ID_EQUALS(bodyA, m_Body) && !B2_ID_EQUALS(bodyB, m_Body)) {
+            otherBody = bodyB;
+        } else if (B2_ID_EQUALS(bodyB, m_Body) && !B2_ID_EQUALS(bodyA, m_Body)) {
+            otherBody = bodyA;
+        }
+        if (B2_IS_NULL(otherBody)) {
+            continue;
+        }
 
         // ====================================================
         // 關鍵：只影響其他磁鐵！
         // 如果 otherBody 的 UserData 是 0，代表它不是 MagnetObject
         // ====================================================
-        uintptr_t otherData = otherBody->GetUserData().pointer;
-        if (otherData == 0) {
+        void* otherData = b2Body_GetUserData(otherBody);
+        if (otherData == nullptr) {
             continue;  // 不是磁鐵，跳過
         }
 
         // 將 UserData 還原成 MagnetObject 指標，讀取對方的磁力值
-        auto* otherMagnet = reinterpret_cast<MagnetObject*>(otherData);
+        auto* otherMagnet = static_cast<MagnetObject*>(otherData);
         float otherMagnetism = otherMagnet->GetMagnetism();
 
         // 4. 計算方向（從對方指向自己）
-        b2Vec2 otherPos = otherBody->GetPosition();
-        b2Vec2 direction = magnetPos - otherPos;
-        float distanceSq = direction.LengthSquared();
+        b2Vec2 otherPos = b2Body_GetPosition(otherBody);
+        b2Vec2 direction = {magnetPos.x - otherPos.x, magnetPos.y - otherPos.y};
+        float distanceSq = direction.x * direction.x + direction.y * direction.y;
 
         // 避免距離太近導致力過大
         constexpr float kMinDistanceSq = 1.0f;  // 提高最小距離上限
@@ -123,7 +136,7 @@ void MagnetObject::Update() {
                      sign * direction.y * forceMagnitude);
 
         // 6. 對另一個磁鐵的質心施加力
-        otherBody->ApplyForceToCenter(force, true);
+        b2Body_ApplyForceToCenter(otherBody, force, true);
     }
 }
 

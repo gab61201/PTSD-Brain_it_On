@@ -37,7 +37,7 @@ class BaseObject {
 
     std::shared_ptr<Util::GameObject> m_Visual;
 
-    Physics::ShapePtr m_Fixture;
+    Physics::ShapePtr m_Fixture = b2_nullShapeId;
 
    protected:
 

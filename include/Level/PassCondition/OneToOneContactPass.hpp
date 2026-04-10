@@ -20,11 +20,11 @@ class OneToOneContactPass : public PassCondition {
     void AttachToWorld(Physics::WorldPtr world) override;
 
    private:
-    void OnContactEvent(Physics::ShapePtr fixtureA, Physics::ShapePtr fixtureB, TriggerType triggerType) override;
+    void OnContactEvent(Physics::Shape fixtureA, Physics::Shape fixtureB, TriggerType triggerType) override;
     std::shared_ptr<GameWorld::BaseObject> m_BaseObjectA = nullptr;
     std::shared_ptr<GameWorld::BaseObject> m_BaseObjectB = nullptr;
-    Physics::ShapePtr m_FixtureA = nullptr;
-    Physics::ShapePtr m_FixtureB = nullptr;
+    Physics::Shape m_FixtureA = b2_nullShapeId;
+    Physics::Shape m_FixtureB = b2_nullShapeId;
 };
 
 #endif  // ONE_TO_ONE_CONTACT_PASS_HPP

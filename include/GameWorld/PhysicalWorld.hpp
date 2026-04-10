@@ -12,7 +12,7 @@ namespace GameWorld {
 class PhysicalWorld {
    public:
     PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects, PassCondition* passCondition);
-    ~PhysicalWorld() = default;
+    ~PhysicalWorld();
 
     // 更新碰撞並渲染
     void Start();

@@ -8,12 +8,18 @@ PassCondition::PassCondition(
     : m_TriggerType(triggerType),
       m_Duration(duration) {}
 
-void PassCondition::BeginContact(Physics::ContactPtr contact) {
-    OnContactEvent(contact->GetFixtureA(), contact->GetFixtureB(), TriggerType::TOUCHING);
-}
+void PassCondition::ConsumeContactEvents(Physics::World world) {
+    Physics::ContactEvents events = b2World_GetContactEvents(world);
 
-void PassCondition::EndContact(Physics::ContactPtr contact) {
-    OnContactEvent(contact->GetFixtureA(), contact->GetFixtureB(), TriggerType::SEPARATED);
+    for (int i = 0; i < events.beginCount; i++) {
+        const b2ContactBeginTouchEvent& event = events.beginEvents[i];
+        OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::TOUCHING);
+    }
+
+    for (int i = 0; i < events.endCount; i++) {
+        const b2ContactEndTouchEvent& event = events.endEvents[i];
+        OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::SEPARATED);
+    }
 }
 
 void PassCondition::Update() {

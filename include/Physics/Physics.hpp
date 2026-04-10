@@ -5,19 +5,16 @@
 
 namespace Physics {
 
-using World = b2World;
-using WorldPtr = b2World*;
+using World = b2WorldId;
+using WorldPtr = b2WorldId;
 
-using Body = b2Body;
-using BodyPtr = b2Body*;
+using Body = b2BodyId;
+using BodyPtr = b2BodyId;
 
-using Shape = b2Fixture;
-using ShapePtr = b2Fixture*;
+using Shape = b2ShapeId;
+using ShapePtr = b2ShapeId;
 
-using Contact = b2Contact;
-using ContactPtr = b2Contact*;
-
-using ContactListener = b2ContactListener;
+using ContactEvents = b2ContactEvents;
 
 }  // namespace Physics
 

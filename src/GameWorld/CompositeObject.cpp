@@ -33,12 +33,12 @@ CompositeObject::CompositeObject(
 // ==========================================
 void CompositeObject::AttachToWorld(Physics::WorldPtr world) {
     // 防呆機制：如果已經掛載過，就不再重複創建，避免記憶體洩漏
-    if (m_Body != nullptr) {
+    if (B2_IS_NON_NULL(m_Body)) {
         return;
     }
 
     // 1. 準備剛體設計圖 (BodyDef)
-    b2BodyDef bodyDef;
+    b2BodyDef bodyDef = b2DefaultBodyDef();
 
     // 將自訂的 BodyType 列舉轉換為 Box2D 原生型別
     switch (m_BodyType) {
@@ -57,10 +57,10 @@ void CompositeObject::AttachToWorld(Physics::WorldPtr world) {
     // 設定初始位置與角度
     // 注意：Box2D 必須使用公尺，角度使用弧度 (Radians)
     bodyDef.position = GameWorld::PixelsToMeters(m_Position);
-    bodyDef.angle = m_Rotation;
+    bodyDef.rotation = b2MakeRot(m_Rotation);
 
     // 2. 在物理世界中創建真實的剛體 (骨架)
-    m_Body = world->CreateBody(&bodyDef);
+    m_Body = b2CreateBody(world, &bodyDef);
 
     // 3. 向下交辦：呼叫所有子零件，讓它們把碰撞形狀掛載到這個骨架上
     for (auto& baseObj : m_BaseObjects) {
@@ -76,13 +76,13 @@ void CompositeObject::AttachToWorld(Physics::WorldPtr world) {
 // ==========================================
 void CompositeObject::Update() {
     // 如果骨架還沒生成，就沒有物理數據可以更新
-    if (m_Body == nullptr) {
+    if (B2_IS_NULL(m_Body)) {
         return;
     }
 
     // 1. 從物理引擎取得這幀計算完的最新位置與角度
-    b2Vec2 physicsPos = m_Body->GetPosition();
-    float currentRotation = m_Body->GetAngle();
+    b2Vec2 physicsPos = b2Body_GetPosition(m_Body);
+    float currentRotation = b2Rot_GetAngle(b2Body_GetRotation(m_Body));
 
     // 2. 將物理的公尺座標，轉換回遊戲畫面的像素座標
     glm::vec2 currentPixelPos = GameWorld::MetersToPixels(physicsPos);

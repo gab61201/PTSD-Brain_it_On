@@ -16,7 +16,7 @@ enum class TriggerType {
     SEPARATED
 };
 
-class PassCondition : public Physics::ContactListener {
+class PassCondition {
    public:
     PassCondition() = default;
     PassCondition(
@@ -25,13 +25,12 @@ class PassCondition : public Physics::ContactListener {
     virtual ~PassCondition() = default;
 
     virtual void AttachToWorld(Physics::WorldPtr world) = 0;
-    void BeginContact(Physics::ContactPtr contact) override;
-    void EndContact(Physics::ContactPtr contact) override;
+    void ConsumeContactEvents(Physics::World world);
     void Update();
     bool Check() const;
 
    protected:
-    virtual void OnContactEvent(Physics::ShapePtr fixtureA, Physics::ShapePtr fixtureB, TriggerType triggerType) = 0;
+    virtual void OnContactEvent(Physics::Shape fixtureA, Physics::Shape fixtureB, TriggerType triggerType) = 0;
     TriggerType m_TriggerType;
     int m_Duration;
 
