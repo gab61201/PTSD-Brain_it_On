@@ -1,8 +1,7 @@
 #ifndef GAMEWORLD_COORDINATE_HELPER_HPP
 #define GAMEWORLD_COORDINATE_HELPER_HPP
 
-#include "Physics/Physics.hpp"
-
+#include <box2d/box2d.h>
 #include <glm/glm.hpp>
 
 namespace GameWorld {

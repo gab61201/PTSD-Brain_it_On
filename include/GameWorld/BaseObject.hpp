@@ -1,8 +1,7 @@
 #ifndef BASE_OBJECT_HPP
 #define BASE_OBJECT_HPP
 
-#include "Physics/Physics.hpp"
-
+#include <box2d/box2d.h>
 #include <glm/glm.hpp>
 #include <memory>
 
@@ -33,11 +32,11 @@ class BaseObject {
 
     void Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation);
 
-    void AttachToBody(Physics::BodyPtr body);
+    void AttachToBody(b2BodyId body);
 
     std::shared_ptr<Util::GameObject> m_Visual;
 
-    Physics::ShapePtr m_Fixture = b2_nullShapeId;
+    b2ShapeId m_Fixture = b2_nullShapeId;
 
    protected:
 

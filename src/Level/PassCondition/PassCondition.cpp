@@ -1,5 +1,7 @@
 #include "Level/PassCondition/PassCondition.hpp"
 
+#include <box2d/box2d.h>
+
 #define FPS 60
 
 PassCondition::PassCondition(
@@ -8,8 +10,8 @@ PassCondition::PassCondition(
     : m_TriggerType(triggerType),
       m_Duration(duration) {}
 
-void PassCondition::ConsumeContactEvents(Physics::World world) {
-    Physics::ContactEvents events = b2World_GetContactEvents(world);
+void PassCondition::ConsumeContactEvents(b2WorldId world) {
+    b2ContactEvents events = b2World_GetContactEvents(world);
 
     for (int i = 0; i < events.beginCount; i++) {
         const b2ContactBeginTouchEvent& event = events.beginEvents[i];

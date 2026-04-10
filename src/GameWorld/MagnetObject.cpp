@@ -1,7 +1,6 @@
 #include "GameWorld/MagnetObject.hpp"
 
-#include "Physics/Physics.hpp"
-
+#include <box2d/box2d.h>
 #include <cmath>
 #include <glm/fwd.hpp>
 #include <vector>
@@ -32,7 +31,7 @@ MagnetObject::MagnetObject(
 // 掛載到物理世界，並在 Body 上標記 this 指標
 // 這樣其他磁鐵就能透過 UserData 辨識這個 Body 是磁鐵
 // ==========================================
-void MagnetObject::AttachToWorld(Physics::WorldPtr world) {
+void MagnetObject::AttachToWorld(b2WorldId world) {
     CompositeObject::AttachToWorld(world);
 
     if (B2_IS_NON_NULL(m_Body)) {

@@ -17,7 +17,7 @@ class MagnetObject : public CompositeObject {
     ~MagnetObject() = default;
 
     // 掛載到物理世界時，同時將 this 指標存入 b2Body 的 UserData
-    void AttachToWorld(Physics::WorldPtr world);
+    void AttachToWorld(b2WorldId world);
 
     // 擴充 Update，除了更新座標，還能每一幀執行磁鐵的相吸邏輯
     void Update() override;

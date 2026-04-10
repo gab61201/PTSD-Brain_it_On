@@ -40,7 +40,7 @@ BaseObject::BaseObject(
 // ==========================================
 // 實體組裝期 (AttachToBody) - 現場製造零件並掛載
 // ==========================================
-void BaseObject::AttachToBody(Physics::BodyPtr body) {
+void BaseObject::AttachToBody(b2BodyId body) {
     // 防呆：如果已經有實體了，不要重複掛載
     if (B2_IS_NON_NULL(m_Fixture)) return;
 

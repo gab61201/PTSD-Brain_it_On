@@ -5,7 +5,8 @@
 #include "GameWorld/DrawnObject.hpp"
 #include "GameWorld/MagnetObject.hpp"
 #include "Level/PassCondition/PassCondition.hpp"
-#include "Physics/Physics.hpp"
+
+#include <box2d/box2d.h>
 
 namespace GameWorld {
 
@@ -23,7 +24,7 @@ class PhysicalWorld {
     void Update();
 
    private:
-    Physics::World m_b2World;
+    b2WorldId m_b2World;
     // 地圖原有的物件
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
     // 玩家畫的物件

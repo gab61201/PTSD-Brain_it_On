@@ -16,7 +16,7 @@ OneToOneContactPass::OneToOneContactPass(
     : PassCondition(triggerType, duration),
       m_BaseObjectA(baseObject) {}
 
-void OneToOneContactPass::AttachToWorld(Physics::WorldPtr world) {
+void OneToOneContactPass::AttachToWorld(b2WorldId world) {
     (void)world;
     m_FixtureA = m_BaseObjectA->m_Fixture;
     if (m_BaseObjectB) {
@@ -24,7 +24,7 @@ void OneToOneContactPass::AttachToWorld(Physics::WorldPtr world) {
     }
 }
 
-void OneToOneContactPass::OnContactEvent(Physics::Shape fixtureA, Physics::Shape fixtureB, TriggerType triggerType) {
+void OneToOneContactPass::OnContactEvent(b2ShapeId fixtureA, b2ShapeId fixtureB, TriggerType triggerType) {
     if (B2_ID_EQUALS(fixtureA, m_FixtureA) || B2_ID_EQUALS(fixtureB, m_FixtureA)) {  // 找到 A 物體
         if ((B2_IS_NON_NULL(m_FixtureB) && (B2_ID_EQUALS(fixtureA, m_FixtureB) || B2_ID_EQUALS(fixtureB, m_FixtureB)))  // 有指定 B 且找到 B
             || B2_IS_NULL(m_FixtureB)) {                                                               // 無指定 B

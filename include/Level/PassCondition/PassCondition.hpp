@@ -1,7 +1,7 @@
 #ifndef PASS_CONDITION_HPP
 #define PASS_CONDITION_HPP
 
-#include "Physics/Physics.hpp"
+#include <box2d/box2d.h>
 
 #include "GameWorld/BaseObject.hpp"
 
@@ -24,13 +24,13 @@ class PassCondition {
         int duration);
     virtual ~PassCondition() = default;
 
-    virtual void AttachToWorld(Physics::WorldPtr world) = 0;
-    void ConsumeContactEvents(Physics::World world);
+    virtual void AttachToWorld(b2WorldId world) = 0;
+    void ConsumeContactEvents(b2WorldId world);
     void Update();
     bool Check() const;
 
    protected:
-    virtual void OnContactEvent(Physics::Shape fixtureA, Physics::Shape fixtureB, TriggerType triggerType) = 0;
+    virtual void OnContactEvent(b2ShapeId fixtureA, b2ShapeId fixtureB, TriggerType triggerType) = 0;
     TriggerType m_TriggerType;
     int m_Duration;
 
