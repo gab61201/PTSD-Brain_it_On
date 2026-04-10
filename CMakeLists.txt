@@ -7,10 +7,11 @@ cmake_policy(SET CMP0135 NEW)
 
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
+set(BOX2D_TAG v2.4.1)
 
 FetchContent_Declare(
     box2d
-    URL         https://github.com/erincatto/box2d/archive/refs/tags/v2.4.1.zip
+    URL         https://github.com/erincatto/box2d/archive/refs/tags/${BOX2D_TAG}.zip
     SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/lib/box2d
 )
 
@@ -59,7 +60,6 @@ else()
 endif()
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${DEPENDENCY_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lib/box2d/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/PTSD/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
