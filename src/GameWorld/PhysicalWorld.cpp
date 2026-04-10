@@ -89,7 +89,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
         callback.testPoint = point;
 
         b2AABB aabb;
-        b2Vec2 d(0.001f, 0.001f);
+        b2Vec2 d = {0.001f, 0.001f};
         aabb.lowerBound = {point.x - d.x, point.y - d.y};
         aabb.upperBound = {point.x + d.x, point.y + d.y};
 

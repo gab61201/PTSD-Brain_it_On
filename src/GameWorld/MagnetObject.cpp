@@ -132,8 +132,8 @@ void MagnetObject::Update() {
         // product > 0 時 sign = -1（排斥，direction 反轉）
         float sign = (product < 0) ? 1.0f : -1.0f;
 
-        b2Vec2 force(sign * direction.x * forceMagnitude,
-                     sign * direction.y * forceMagnitude);
+        b2Vec2 force = {sign * direction.x * forceMagnitude,
+                        sign * direction.y * forceMagnitude};
 
         // 6. 對另一個磁鐵的質心施加力
         b2Body_ApplyForceToCenter(otherBody, force, true);

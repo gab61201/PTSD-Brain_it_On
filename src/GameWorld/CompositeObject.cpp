@@ -20,7 +20,7 @@ CompositeObject::CompositeObject(
       m_BodyType(bodyType),
       m_Position(position),
       m_Rotation(rotation),
-      m_Body(nullptr)  // 初始化時，真實物理骨架尚未生成
+      m_Body(b2_nullBodyId)  // 初始化時，真實物理骨架尚未生成
 {
     for (auto& baseObj : m_BaseObjects) {
         m_Renderer.AddChild(baseObj->m_Visual);
