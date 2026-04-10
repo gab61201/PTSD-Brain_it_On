@@ -7,12 +7,11 @@ cmake_policy(SET CMP0135 NEW)
 
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
-set(BOX2D_TAG v2.4.1)
+set(BOX2D_TAG v3.1.1)
 
 FetchContent_Declare(
     box2d
     URL         https://github.com/erincatto/box2d/archive/refs/tags/${BOX2D_TAG}.zip
-    SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/lib/box2d
 )
 
 set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "" FORCE)
