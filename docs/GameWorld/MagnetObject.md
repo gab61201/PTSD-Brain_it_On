@@ -21,6 +21,7 @@ MagnetObject(
 ```
 
 **參數說明**:
+
 - `baseObjects`: 構成磁鐵形狀的基礎物件
 - `bodyType`: 物理類型，DYNAMIC 表示磁鐵本身也會移動
 - `position`: 初始位置
@@ -34,6 +35,7 @@ MagnetObject(
 將磁鐵掛載到物理世界。此方法會將本物件的指標存入 Box2D Body 的 UserData，以便在碰撞檢測時識別磁力來源。
 
 **參數**:
+
 - `world`: Box2D 世界 handle
 
 ### `void Update() override`
@@ -45,13 +47,14 @@ MagnetObject(
 取得當前磁力值。
 
 **回傳值**: 磁力值
+
 - 正值：N 極
 - 負值：S 極
 
 ## 成員變數
 
-| 名稱 | 類型 | 說明 |
-|------|------|------|
+| 名稱          | 類型    | 說明          |
+| ------------- | ------- | ------------- |
 | `m_Magnetism` | `float` | 磁力值 (私有) |
 
 ## 繼承關係

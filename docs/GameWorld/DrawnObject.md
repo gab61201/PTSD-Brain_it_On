@@ -15,6 +15,7 @@ DrawnObject(glm::vec2 position);
 ```
 
 **參數**:
+
 - `position`: 起始位置
 
 ## 方法
@@ -24,6 +25,7 @@ DrawnObject(glm::vec2 position);
 添加下一個頂點到繪製路徑中。
 
 **參數**:
+
 - `position`: 新頂點的座標
 
 ### `void EndDrawing()`
@@ -38,8 +40,8 @@ DrawnObject(glm::vec2 position);
 
 ## 成員變數
 
-| 名稱 | 類型 | 說明 |
-|------|------|------|
+| 名稱       | 類型                     | 說明                         |
+| ---------- | ------------------------ | ---------------------------- |
 | `m_Points` | `std::vector<glm::vec2>` | 頂點列表，儲存所有繪製的座標 |
 
 ## 繼承關係

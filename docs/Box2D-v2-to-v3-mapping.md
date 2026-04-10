@@ -4,37 +4,37 @@
 
 ## 核心型別映射
 
-| v2.x | v3.x | 說明 |
-|------|------|------|
-| `b2World` | `b2WorldId` | 世界由 class instance 改為 handle |
-| `b2Body*` | `b2BodyId` | Body 由指標改為 handle |
-| `b2Fixture*` | `b2ShapeId` | Fixture 概念改為 Shape handle |
-| `b2ContactListener` | `b2ContactEvents` | 改為每幀讀取接觸事件緩衝 |
+| v2.x                | v3.x              | 說明                              |
+| ------------------- | ----------------- | --------------------------------- |
+| `b2World`           | `b2WorldId`       | 世界由 class instance 改為 handle |
+| `b2Body*`           | `b2BodyId`        | Body 由指標改為 handle            |
+| `b2Fixture*`        | `b2ShapeId`       | Fixture 概念改為 Shape handle     |
+| `b2ContactListener` | `b2ContactEvents` | 改為每幀讀取接觸事件緩衝          |
 
 ## 世界生命週期
 
-| v2.x | v3.x |
-|------|------|
-| `b2World world(gravity)` | `b2WorldDef def = b2DefaultWorldDef(); def.gravity = ...; b2CreateWorld(&def)` |
-| `delete world` (或物件析構) | `b2DestroyWorld(worldId)` |
-| `world.Step(dt, velIter, posIter)` | `b2World_Step(worldId, dt, subStepCount)` |
+| v2.x                               | v3.x                                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------------ |
+| `b2World world(gravity)`           | `b2WorldDef def = b2DefaultWorldDef(); def.gravity = ...; b2CreateWorld(&def)` |
+| `delete world` (或物件析構)        | `b2DestroyWorld(worldId)`                                                      |
+| `world.Step(dt, velIter, posIter)` | `b2World_Step(worldId, dt, subStepCount)`                                      |
 
 ## Body 與 Shape 建立
 
-| v2.x | v3.x |
-|------|------|
-| `world->CreateBody(&bodyDef)` | `b2CreateBody(worldId, &bodyDef)` |
+| v2.x                               | v3.x                                                     |
+| ---------------------------------- | -------------------------------------------------------- |
+| `world->CreateBody(&bodyDef)`      | `b2CreateBody(worldId, &bodyDef)`                        |
 | `body->CreateFixture(&fixtureDef)` | `b2CreateCircleShape(...)` / `b2CreatePolygonShape(...)` |
-| `body->SetType(type)` | `b2Body_SetType(bodyId, type)` |
-| `body->GetPosition()` | `b2Body_GetPosition(bodyId)` |
-| `body->GetAngle()` | `b2Body_GetAngle(bodyId)` |
+| `body->SetType(type)`              | `b2Body_SetType(bodyId, type)`                           |
+| `body->GetPosition()`              | `b2Body_GetPosition(bodyId)`                             |
+| `body->GetAngle()`                 | `b2Body_GetAngle(bodyId)`                                |
 
 ## 查詢與事件
 
-| v2.x | v3.x |
-|------|------|
-| `b2QueryCallback` | `b2World_OverlapAABB` + callback/context |
-| `b2RayCastCallback` | `b2World_CastRay` + callback/context |
+| v2.x                               | v3.x                                                       |
+| ---------------------------------- | ---------------------------------------------------------- |
+| `b2QueryCallback`                  | `b2World_OverlapAABB` + callback/context                   |
+| `b2RayCastCallback`                | `b2World_CastRay` + callback/context                       |
 | `BeginContact/EndContact` override | 讀取 `b2World_GetContactEvents(worldId)` 的 begin/end 陣列 |
 
 ## 專案內抽象層對應

@@ -18,6 +18,7 @@ PhysicalWorld(
 ```
 
 **參數**:
+
 - `compositeObjects`: 關卡設計時預先放置的複合物件列表
 - `passCondition`: 指向當前關卡的過關條件物件
 
@@ -36,6 +37,7 @@ PhysicalWorld(
 在指定位置開始繪製新物件。此方法會建立一個新的 DrawnObject 並加入管理列表。
 
 **參數**:
+
 - `position`: 繪製起始位置
 
 ### `void EndDrawing()`
@@ -46,13 +48,15 @@ PhysicalWorld(
 
 檢查關卡是否已通過。
 
-**回傳值**: 
+**回傳值**:
+
 - `true`: 過關條件達成
 - `false`: 尚未過關
 
 ### `void Update()`
 
 每幀更新物理世界狀態，包括：
+
 - 執行 Box2D 物理模擬
 - 更新所有物件位置
 - 檢查碰撞事件
@@ -60,14 +64,14 @@ PhysicalWorld(
 
 ## 成員變數
 
-| 名稱 | 類型 | 說明 |
-|------|------|------|
-| `m_b2World` | `Physics::World` | Box2D v3 世界 handle |
-| `m_CompositeObject` | `std::vector<std::shared_ptr<CompositeObject>>` | 地圖預先放置的物件 |
-| `m_DrawnObjects` | `std::vector<std::shared_ptr<DrawnObject>>` | 玩家繪製的物件列表 |
-| `m_LastDrawingObject` | `std::shared_ptr<DrawnObject>` | 當前正在繪製的物件 |
-| `m_PassCondition` | `PassCondition*` | 過關條件指標 |
-| `m_IsActive` | `bool` | 物理世界是否處於活動狀態 |
+| 名稱                  | 類型                                            | 說明                     |
+| --------------------- | ----------------------------------------------- | ------------------------ |
+| `m_b2World`           | `Physics::World`                                | Box2D v3 世界 handle     |
+| `m_CompositeObject`   | `std::vector<std::shared_ptr<CompositeObject>>` | 地圖預先放置的物件       |
+| `m_DrawnObjects`      | `std::vector<std::shared_ptr<DrawnObject>>`     | 玩家繪製的物件列表       |
+| `m_LastDrawingObject` | `std::shared_ptr<DrawnObject>`                  | 當前正在繪製的物件       |
+| `m_PassCondition`     | `PassCondition*`                                | 過關條件指標             |
+| `m_IsActive`          | `bool`                                          | 物理世界是否處於活動狀態 |
 
 ## 更新流程
 
