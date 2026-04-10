@@ -38,20 +38,20 @@ OneToOneContactPass(
 
 ## 方法
 
-### `void AttachToWorld(b2World* world)`
+### `void AttachToWorld(b2WorldId world)`
 
-將過關條件掛載到物理世界，開始監聽碰撞事件。
-
-**參數**:
-- `world`: Box2D 世界指標
-
-### `void OnContactEvent(b2Fixture* fixtureA, b2Fixture* fixtureB, TriggerType triggerType) override`
-
-處理碰撞事件的內部實作。當指定的兩個 Fixture 發生接觸或分離時呼叫。
+將過關條件掛載到物理世界，並同步儲存目標物件的 shape handle。
 
 **參數**:
-- `fixtureA`: 第一個碰撞體
-- `fixtureB`: 第二個碰撞體
+- `world`: Box2D 世界 handle
+
+### `void OnContactEvent(b2ShapeId fixtureA, b2ShapeId fixtureB, TriggerType triggerType) override`
+
+處理碰撞事件的內部實作。當指定的兩個 shape 發生接觸或分離時呼叫。
+
+**參數**:
+- `fixtureA`: 第一個碰撞 shape handle
+- `fixtureB`: 第二個碰撞 shape handle
 - `triggerType`: 觸發類型
 
 ## 成員變數
@@ -60,16 +60,15 @@ OneToOneContactPass(
 |------|------|------|
 | `m_BaseObjectA` | `std::shared_ptr<GameWorld::BaseObject>` | 物件 A (私有) |
 | `m_BaseObjectB` | `std::shared_ptr<GameWorld::BaseObject>` | 物件 B (私有，可為 nullptr) |
-| `m_FixtureA` | `b2Fixture*` | Fixture A 指標 (內部使用) |
-| `m_FixtureB` | `b2Fixture*` | Fixture B 指標 (內部使用，可為 nullptr) |
+| `m_FixtureA` | `b2ShapeId` | Shape A handle (內部使用) |
+| `m_FixtureB` | `b2ShapeId` | Shape B handle (內部使用，可為 null) |
 
 ## 繼承關係
 
 - **繼承自**: `PassCondition`
 - **父類別方法**:
   - `AttachToWorld()`: 掛載到物理世界
-  - `BeginContact()`: 開始碰撞
-  - `EndContact()`: 結束碰撞
+  - `ConsumeContactEvents()`: 讀取本幀碰撞事件
   - `Update()`: 更新計時器
   - `Check()`: 檢查是否過關
 
@@ -91,6 +90,6 @@ auto passCondition = new OneToOneContactPass(
 ## 相關類別
 
 - **PassCondition**: 過關條件基類，定義通用介面
-- **TriggerType**: 觸發類型列舉 (TOUCHING, SEPERATED)
+- **TriggerType**: 觸發類型列舉 (TOUCHING, SEPARATED)
 - **BaseObject**: 基礎物件，代表物理世界中的實體
 - **PhysicalWorld**: 管理過關條件並執行檢測
