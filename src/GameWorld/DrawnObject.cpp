@@ -47,7 +47,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
 }
 
 void DrawnObject::EndDrawing() {
-    m_Body->SetType(b2_dynamicBody);
+    b2Body_SetType(m_Body, b2_dynamicBody);
 }
 
 }  // namespace GameWorld

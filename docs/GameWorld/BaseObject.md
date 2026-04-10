@@ -6,7 +6,7 @@
 
 ## 描述
 
-`BaseObject` 負責將視覺物件與物理世界中的固定 (Fixture) 連結起來。每個物件都包含一個視覺表示 (`GameObject`) 和一個物理碰撞體 (`b2Fixture`)。
+`BaseObject` 負責將視覺物件與物理世界中的碰撞形狀連結起來。每個物件都包含一個視覺表示 (`GameObject`) 和一個物理碰撞體 (`b2ShapeId`)。
 
 ## 建構式
 
@@ -30,19 +30,19 @@ BaseObject(
 - `ParentObjectPosition`: 父物件的位置
 - `ParentObjectRotation`: 父物件的旋轉角度
 
-### `void AttachToBody(b2Body* body)`
+### `void AttachToBody(b2BodyId body)`
 
 將此物件掛載到 Box2D Body 上，建立視覺與物理世界的連結。
 
 **參數**:
-- `body`: 要掛載到的 Box2D Body 指標
+- `body`: 要掛載到的 Box2D Body handle
 
 ## 成員變數
 
 | 名稱 | 類型 | 說明 |
 |------|------|------|
 | `m_Visual` | `std::shared_ptr<Util::GameObject>` | 視覺物件 |
-| `m_Fixture` | `b2Fixture*` | Box2D 固定器 (碰撞體) |
+| `m_Fixture` | `b2ShapeId` | Box2D 形狀 handle (碰撞體) |
 
 ## 受保護成員
 

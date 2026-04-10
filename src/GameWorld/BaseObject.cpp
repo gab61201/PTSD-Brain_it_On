@@ -30,7 +30,7 @@ BaseObject::BaseObject(
     float rotation,
     bool isSensor)
     : m_Visual(std::make_shared<Util::GameObject>()),
-      m_Fixture(nullptr),
+        m_Fixture(b2_nullShapeId),
       m_ShapeType(shape),
       m_Size(size),
       m_RelativePosition(position),
@@ -40,16 +40,18 @@ BaseObject::BaseObject(
 // ==========================================
 // 實體組裝期 (AttachToBody) - 現場製造零件並掛載
 // ==========================================
-void BaseObject::AttachToBody(b2Body* body) {
+void BaseObject::AttachToBody(Physics::BodyPtr body) {
     // 防呆：如果已經有實體了，不要重複掛載
-    if (m_Fixture != nullptr) return;
+    if (B2_IS_NON_NULL(m_Fixture)) return;
 
     // 1. 準備共用的物理設計圖
-    b2FixtureDef fixtureDef;
-    fixtureDef.isSensor = m_IsSensor;
-    fixtureDef.density = 1.0f;
-    fixtureDef.friction = 0.3f;
-    fixtureDef.restitution = 0.5f;
+    b2ShapeDef shapeDef = b2DefaultShapeDef();
+    shapeDef.isSensor = m_IsSensor;
+    shapeDef.density = 1.0f;
+    shapeDef.material.friction = 0.3f;
+    shapeDef.material.restitution = 0.5f;
+    shapeDef.enableSensorEvents = true;
+    shapeDef.enableContactEvents = true;
 
     // 2. 根據儲存的形狀資料，現場宣告形狀並掛載
     if (m_ShapeType == ShapeType::CIRCLE) {
@@ -58,23 +60,19 @@ void BaseObject::AttachToBody(b2Body* body) {
             m_Visual->SetDrawable(cachedImage);
         }
 
-        b2CircleShape circleShape;
+        b2Circle circleShape = {};
 
         // 像素轉公尺
-        circleShape.m_radius = GameWorld::PixelsToMeters(m_Size.x / 2.0F);
+        circleShape.radius = GameWorld::PixelsToMeters(m_Size.x / 2.0F);
         // 設定相對偏移位置 (Local Position)
-        circleShape.m_p = GameWorld::PixelsToMeters(m_RelativePosition);
-
-        fixtureDef.shape = &circleShape;
+        circleShape.center = GameWorld::PixelsToMeters(m_RelativePosition);
 
         // 🎯 趁著 circleShape 還活著，立刻掛載並接住實體指標
-        m_Fixture = body->CreateFixture(&fixtureDef);
+        m_Fixture = b2CreateCircleShape(body, &shapeDef, &circleShape);
 
     } else if (m_ShapeType == ShapeType::RECTANGLE) {
         auto cachedImage = s_ImageCache.Get("Resources/Images/BasicShapes/white_square.png");
         m_Visual->SetDrawable(cachedImage);
-
-        b2PolygonShape boxShape;
 
         // 矩形需要半寬與半高
         float hx = GameWorld::PixelsToMeters(m_Size.x / 2.0F);
@@ -84,12 +82,10 @@ void BaseObject::AttachToBody(b2Body* body) {
         b2Vec2 center = GameWorld::PixelsToMeters(m_RelativePosition);
 
         // 呼叫 Box2D 專屬方法：(半寬, 半高, 相對中心點, 相對旋轉角度)
-        boxShape.SetAsBox(hx, hy, center, m_RelativeRotation);
-
-        fixtureDef.shape = &boxShape;
+        b2Polygon boxShape = b2MakeOffsetBox(hx, hy, center, b2MakeRot(m_RelativeRotation));
 
         // 🎯 立刻掛載並接住實體指標
-        m_Fixture = body->CreateFixture(&fixtureDef);
+        m_Fixture = b2CreatePolygonShape(body, &shapeDef, &boxShape);
 
     } else if (m_ShapeType == ShapeType::TRIANGLE) {
         // TODO: 未來的三角形實作

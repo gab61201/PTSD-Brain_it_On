@@ -11,7 +11,7 @@ cmake --build build
 ## 架構概述
 
 - **框架**: PTSD v0.2 (Practical Tools for Simple Design) - 透過 FetchContent 獲取
-- **物理引擎**: Box2D v2.4.1 - 透過 FetchContent 下載至 `lib/box2d`
+- **物理引擎**: Box2D v3.1.1 - 透過 FetchContent 於 build 時下載
 - **入口點**: `src/main.cpp` 管理應用程式狀態週期（START → UPDATE → END）
 - **狀態機**: App::State 列舉位於 `include/App.hpp`
 

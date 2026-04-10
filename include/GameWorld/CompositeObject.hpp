@@ -1,7 +1,7 @@
 #ifndef COMPOSITE_OBJECT_HPP
 #define COMPOSITE_OBJECT_HPP
 
-#include <box2d/b2_world.h>
+#include "Physics/Physics.hpp"
 
 #include <glm/glm.hpp>
 #include <memory>
@@ -32,7 +32,7 @@ class CompositeObject {
 
     virtual void Update();
 
-    virtual void AttachToWorld(b2World* world);
+    virtual void AttachToWorld(Physics::WorldPtr world);
 
    protected:
     Util::Renderer m_Renderer;
@@ -40,7 +40,7 @@ class CompositeObject {
     BodyType m_BodyType;
     glm::vec2 m_Position;
     float m_Rotation;
-    b2Body* m_Body = nullptr;
+    Physics::BodyPtr m_Body = b2_nullBodyId;
     // float m_Magnetism = 0;
 };
 

@@ -12,11 +12,11 @@
 
 定義了物理物件的類型：
 
-| 值 | 說明 |
-|----|------|
-| `STATIC` | 靜態物件，不被物理引擎移動，也不受力影響 |
-| `DYNAMIC` | 動態物件，會受到重力與力的影響而移動 |
-| `KINEMATIC` | 運動學物件，不受力影響但可程式控制移動 |
+| 值          | 說明                                     |
+| ----------- | ---------------------------------------- |
+| `STATIC`    | 靜態物件，不被物理引擎移動，也不受力影響 |
+| `DYNAMIC`   | 動態物件，會受到重力與力的影響而移動     |
+| `KINEMATIC` | 運動學物件，不受力影響但可程式控制移動   |
 
 ## 建構式
 
@@ -37,20 +37,20 @@ CompositeObject(
 
 更新複合物件狀態。
 
-### `virtual void AttachToWorld(b2World* world)`
+### `virtual void AttachToWorld(Physics::WorldPtr world)`
 
 將此複合物件及其所有子物件掛載到 Box2D 世界中。
 
 ## 成員變數
 
-| 名稱 | 類型 | 說明 |
-|------|------|------|
-| `m_Renderer` | `Util::Renderer` | 渲染器，用於繪製視覺物件 |
-| `m_BaseObjects` | `std::vector<std::shared_ptr<BaseObject>>` | 子物件列表 |
-| `m_BodyType` | `BodyType` | 物體類型 |
-| `m_Position` | `glm::vec2` | 位置 |
-| `m_Rotation` | `float` | 旋轉角度 |
-| `m_Body` | `b2Body*` | Box2D Body 指標 (nullptr 表示未掛載) |
+| 名稱            | 類型                                       | 說明                                           |
+| --------------- | ------------------------------------------ | ---------------------------------------------- |
+| `m_Renderer`    | `Util::Renderer`                           | 渲染器，用於繪製視覺物件                       |
+| `m_BaseObjects` | `std::vector<std::shared_ptr<BaseObject>>` | 子物件列表                                     |
+| `m_BodyType`    | `BodyType`                                 | 物體類型                                       |
+| `m_Position`    | `glm::vec2`                                | 位置                                           |
+| `m_Rotation`    | `float`                                    | 旋轉角度                                       |
+| `m_Body`        | `Physics::BodyPtr`                         | Box2D Body handle (`b2_nullBodyId` 表示未掛載) |
 
 ## 相關類別
 

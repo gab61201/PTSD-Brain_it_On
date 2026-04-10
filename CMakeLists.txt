@@ -2,16 +2,17 @@ cmake_minimum_required(VERSION 3.16)
 project(PTSD-Brain_it_On)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 cmake_policy(SET CMP0135 NEW)
 
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
+set(BOX2D_TAG v3.1.1)
 
 FetchContent_Declare(
     box2d
-    URL         https://github.com/erincatto/box2d/archive/refs/tags/v2.4.1.zip
-    SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/lib/box2d
+    URL         https://github.com/erincatto/box2d/archive/refs/tags/${BOX2D_TAG}.zip
 )
 
 set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "" FORCE)
@@ -59,7 +60,6 @@ else()
 endif()
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${DEPENDENCY_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lib/box2d/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/PTSD/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
