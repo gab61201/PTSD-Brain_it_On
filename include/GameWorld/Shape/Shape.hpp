@@ -26,6 +26,9 @@ class Shape {
     // 獲取 b2ShapeId
     b2ShapeId GetShapeId() const { return m_Shape; }
 
+    // 獲取 Util::GameObject
+    std::shared_ptr<Util::GameObject> GetVisual() const { return m_Visual; }
+
     protected:
     // 圖像表示 (Util::GameObject)
     std::shared_ptr<Util::GameObject> m_Visual;
