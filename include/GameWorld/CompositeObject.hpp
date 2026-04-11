@@ -2,6 +2,7 @@
 #define COMPOSITE_OBJECT_HPP
 
 #include <box2d/box2d.h>
+
 #include <glm/glm.hpp>
 #include <memory>
 #include <vector>
@@ -39,7 +40,7 @@ class CompositeObject {
     BodyType m_BodyType;
     glm::vec2 m_Position;
     float m_Rotation;
-    b2BodyId m_Body = b2_nullBodyId;
+    b2BodyId m_b2BodyId = b2_nullBodyId;
     // float m_Magnetism = 0;
 };
 

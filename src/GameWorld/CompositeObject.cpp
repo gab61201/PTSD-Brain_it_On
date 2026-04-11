@@ -20,7 +20,7 @@ CompositeObject::CompositeObject(
       m_BodyType(bodyType),
       m_Position(position),
       m_Rotation(rotation),
-      m_Body(b2_nullBodyId)  // 初始化時，真實物理骨架尚未生成
+      m_b2BodyId(b2_nullBodyId)  // 初始化時，真實物理骨架尚未生成
 {
     for (auto& shape : m_Shapes) {
         m_Renderer.AddChild(shape->GetVisual());
@@ -33,7 +33,7 @@ CompositeObject::CompositeObject(
 // ==========================================
 void CompositeObject::AttachToWorld(b2WorldId world) {
     // 防呆機制：如果已經掛載過，就不再重複創建，避免記憶體洩漏
-    if (B2_IS_NON_NULL(m_Body)) {
+    if (B2_IS_NON_NULL(m_b2BodyId)) {
         return;
     }
 
@@ -60,13 +60,13 @@ void CompositeObject::AttachToWorld(b2WorldId world) {
     bodyDef.rotation = b2MakeRot(m_Rotation);
 
     // 2. 在物理世界中創建真實的剛體 (骨架)
-    m_Body = b2CreateBody(world, &bodyDef);
+    m_b2BodyId = b2CreateBody(world, &bodyDef);
 
     // 3. 向下交辦：呼叫所有子零件，讓它們把碰撞形狀掛載到這個骨架上
     for (auto& shape : m_Shapes) {
         if (shape) {
             // 這裡呼叫我們上一篇寫好的 Shape::AttachToBody
-            shape->AttachToBody(m_Body);
+            shape->AttachToBody(m_b2BodyId);
         }
     }
 }
@@ -76,13 +76,13 @@ void CompositeObject::AttachToWorld(b2WorldId world) {
 // ==========================================
 void CompositeObject::Update() {
     // 如果骨架還沒生成，就沒有物理數據可以更新
-    if (B2_IS_NULL(m_Body)) {
+    if (B2_IS_NULL(m_b2BodyId)) {
         return;
     }
 
     // 1. 從物理引擎取得這幀計算完的最新位置與角度
-    b2Vec2 physicsPos = b2Body_GetPosition(m_Body);
-    float currentRotation = b2Rot_GetAngle(b2Body_GetRotation(m_Body));
+    b2Vec2 physicsPos = b2Body_GetPosition(m_b2BodyId);
+    float currentRotation = b2Rot_GetAngle(b2Body_GetRotation(m_b2BodyId));
 
     // 2. 將物理的公尺座標，轉換回遊戲畫面的像素座標
     glm::vec2 currentPixelPos = GameWorld::MetersToPixels(physicsPos);

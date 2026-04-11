@@ -1,4 +1,5 @@
 #include "GameWorld/PhysicalWorld.hpp"
+
 #include "GameWorld/BaseObject.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
 #include "Util/Input.hpp"
@@ -112,7 +113,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
             return;
         }
         DrawingRayCastContext callback;
-        callback.ignoreBody = m_LastDrawingObject->GetBody();
+        callback.ignoreBody = m_LastDrawingObject->Getb2BodyId();
         b2Vec2 startP = GameWorld::PixelsToMeters(p1);
         b2Vec2 endP = GameWorld::PixelsToMeters(p2);
         b2Vec2 translation = {endP.x - startP.x, endP.y - startP.y};

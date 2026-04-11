@@ -13,7 +13,7 @@ class DrawnObject : public GameWorld::CompositeObject {
     void DrawNextPoint(glm::vec2 position);
     void EndDrawing();
 
-    b2BodyId GetBody() { return m_Body; }
+    b2BodyId Getb2BodyId() { return m_b2BodyId; }
 
     std::vector<glm::vec2> m_Points;
 };

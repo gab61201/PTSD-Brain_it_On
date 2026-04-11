@@ -1,10 +1,10 @@
 #include "GameWorld/DrawnObject.hpp"
+
 #include "GameWorld/Shape/Circle.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
 
 #define MIN_STROKE_LENGTH 2.0F
 #define STROKE_WIDTH 10.0F
-
 
 namespace GameWorld {
 
@@ -26,7 +26,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
     }
 
     auto new_point = std::make_shared<Circle>(STROKE_WIDTH, position, false);
-    new_point->AttachToBody(m_Body);
+    new_point->AttachToBody(m_b2BodyId);
     m_Shapes.push_back(new_point);
     m_Renderer.AddChild(new_point->GetVisual());
 
@@ -37,7 +37,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
         glm::vec2(length, STROKE_WIDTH),
         (position + m_Points.back()) / 2.0F,
         angle);
-    new_stroke->AttachToBody(m_Body);
+    new_stroke->AttachToBody(m_b2BodyId);
     m_Shapes.push_back(new_stroke);
     m_Renderer.AddChild(new_stroke->GetVisual());
 
@@ -45,7 +45,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
 }
 
 void DrawnObject::EndDrawing() {
-    b2Body_SetType(m_Body, b2_dynamicBody);
+    b2Body_SetType(m_b2BodyId, b2_dynamicBody);
 }
 
 }  // namespace GameWorld
