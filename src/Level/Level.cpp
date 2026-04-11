@@ -27,6 +27,10 @@ void Level::Waiting() {
 }
 
 void Level::Drawing() {
+    if (!m_World) {
+        return;
+    }
+
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         m_state = State::PLAYING;
         m_World->EndDrawing();
@@ -36,6 +40,10 @@ void Level::Drawing() {
 }
 
 void Level::Playing() {
+    if (!m_World) {
+        return;
+    }
+
     if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
         m_state = State::DRAWING;
         m_World->DrawObject(Util::Input::GetCursorPosition());

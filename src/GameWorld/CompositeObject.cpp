@@ -12,18 +12,18 @@ namespace GameWorld {
 // 注意：.cpp 實作檔中不可加上預設值 (如 = BodyType::STATIC)
 // ==========================================
 CompositeObject::CompositeObject(
-    std::vector<std::shared_ptr<BaseObject>> baseObjects,
+    std::vector<std::shared_ptr<Shape>> shapes,
     BodyType bodyType,
     glm::vec2 position,
     float rotation)
-    : m_BaseObjects(std::move(baseObjects)),  // 使用 std::move 提升 vector 賦值效能
+    : m_Shapes(std::move(shapes)),  // 使用 std::move 提升 vector 賦值效能
       m_BodyType(bodyType),
       m_Position(position),
       m_Rotation(rotation),
       m_Body(b2_nullBodyId)  // 初始化時，真實物理骨架尚未生成
 {
-    for (auto& baseObj : m_BaseObjects) {
-        m_Renderer.AddChild(baseObj->m_Visual);
+    for (auto& shape : m_Shapes) {
+        m_Renderer.AddChild(shape->GetVisual());
     }
 }
 
@@ -63,10 +63,10 @@ void CompositeObject::AttachToWorld(b2WorldId world) {
     m_Body = b2CreateBody(world, &bodyDef);
 
     // 3. 向下交辦：呼叫所有子零件，讓它們把碰撞形狀掛載到這個骨架上
-    for (auto& baseObj : m_BaseObjects) {
-        if (baseObj) {
-            // 這裡呼叫我們上一篇寫好的 BaseObject::AttachToBody
-            baseObj->AttachToBody(m_Body);
+    for (auto& shape : m_Shapes) {
+        if (shape) {
+            // 這裡呼叫我們上一篇寫好的 Shape::AttachToBody
+            shape->AttachToBody(m_Body);
         }
     }
 }
@@ -88,9 +88,9 @@ void CompositeObject::Update() {
     glm::vec2 currentPixelPos = GameWorld::MetersToPixels(physicsPos);
 
     // 3. 廣播更新：把最新的絕對座標與角度告訴所有子零件
-    // 讓 BaseObject 內部的 2D 旋轉矩陣去計算各自圖片該擺放的位置
-    for (auto& baseObj : m_BaseObjects) {
-        baseObj->Update(currentPixelPos, currentRotation);
+    // 讓 Shape 內部的 2D 旋轉矩陣去計算各自圖片該擺放的位置
+    for (auto& shape : m_Shapes) {
+        shape->Update(currentPixelPos, currentRotation);
     }
     m_Renderer.Update();
 }

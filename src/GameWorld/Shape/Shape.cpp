@@ -2,6 +2,9 @@
 
 namespace GameWorld {
 
+Shape::Shape()
+    : m_Visual(std::make_shared<Util::GameObject>()) {}
+
 void Shape::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation) {
     if (!m_Visual) return;
     // 1. 計算絕對旋轉角度 = 父物件目前的旋轉 + 自己的相對旋轉

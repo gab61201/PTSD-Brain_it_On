@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-#include "GameWorld/BaseObject.hpp"
+#include "GameWorld/Shape/Shape.hpp"
 #include "Util/Renderer.hpp"
 
 namespace GameWorld {
@@ -19,10 +19,10 @@ enum class BodyType {
 
 class CompositeObject {
    public:
-    // 傳入多個 BaseObject 作為子物件
+    // 傳入多個 Shape 作為子物件
     CompositeObject() = default;
     CompositeObject(
-        std::vector<std::shared_ptr<BaseObject>> baseObjects,
+        std::vector<std::shared_ptr<Shape>> shapes,
         BodyType bodyType = BodyType::STATIC,
         glm::vec2 position = {0.0F, 0.0F},
         float rotation = 0.0F);
@@ -35,7 +35,7 @@ class CompositeObject {
 
    protected:
     Util::Renderer m_Renderer;
-    std::vector<std::shared_ptr<BaseObject>> m_BaseObjects;
+    std::vector<std::shared_ptr<Shape>> m_Shapes;
     BodyType m_BodyType;
     glm::vec2 m_Position;
     float m_Rotation;

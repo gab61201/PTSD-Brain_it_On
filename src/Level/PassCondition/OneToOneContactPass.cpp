@@ -1,33 +1,25 @@
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
 OneToOneContactPass::OneToOneContactPass(
-    std::shared_ptr<GameWorld::BaseObject> baseObjectA,
-    std::shared_ptr<GameWorld::BaseObject> baseObjectB,
+    b2ShapeId shapeA,
+    b2ShapeId shapeB,
     TriggerType triggerType,
     int duration)
-    : PassCondition(triggerType, duration),
-      m_BaseObjectA(baseObjectA),
-      m_BaseObjectB(baseObjectB) {}
+    : PassCondition(triggerType, duration), m_ShapeA(shapeA), m_ShapeB(shapeB) {}
 
 OneToOneContactPass::OneToOneContactPass(
-    std::shared_ptr<GameWorld::BaseObject> baseObject,
+    b2ShapeId shape,
     TriggerType triggerType,
     int duration)
-    : PassCondition(triggerType, duration),
-      m_BaseObjectA(baseObject) {}
+    : PassCondition(triggerType, duration), m_ShapeA(shape), m_ShapeB(b2_nullShapeId) {}
 
 void OneToOneContactPass::AttachToWorld(b2WorldId world) {
-    (void)world;
-    m_FixtureA = m_BaseObjectA->m_Fixture;
-    if (m_BaseObjectB) {
-        m_FixtureB = m_BaseObjectB->m_Fixture;
-    }
 }
 
-void OneToOneContactPass::OnContactEvent(b2ShapeId fixtureA, b2ShapeId fixtureB, TriggerType triggerType) {
-    if (B2_ID_EQUALS(fixtureA, m_FixtureA) || B2_ID_EQUALS(fixtureB, m_FixtureA)) {  // 找到 A 物體
-        if ((B2_IS_NON_NULL(m_FixtureB) && (B2_ID_EQUALS(fixtureA, m_FixtureB) || B2_ID_EQUALS(fixtureB, m_FixtureB)))  // 有指定 B 且找到 B
-            || B2_IS_NULL(m_FixtureB)) {                                                               // 無指定 B
+void OneToOneContactPass::OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) {
+    if (B2_ID_EQUALS(shapeA, m_ShapeA) || B2_ID_EQUALS(shapeB, m_ShapeA)) {  // 找到 A 物體
+        if ((B2_IS_NON_NULL(m_ShapeB) && (B2_ID_EQUALS(shapeA, m_ShapeB) || B2_ID_EQUALS(shapeB, m_ShapeB)))  // 有指定 B 且找到 B
+            || B2_IS_NULL(m_ShapeB)) {                                                               // 無指定 B
             if (triggerType == m_TriggerType) {
                 m_Timer++;
             } else {

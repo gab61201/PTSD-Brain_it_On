@@ -3,7 +3,7 @@
 
 #include <box2d/box2d.h>
 
-#include "GameWorld/BaseObject.hpp"
+#include "GameWorld/Shape/Shape.hpp"
 
 // 放一個物體到盒子內
 // 將球放到盒子內
@@ -30,7 +30,7 @@ class PassCondition {
     bool Check() const;
 
    protected:
-    virtual void OnContactEvent(b2ShapeId fixtureA, b2ShapeId fixtureB, TriggerType triggerType) = 0;
+    virtual void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) = 0;
     TriggerType m_TriggerType;
     int m_Duration;
 
