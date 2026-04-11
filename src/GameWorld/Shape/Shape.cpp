@@ -2,8 +2,11 @@
 
 namespace GameWorld {
 
-Shape::Shape()
-    : m_Visual(std::make_shared<Util::GameObject>()) {}
+Shape::Shape(std::variant<glm::vec2, float> m_Size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor)
+    : m_Size(m_Size),
+      m_RelativePosition(relativePosition),
+      m_RelativeRotation(relativeRotation),
+      m_IsSensor(isSensor) {}
 
 void Shape::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation) {
     if (!m_Visual) return;

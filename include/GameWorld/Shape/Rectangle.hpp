@@ -7,7 +7,7 @@ namespace GameWorld {
 
 class Rectangle : public Shape {
    public:
-    Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, bool isSensor = false);
+    Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation = 0.0f, bool isSensor = false);
 
     void AttachToBody(b2BodyId body) override;
 };

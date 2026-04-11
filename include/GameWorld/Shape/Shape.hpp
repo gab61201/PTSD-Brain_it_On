@@ -13,7 +13,13 @@ namespace GameWorld {
 
 class Shape {
    public:
-    Shape();
+    Shape() = default;
+
+    Shape(std::variant<glm::vec2, float> m_Size,
+        const glm::vec2& relativePosition,
+        float relativeRotation,
+        bool isSensor = false
+    );
 
     virtual ~Shape() = default;
 
@@ -24,17 +30,17 @@ class Shape {
     virtual void AttachToBody(b2BodyId body) = 0;
 
     // 獲取 b2ShapeId
-    b2ShapeId GetShapeId() const { return m_Shape; }
+    b2ShapeId Getb2ShapeId() const { return m_b2ShapeId; }
 
     // 獲取 Util::GameObject
     std::shared_ptr<Util::GameObject> GetVisual() const { return m_Visual; }
 
    protected:
     // 圖像表示 (Util::GameObject)
-    std::shared_ptr<Util::GameObject> m_Visual;
+    std::shared_ptr<Util::GameObject> m_Visual = std::make_shared<Util::GameObject>();
 
     // 形狀實例
-    b2ShapeId m_Shape = b2_nullShapeId;
+    b2ShapeId m_b2ShapeId = b2_nullShapeId;
 
     // 大小，對於圓形是直徑，對於矩形是寬高
     std::variant<glm::vec2, float> m_Size;

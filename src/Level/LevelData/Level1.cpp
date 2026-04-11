@@ -1,7 +1,7 @@
+#include "GameWorld/Shape/Circle.hpp"
+#include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
-#include "GameWorld/Shape/Rectangle.hpp"
-#include "GameWorld/Shape/Circle.hpp"
 
 LevelData LevelData_1() {
     LevelData data;
@@ -12,7 +12,7 @@ LevelData LevelData_1() {
     // ==========================================
     auto floorPart = std::make_shared<GameWorld::Rectangle>(
         glm::vec2(800.0F, 50.0F),  // 800x50 像素的地板
-        glm::vec2(0.0F, 0.0F)       // 相對位置：以組合件中心為基準，地板往下偏移 (依據你的座標系微調)
+        glm::vec2(0.0F, 0.0F)      // 相對位置：以組合件中心為基準，地板往下偏移 (依據你的座標系微調)
     );
     auto floorComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{floorPart},
@@ -25,8 +25,7 @@ LevelData LevelData_1() {
     // ==========================================
     auto boxPart = std::make_shared<GameWorld::Rectangle>(
         glm::vec2(60.0F, 60.0F),  // 60x60 像素的方塊
-        glm::vec2(0.0F, 0.0F)
-    );
+        glm::vec2(0.0F, 0.0F));
     auto boxComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{boxPart},
         GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)
@@ -38,8 +37,7 @@ LevelData LevelData_1() {
     // ==========================================
     auto circlePart = std::make_shared<GameWorld::Circle>(
         50.0f,  // 直徑 50 像素 (半徑 25)
-        glm::vec2(0.0F, 0.0F)
-    );
+        glm::vec2(0.0F, 0.0F));
     auto circleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{circlePart},
         GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)
@@ -52,7 +50,7 @@ LevelData LevelData_1() {
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         floorComp, boxComp, circleComp};
 
-    PassCondition* passCondition = new OneToOneContactPass(boxPart->GetShapeId(), circlePart->GetShapeId(), TriggerType::TOUCHING, 3);
+    PassCondition* passCondition = new OneToOneContactPass(boxPart->Getb2ShapeId(), circlePart->Getb2ShapeId(), TriggerType::TOUCHING, 3);
     // 實例化物理世界 (建構子會自動將這些 objects 透過 AttachToWorld 掛載到 Box2D)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, passCondition);
 
@@ -62,11 +60,11 @@ LevelData LevelData_1() {
 
 // 自動註冊（靜態物件）
 namespace {
-    struct Register {
-        Register() {
-            RegisterLevel(LevelId::LEVEL_1, LevelData_1);
-        }
-    };
+struct Register {
+    Register() {
+        RegisterLevel(LevelId::LEVEL_1, LevelData_1);
+    }
+};
 
-    static Register reg;
-}
+static Register reg;
+}  // namespace
