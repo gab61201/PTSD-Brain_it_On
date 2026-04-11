@@ -25,7 +25,9 @@ void Rectangle::AttachToBody(b2BodyId body) {
     b2Vec2 center = PixelsToMeters(m_RelativePosition);
     b2Polygon rectangleShape = b2MakeOffsetBox(halfWidth, halfHeight, center, b2Rot_identity);
 
-    m_Shape = b2CreatePolygonShape(body, &m_ShapeDef, &rectangleShape);
+    b2ShapeDef shapeDef = b2DefaultShapeDef();
+    shapeDef.isSensor = m_IsSensor;
+    m_Shape = b2CreatePolygonShape(body, &shapeDef, &rectangleShape);
 
     m_Visual->SetDrawable(s_ImageCache.Get(RECTANGLE_IMAGE_PATH));
     m_Visual->m_Transform.scale = size / IMAGE_SIZE;

@@ -36,9 +36,6 @@ class Shape {
     // 形狀實例
     b2ShapeId m_Shape = b2_nullShapeId;
 
-    // 物理設計圖
-    b2ShapeDef m_ShapeDef = b2DefaultShapeDef();
-
     // 大小，對於圓形是直徑，對於矩形是寬高
     std::variant<glm::vec2, float> m_Size;
 

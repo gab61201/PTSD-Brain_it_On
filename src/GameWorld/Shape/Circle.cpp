@@ -22,7 +22,9 @@ void Circle::AttachToBody(b2BodyId body) {
         PixelsToMeters(m_RelativePosition),             // center
         PixelsToMeters(std::get<float>(m_Size) / 2.0f)  // radius
     };
-    b2ShapeId m_Shape = b2CreateCircleShape(body, &m_ShapeDef, &circleShape);
+    b2ShapeDef shapeDef = b2DefaultShapeDef();
+    shapeDef.isSensor = m_IsSensor;
+    m_Shape = b2CreateCircleShape(body, &shapeDef, &circleShape);
 
     m_Visual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
     m_Visual->m_Transform.scale = glm::vec2(std::get<float>(m_Size), std::get<float>(m_Size)) / IMAGE_SIZE;
