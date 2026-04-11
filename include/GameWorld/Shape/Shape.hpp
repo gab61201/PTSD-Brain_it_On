@@ -26,10 +26,10 @@ class Shape {
     // 獲取 b2ShapeId
     b2ShapeId GetShapeId() const { return m_Shape; }
 
+    protected:
     // 圖像表示 (Util::GameObject)
     std::shared_ptr<Util::GameObject> m_Visual;
 
-   protected:
     // 形狀實例
     b2ShapeId m_Shape = b2_nullShapeId;
 

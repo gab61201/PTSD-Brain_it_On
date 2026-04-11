@@ -17,6 +17,7 @@ Circle::Circle(float diameter, const glm::vec2& relativePosition, bool isSensor)
 
 void Circle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_Shape)) return;
+
     b2Circle circleShape = {
         PixelsToMeters(m_RelativePosition),             // center
         PixelsToMeters(std::get<float>(m_Size) / 2.0f)  // radius
