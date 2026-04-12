@@ -10,11 +10,15 @@ std::string CIRCLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_circle.png";
 namespace GameWorld {
 
 Circle::Circle(float diameter, const glm::vec2& relativePosition, bool isSensor)
-: Shape(diameter, relativePosition, 0.0f, isSensor) {}
+    : Shape(diameter, relativePosition, 0.0f, isSensor) {}
 
 void Circle::AttachToBody(b2BodyId body) {
-    if (B2_IS_NON_NULL(m_b2ShapeId)) return;
-
+    if (B2_IS_NON_NULL(m_b2ShapeId)) {
+        return;
+    }
+    if (m_Visual == nullptr) {
+        m_Visual = std::make_shared<Util::GameObject>();
+    }
     b2Circle circleShape = {
         PixelsToMeters(m_RelativePosition),             // center
         PixelsToMeters(std::get<float>(m_Size) / 2.0f)  // radius

@@ -13,7 +13,12 @@ Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, f
 : Shape(size, relativePosition, relativeRotation, isSensor) {}
 
 void Rectangle::AttachToBody(b2BodyId body) {
-    if (B2_IS_NON_NULL(m_b2ShapeId)) return;
+    if (B2_IS_NON_NULL(m_b2ShapeId)) {
+        return;
+    }
+    if (m_Visual == nullptr) {
+        m_Visual = std::make_shared<Util::GameObject>();
+    }
 
     glm::vec2 size = std::get<glm::vec2>(m_Size);
     float halfWidth = PixelsToMeters(size.x / 2.0f);

@@ -13,9 +13,9 @@
 namespace GameWorld {
 
 enum class BodyType {
-    STATIC,
-    DYNAMIC,
-    KINEMATIC
+    STATIC = b2_staticBody,
+    KINEMATIC = b2_kinematicBody,
+    DYNAMIC = b2_dynamicBody
 };
 
 class CompositeObject {
