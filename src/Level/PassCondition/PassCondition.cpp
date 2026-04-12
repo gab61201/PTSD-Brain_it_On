@@ -11,6 +11,9 @@ PassCondition::PassCondition(
       m_Duration(duration) {}
 
 bool PassCondition::Check(b2ContactEvents events) {
+    if (m_Timer > m_Duration * FPS) {
+        return true;
+    }
     for (int i = 0; i < events.beginCount; i++) {
         const b2ContactBeginTouchEvent& event = events.beginEvents[i];
         OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::TOUCHING);
