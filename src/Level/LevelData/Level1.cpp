@@ -1,5 +1,6 @@
 #include "GameWorld/Shape/Circle.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
+#include "GameWorld/Shape/Capsule.hpp"
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
@@ -44,11 +45,21 @@ LevelData LevelData_1() {
         glm::vec2(15.0F, 400.0F)       // 絕對位置：放在方塊正上方再稍微偏右，製造不平衡的撞擊！
     );
 
+    auto capsulePart = std::make_shared<GameWorld::Capsule>(
+        30.0f,  // 直徑 30 像素
+        glm::vec2(-15.0f, 0.0f),  // 膠囊體左端圓心相對位置
+        glm::vec2(15.0f, 0.0f)    // 膠囊體右端圓心相對位置
+    );
+    auto capsuleComp = std::make_shared<GameWorld::CompositeObject>(
+        std::vector<std::shared_ptr<GameWorld::Shape>>{capsulePart},
+        GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)
+        glm::vec2(-15.0F, 400.0F)       // 絕對位置：放在方塊正上方再稍微偏左，製造不平衡的撞擊！
+    );
     // ==========================================
     // 4. 將所有組合件打包，並初始化物理世界
     // ==========================================
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
-        floorComp, boxComp, circleComp};
+        floorComp, boxComp, circleComp, capsuleComp};
 
     PassCondition* passCondition = new OneToOneContactPass(boxPart->Getb2ShapeId(), circlePart->Getb2ShapeId(), TriggerType::TOUCHING, 3);
     // 實例化物理世界 (建構子會自動將這些 objects 透過 AttachToWorld 掛載到 Box2D)

@@ -23,11 +23,11 @@ class Shape {
 
     virtual ~Shape() = default;
 
+    // 創建對應的 b2Shape 實例以及 GameObject 實例並將形狀附加到 b2Body 上
+    virtual void AttachToBody(b2BodyId body) = 0;
+
     // 更新 m_Visual 的世界座標和旋轉角度
     virtual void Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation);
-
-    // 創建對應的 b2Shape 實例並將形狀附加到 b2Body 上
-    virtual void AttachToBody(b2BodyId body) = 0;
 
     // 獲取 b2ShapeId
     b2ShapeId Getb2ShapeId() const { return m_b2ShapeId; }

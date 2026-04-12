@@ -10,45 +10,13 @@ std::string RECTANGLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_square.pn
 
 namespace GameWorld {
 
-std::shared_ptr<Capsule> Capsule::CreateFromPoints(
-    const glm::vec2& pointA, 
-    const glm::vec2& pointB, 
-    float width, 
-    bool isSensor) {
-    auto capsule = std::make_shared<Capsule>();
-    
-    // 計算中心點
-    glm::vec2 center = (pointA + pointB) * 0.5f;
-    
-    // 計算長度（兩點距離）
-    float length = glm::length(pointB - pointA);
-    
-    // 計算方向角度
-    float angle = std::atan2(pointB.y - pointA.y, pointB.x - pointA.x);
-    
-    // 設定基本屬性
-    capsule->m_RelativePosition = center;
-    capsule->m_RelativeRotation = angle;
-    capsule->m_Size = glm::vec2(length, width);
-    capsule->m_IsSensor = isSensor;
-    
-    return capsule;
-}
-
-std::shared_ptr<Capsule> Capsule::CreateFromCenter(
-    const glm::vec2& center, 
-    const glm::vec2& size, 
-    float angle,
-    bool isSensor) {
-    auto capsule = std::make_shared<Capsule>();
-    
-    capsule->m_RelativePosition = center;
-    capsule->m_RelativeRotation = angle;
-    capsule->m_Size = size;  // x = length, y = width
-    capsule->m_IsSensor = isSensor;
-    
-    return capsule;
-}
+Capsule::Capsule(
+    float diameter,
+    const glm::vec2& pointA,
+    const glm::vec2& pointB,
+    bool isSensor)
+    : Shape(diameter, (pointA+pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor),
+    m_PointA(pointA), m_PointB(pointB) {}
 
 void Capsule::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
@@ -58,75 +26,75 @@ void Capsule::AttachToBody(b2BodyId body) {
         m_Visual = std::make_shared<Util::GameObject>();
     }
 
-    glm::vec2 size = std::get<glm::vec2>(m_Size);
-    float length = size.x;
-    float width = size.y;
-    float radius = width / 2.0f;
-    
-    // 處理長度小於等於寬度的情況（顯示為圓形）
-    if (length <= width) {
-        b2Circle circleShape = {
-            PixelsToMeters(m_RelativePosition),
-            PixelsToMeters(radius)
-        };
-        b2ShapeDef shapeDef = b2DefaultShapeDef();
-        shapeDef.isSensor = m_IsSensor;
-        m_b2ShapeId = b2CreateCircleShape(body, &shapeDef, &circleShape);
-        
-        // 視覺：只顯示一個圓
-        auto circle = std::make_shared<Util::GameObject>();
-        circle->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
-        circle->m_Transform.scale = glm::vec2(width) / IMAGE_SIZE;
-        m_Visual->AddChild(circle);
-        return;
-    }
-    
-    // 計算兩個半圓的中心點（考慮旋轉）
-    float halfLength = length / 2.0f;
-    
-    // 計算旋轉後的偏移向量
-    float cosAngle = std::cos(m_RelativeRotation);
-    float sinAngle = std::sin(m_RelativeRotation);
-    float offsetX = halfLength * cosAngle;
-    float offsetY = halfLength * sinAngle;
-    
-    // Box2D b2Capsule 使用兩個半圓中心點
-    glm::vec2 center1 = m_RelativePosition - glm::vec2(offsetX, offsetY);
-    glm::vec2 center2 = m_RelativePosition + glm::vec2(offsetX, offsetY);
-    
+    float diameter = std::get<float>(m_Size);
     b2Capsule capsuleShape = {
-        PixelsToMeters(center1),  // 第一個半圓中心
-        PixelsToMeters(center2),  // 第二個半圓中心
-        PixelsToMeters(radius)    // 半徑
+        PixelsToMeters(m_PointA),  // 第一個半圓中心
+        PixelsToMeters(m_PointB),  // 第二個半圓中心
+        PixelsToMeters(diameter * 0.5f)    // 半徑
     };
     
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreateCapsuleShape(body, &shapeDef, &capsuleShape);
-    
-    // 視覺表示：左圓 + 中間矩形 + 右圓
-    float rectWidth = length - width;
-    
-    // 左圓
-    auto leftCircle = std::make_shared<Util::GameObject>();
-    leftCircle->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
-    leftCircle->m_Transform.translation = glm::vec2(-halfLength, 0);
-    leftCircle->m_Transform.scale = glm::vec2(width) / IMAGE_SIZE;
-    m_Visual->AddChild(leftCircle);
-    
-    // 中間矩形
-    auto middleRect = std::make_shared<Util::GameObject>();
-    middleRect->SetDrawable(s_ImageCache.Get(RECTANGLE_IMAGE_PATH));
-    middleRect->m_Transform.translation = glm::vec2(0, 0);
-    middleRect->m_Transform.scale = glm::vec2(rectWidth, width) / IMAGE_SIZE;
-    m_Visual->AddChild(middleRect);
-    
-    // 右圓
-    auto rightCircle = std::make_shared<Util::GameObject>();
-    rightCircle->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
-    rightCircle->m_Transform.translation = glm::vec2(halfLength, 0);
-    rightCircle->m_Transform.scale = glm::vec2(width) / IMAGE_SIZE;
-    m_Visual->AddChild(rightCircle);
+
+    // 處理長度小於等於寬度的情況（顯示為圓形）
+    if (glm::distance(m_PointA, m_PointB) <= 1.0f) {
+        // 顯示為圓形
+        m_Visual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
+        m_Visual->m_Transform.scale = glm::vec2(diameter, diameter) / IMAGE_SIZE;
+    } else {
+        // 中間矩形
+        m_Visual = std::make_shared<Util::GameObject>();
+        m_Visual->SetDrawable(s_ImageCache.Get(RECTANGLE_IMAGE_PATH));
+        m_Visual->m_Transform.scale = glm::vec2(glm::distance(m_PointA, m_PointB), diameter) / IMAGE_SIZE;
+        // 左圓
+        m_CircleAVisual = std::make_shared<Util::GameObject>();
+        m_CircleAVisual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
+        m_CircleAVisual->m_Transform.scale = glm::vec2(diameter, diameter) / IMAGE_SIZE;
+        m_Visual->AddChild(m_CircleAVisual);
+        // 右圓
+        m_CircleBVisual = std::make_shared<Util::GameObject>();
+        m_CircleBVisual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
+        m_CircleBVisual->m_Transform.scale = glm::vec2(diameter, diameter) / IMAGE_SIZE;
+        m_Visual->AddChild(m_CircleBVisual);
+    }
+}
+
+void Capsule::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation) {
+    if (!m_Visual) return;
+    // 1. 計算絕對旋轉角度 = 父物件目前的旋轉 + 自己的相對旋轉
+    float globalRotation = ParentObjectRotation + m_RelativeRotation;
+
+    // 2. 計算「公轉」後的相對座標 (2D 旋轉矩陣)
+    // 必須使用父物件的旋轉角度 (ParentObjectRotation) 來進行公轉
+    // 注意：C++ 的 std::cos / std::sin 接收的是弧度 (Radians)
+    float cosTheta = std::cos(ParentObjectRotation);
+    float sinTheta = std::sin(ParentObjectRotation);
+
+    glm::vec2 rotatedLocalPos;
+    rotatedLocalPos.x = m_RelativePosition.x * cosTheta - m_RelativePosition.y * sinTheta;
+    rotatedLocalPos.y = m_RelativePosition.x * sinTheta + m_RelativePosition.y * cosTheta;
+
+    // 3. 計算出在螢幕上的最終絕對座標 (父物件的世界座標 + 旋轉後的相對偏移量)
+    glm::vec2 globalPosition = ParentObjectPosition + rotatedLocalPos;
+
+    // 4. 同步資料給你的 PTSD GameObject
+    m_Visual->m_Transform.translation = globalPosition;
+    m_Visual->m_Transform.rotation = globalRotation;
+
+    float radius = std::get<float>(m_Size) * 0.5f;
+    // 2. 計算膠囊體在「世界空間」中的 X 軸方向向量
+    float cosGlobal = std::cos(globalRotation);
+    float sinGlobal = std::sin(globalRotation);
+    glm::vec2 globalDirection(cosGlobal, sinGlobal);
+
+    // 3. 順著方向推算左右圓心的絕對座標
+    // 右圓：中心點 + (方向向量 * 距離)
+    glm::vec2 CircleAGlobalPos = globalPosition - (globalDirection * radius);
+    m_CircleAVisual->m_Transform.translation = CircleAGlobalPos;
+    // 左圓：中心點 - (方向向量 * 距離)
+    glm::vec2 CircleBGlobalPos = globalPosition + (globalDirection * radius);
+    m_CircleBVisual->m_Transform.translation = CircleBGlobalPos;
 }
 
 }  // namespace GameWorld
