@@ -17,7 +17,6 @@ class OneToOneContactPass : public PassCondition {
         int duration
     );
     ~OneToOneContactPass() = default;
-    void AttachToWorld(b2WorldId world) override;
 
    private:
     void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) override;

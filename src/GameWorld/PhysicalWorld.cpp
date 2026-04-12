@@ -51,26 +51,22 @@ float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 /*normal*/, flo
 
 }  // namespace
 
-PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects, PassCondition* passCondition)
-    : m_b2World(b2_nullWorldId),
-      m_CompositeObject(std::move(compositeObjects)),
-      m_PassCondition(passCondition) {
+PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
+    : m_b2WorldId(b2_nullWorldId),
+      m_CompositeObject(std::move(compositeObjects)) {
     b2WorldDef worldDef = b2DefaultWorldDef();
     worldDef.gravity = {0.0f, -9.8f};
-    m_b2World = b2CreateWorld(&worldDef);
+    m_b2WorldId = b2CreateWorld(&worldDef);
 
     for (auto& obj : m_CompositeObject) {
-        obj->AttachToWorld(m_b2World);
-    }
-    if (m_PassCondition != nullptr) {
-        m_PassCondition->AttachToWorld(m_b2World);
+        obj->AttachToWorld(m_b2WorldId);
     }
 }
 
 PhysicalWorld::~PhysicalWorld() {
-    if (B2_IS_NON_NULL(m_b2World)) {
-        b2DestroyWorld(m_b2World);
-        m_b2World = b2_nullWorldId;
+    if (B2_IS_NON_NULL(m_b2WorldId)) {
+        b2DestroyWorld(m_b2WorldId);
+        m_b2WorldId = b2_nullWorldId;
     }
 }
 
@@ -96,7 +92,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
 
         b2QueryFilter filter = b2DefaultQueryFilter();
 
-        b2World_OverlapAABB(m_b2World, aabb, filter, ReportPointShape, &callback);
+        b2World_OverlapAABB(m_b2WorldId, aabb, filter, ReportPointShape, &callback);
         if (callback.hit) {
             return;
         }
@@ -104,7 +100,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
         // 建立新的物件
         m_LastDrawingObject = std::make_shared<DrawnObject>(position);
         m_DrawnObjects.push_back(m_LastDrawingObject);
-        m_LastDrawingObject->AttachToWorld(m_b2World);
+        m_LastDrawingObject->AttachToWorld(m_b2WorldId);
     } else {
         // 檢查射線有沒有碰到其他東西
         auto p1 = m_LastDrawingObject->m_Points.back();
@@ -120,7 +116,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
 
         b2QueryFilter filter = b2DefaultQueryFilter();
 
-        b2World_CastRay(m_b2World, startP, translation, filter, ReportDrawingShape, &callback);
+        b2World_CastRay(m_b2WorldId, startP, translation, filter, ReportDrawingShape, &callback);
         if (callback.hit) {
             glm::vec2 hitPixel = GameWorld::MetersToPixels(callback.hitPoint);
             float dist = glm::distance(p1, hitPixel);
@@ -147,29 +143,23 @@ void PhysicalWorld::EndDrawing() {
     m_LastDrawingObject = nullptr;
 }
 
-bool PhysicalWorld::IsPassed() {
-    return m_PassCondition != nullptr ? m_PassCondition->Check() : false;
-}
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
 // ==========================================
 void PhysicalWorld::Update() {
-    b2World_Step(m_b2World, m_IsActive ? (1.0f / 60.0f) : 0.0f, 4);
-
-    if (m_PassCondition != nullptr) {
-        m_PassCondition->ConsumeContactEvents(m_b2World);
+    if (m_IsActive) {
+        b2World_Step(m_b2WorldId, (1.0f / 60.0f), 4);
     }
-
     for (auto& obj : m_CompositeObject) {
         obj->Update();
     }
     for (auto& obj : m_DrawnObjects) {
         obj->Update();
     }
+}
 
-    if (m_PassCondition != nullptr) {
-        m_PassCondition->Update();
-    }
+b2ContactEvents PhysicalWorld::GetContactEvents() {
+    return b2World_GetContactEvents(m_b2WorldId);
 }
 
 }  // namespace GameWorld

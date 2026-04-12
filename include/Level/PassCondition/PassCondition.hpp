@@ -24,17 +24,12 @@ class PassCondition {
         int duration);
     virtual ~PassCondition() = default;
 
-    virtual void AttachToWorld(b2WorldId world) = 0;
-    void ConsumeContactEvents(b2WorldId world);
-    void Update();
-    bool Check() const;
+    bool Check(b2ContactEvents events);
 
    protected:
     virtual void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) = 0;
     TriggerType m_TriggerType;
     int m_Duration;
-
-    bool m_IsPassed = false;
     int m_Timer = 0;
 };
 

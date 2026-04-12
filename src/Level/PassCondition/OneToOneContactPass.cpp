@@ -5,16 +5,24 @@ OneToOneContactPass::OneToOneContactPass(
     b2ShapeId shapeB,
     TriggerType triggerType,
     int duration)
-    : PassCondition(triggerType, duration), m_ShapeA(shapeA), m_ShapeB(shapeB) {}
+    : PassCondition(triggerType, duration), m_ShapeA(shapeA), m_ShapeB(shapeB) {
+        if (b2Shape_IsSensor(shapeA)){
+            b2Shape_EnableSensorEvents(shapeA, true);
+        }else{
+            b2Shape_EnableContactEvents(shapeA, true);
+        }
+        if (b2Shape_IsSensor(shapeB)){
+            b2Shape_EnableSensorEvents(shapeB, true);
+        }else{
+            b2Shape_EnableContactEvents(shapeB, true);
+        }
+    }
 
 OneToOneContactPass::OneToOneContactPass(
     b2ShapeId shape,
     TriggerType triggerType,
     int duration)
     : PassCondition(triggerType, duration), m_ShapeA(shape), m_ShapeB(b2_nullShapeId) {}
-
-void OneToOneContactPass::AttachToWorld(b2WorldId world) {
-}
 
 void OneToOneContactPass::OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) {
     if (B2_ID_EQUALS(shapeA, m_ShapeA) || B2_ID_EQUALS(shapeB, m_ShapeA)) {  // 找到 A 物體

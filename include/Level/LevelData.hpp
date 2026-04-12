@@ -19,6 +19,7 @@ struct LevelData {
     float timeout = 30.0F;
     std::string targetText = "";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
+    std::shared_ptr<PassCondition> passCondition;
 };
 
 using LevelFunction = std::function<LevelData()>;
