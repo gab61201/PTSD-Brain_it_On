@@ -10,8 +10,6 @@ class Circle : public Shape {
     Circle(float diameter, const glm::vec2& relativePosition, bool isSensor = false);
 
     void AttachToBody(b2BodyId body) override;
-
-    
 };
 
 }  // namespace GameWorld

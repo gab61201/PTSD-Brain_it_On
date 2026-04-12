@@ -11,6 +11,7 @@ class DrawnObject : public GameWorld::CompositeObject {
     ~DrawnObject() = default;
 
     void DrawNextPoint(glm::vec2 position);
+
     void EndDrawing();
 
     b2BodyId Getb2BodyId() { return m_b2BodyId; }
