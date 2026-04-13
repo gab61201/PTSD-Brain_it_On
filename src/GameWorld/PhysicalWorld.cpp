@@ -31,21 +31,27 @@ bool ReportPointShape(b2ShapeId shapeId, void* context) {
 struct DrawingRayCastContext {
     bool hit = false;
     b2Vec2 hitPoint = {0.0f, 0.0f};
+    float fraction = 1.0f;
     b2BodyId ignoreBody = b2_nullBodyId;
+    b2Vec2 normal = {0.0f, 0.0f};
 };
 
-float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 /*normal*/, float fraction, void* context) {
-    auto* rayContext = static_cast<DrawingRayCastContext*>(context);
+float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float fraction, void* context) {
+    auto* castContext = static_cast<DrawingRayCastContext*>(context);
 
-    if (B2_IS_NON_NULL(rayContext->ignoreBody) && B2_ID_EQUALS(b2Shape_GetBody(shapeId), rayContext->ignoreBody)) {
+    if (B2_IS_NON_NULL(castContext->ignoreBody) && B2_ID_EQUALS(b2Shape_GetBody(shapeId), castContext->ignoreBody)) {
         return -1.0f;
     }
     if (b2Shape_IsSensor(shapeId)) {
         return -1.0f;
     }
 
-    rayContext->hit = true;
-    rayContext->hitPoint = point;
+    if (fraction < castContext->fraction) {
+        castContext->hit = true;
+        castContext->hitPoint = point;
+        castContext->fraction = fraction;
+        castContext->normal = normal;
+    }
     return fraction;
 }
 
@@ -115,18 +121,13 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
         b2Vec2 translation = {endP.x - startP.x, endP.y - startP.y};
 
         b2QueryFilter filter = b2DefaultQueryFilter();
+        b2ShapeProxy circleProxy = {{startP}, 1, GameWorld::PixelsToMeters(STROKE_WIDTH * 0.5F)};
 
-        b2World_CastRay(m_b2WorldId, startP, translation, filter, ReportDrawingShape, &callback);
+        b2World_CastShape(m_b2WorldId, &circleProxy, translation, filter, ReportDrawingShape, &callback);
         if (callback.hit) {
-            glm::vec2 hitPixel = GameWorld::MetersToPixels(callback.hitPoint);
-            float dist = glm::distance(p1, hitPixel);
-            if (dist > 10.0f) {
-                glm::vec2 dir = (hitPixel - p1) / dist;
-                hitPixel -= dir * 10.0f;
-            } else {
-                hitPixel = p1;
-            }
-            m_LastDrawingObject->DrawNextPoint(hitPixel);
+            b2Vec2 centerAtHit = b2Add(startP, b2MulSV(callback.fraction, translation));
+            b2Vec2 nextPoint = b2Add(centerAtHit, b2MulSV(GameWorld::PixelsToMeters(STROKE_WIDTH * 0.1F), callback.normal));
+            m_LastDrawingObject->DrawNextPoint(GameWorld::MetersToPixels(nextPoint));
             return;
         }
 
