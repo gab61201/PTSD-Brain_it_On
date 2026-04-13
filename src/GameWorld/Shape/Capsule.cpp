@@ -82,18 +82,17 @@ void Capsule::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation)
     m_Visual->m_Transform.translation = globalPosition;
     m_Visual->m_Transform.rotation = globalRotation;
 
-    float radius = std::get<float>(m_Size) * 0.5f;
-    // 2. 計算膠囊體在「世界空間」中的 X 軸方向向量
+    float halfLength = glm::distance(m_PointA, m_PointB) * 0.5f;    // 2. 計算膠囊體在「世界空間」中的 X 軸方向向量
     float cosGlobal = std::cos(globalRotation);
     float sinGlobal = std::sin(globalRotation);
     glm::vec2 globalDirection(cosGlobal, sinGlobal);
 
     // 3. 順著方向推算左右圓心的絕對座標
     // 右圓：中心點 + (方向向量 * 距離)
-    glm::vec2 CircleAGlobalPos = globalPosition - (globalDirection * radius);
+    glm::vec2 CircleAGlobalPos = globalPosition - (globalDirection * halfLength);
     m_CircleAVisual->m_Transform.translation = CircleAGlobalPos;
     // 左圓：中心點 - (方向向量 * 距離)
-    glm::vec2 CircleBGlobalPos = globalPosition + (globalDirection * radius);
+    glm::vec2 CircleBGlobalPos = globalPosition + (globalDirection * halfLength);
     m_CircleBVisual->m_Transform.translation = CircleBGlobalPos;
 }
 
