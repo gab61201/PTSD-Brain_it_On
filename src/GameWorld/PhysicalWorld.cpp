@@ -1,6 +1,4 @@
 #include "GameWorld/PhysicalWorld.hpp"
-
-#include "GameWorld/BaseObject.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -142,10 +140,6 @@ void PhysicalWorld::EndDrawing() {
     }
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
-}
-
-bool PhysicalWorld::IsPassed() {
-    return m_PassCondition != nullptr ? m_PassCondition->Check() : false;
 }
 
 int PhysicalWorld::GetDrawnObjectCount() const {
