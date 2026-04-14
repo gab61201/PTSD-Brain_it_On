@@ -63,6 +63,17 @@ void Level::Reset() {
     m_HUD->Reset(data.targetText, m_StrokeLimit);
 }
 
+LevelResultData Level::GetResultData() const {
+    LevelResultData result;
+    result.levelId = m_LevelId;
+    result.passed = (m_state == State::FINISHED);
+    result.goalTime = m_Timeout;
+    result.solvedTime = m_Time;
+    result.goalStroke = m_StrokeLimit;
+    result.usedStroke = m_World ? m_World->GetDrawnObjectCount() : 0;
+    return result;
+}
+
 void Level::Update() {
     // 只有在繪圖或播放物理模擬時才計時 (使用 GetDeltaTimeMs() 並除以 1000)
     if (m_state == State::DRAWING || m_state == State::PLAYING) {
