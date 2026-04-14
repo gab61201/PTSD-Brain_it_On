@@ -8,6 +8,23 @@
 #include "Util/GameObject.hpp"
 #include "Util/Text.hpp"
 
+struct LevelResultData {
+    LevelId levelId = LevelId::LEVEL_1;
+    bool passed = false;
+    float goalTime = 0.0f;
+    float solvedTime = 0.0f;
+    int goalStroke = 0;
+    int usedStroke = 0;
+};
+
+inline bool IsWithinTimeLimit(const LevelResultData& resultData) {
+    return resultData.solvedTime <= resultData.goalTime;
+}
+
+inline bool IsWithinStrokeLimit(const LevelResultData& resultData) {
+    return resultData.usedStroke <= resultData.goalStroke;
+}
+
 class Level {
    public:
     Level(LevelId levelId);
@@ -29,6 +46,7 @@ class Level {
 
     LevelId GetLevelId() const { return m_LevelId; }
     State GetState() const { return m_state; }
+    LevelResultData GetResultData() const;
 
    private:
     void Waiting();
@@ -38,8 +56,9 @@ class Level {
 
     LevelId m_LevelId;
     State m_state = State::WAITING;
-    float m_Time = 0.0F;                    // 遊戲進行時間
-    float m_Timeout;                        // 遊戲限制時間
+    float m_Time = 0.0F;  // 遊戲進行時間
+    float m_Timeout;      // 遊戲限制時間
+    int m_StrokeLimit;
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
     std::shared_ptr<PassCondition> m_PassCondition;
     std::unique_ptr<LevelHUD> m_HUD;

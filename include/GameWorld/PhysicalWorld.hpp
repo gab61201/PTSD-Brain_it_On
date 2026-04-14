@@ -20,6 +20,7 @@ class PhysicalWorld {
     void DrawObject(glm::vec2 position);
     void EndDrawing();
     void Update();
+    int GetDrawnObjectCount() const;
     b2ContactEvents GetContactEvents();
 
    private:

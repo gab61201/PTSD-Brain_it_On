@@ -14,7 +14,9 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
     m_World = data.world;
     m_PassCondition = data.passCondition;
     m_Timeout = data.timeout;
-    m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText);
+    m_StrokeLimit = data.strokeLimit;
+    m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText,
+                                        m_StrokeLimit);
 }
 
 void Level::Waiting() {
@@ -66,7 +68,20 @@ void Level::Reset() {
     m_World = data.world;
     m_PassCondition = data.passCondition;
     m_Time = 0.0F;
-    m_HUD->Reset(data.targetText);
+    m_Timeout = data.timeout;
+    m_StrokeLimit = data.strokeLimit;
+    m_HUD->Reset(data.targetText, m_StrokeLimit);
+}
+
+LevelResultData Level::GetResultData() const {
+    LevelResultData result;
+    result.levelId = m_LevelId;
+    result.passed = (m_state == State::FINISHED);
+    result.goalTime = m_Timeout;
+    result.solvedTime = m_Time;
+    result.goalStroke = m_StrokeLimit;
+    result.usedStroke = m_World ? m_World->GetDrawnObjectCount() : 0;
+    return result;
 }
 
 void Level::Update() {
@@ -98,5 +113,6 @@ void Level::Update() {
 
     // 更新 HUD（計時器、提示文字）
     m_HUD->UpdateTimer(GetRemainingTime());
+    m_HUD->UpdateStrokeLimit(m_StrokeLimit - m_World->GetDrawnObjectCount(), m_StrokeLimit);
     m_HUD->Update();
 }

@@ -12,8 +12,8 @@
 
 定義了可用的關卡 ID：
 
-| 值 | 說明 |
-|----|------|
+| 值        | 說明   |
+| --------- | ------ |
 | `LEVEL_1` | 第一關 |
 | `LEVEL_2` | 第二關 |
 | `LEVEL_3` | 第三關 |
@@ -25,6 +25,7 @@
 ```cpp
 struct LevelData {
     float timeout = 30.0F;                      // 時間限制 (秒)
+    int strokeLimit = 3;                        // 筆劃限制
     std::string targetText = "";                // 目標提示文字
     std::shared_ptr<GameWorld::PhysicalWorld> world;  // 物理世界實體
 };
@@ -32,11 +33,12 @@ struct LevelData {
 
 ### 成員變數
 
-| 名稱 | 類型 | 預設值 | 說明 |
-|------|------|--------|------|
-| `timeout` | `float` | `30.0F` | 關卡時間限制，玩家需在時間內達成目標 |
-| `targetText` | `std::string` | `""` | 顯示給玩家的目標提示 (如：「將球放入盒子」) |
-| `world` | `std::shared_ptr<PhysicalWorld>` | `nullptr` | 關卡的物理世界實體，包含所有預先放置的物件 |
+| 名稱          | 類型                             | 預設值    | 說明                                        |
+| ------------- | -------------------------------- | --------- | ------------------------------------------- |
+| `timeout`     | `float`                          | `30.0F`   | 關卡時間限制，玩家需在時間內達成目標        |
+| `strokeLimit` | `int`                            | `3`       | 關卡筆劃限制，HUD 會顯示剩餘/總數           |
+| `targetText`  | `std::string`                    | `""`      | 顯示給玩家的目標提示 (如：「將球放入盒子」) |
+| `world`       | `std::shared_ptr<PhysicalWorld>` | `nullptr` | 關卡的物理世界實體，包含所有預先放置的物件  |
 
 ## LevelFunction 類型定義
 
@@ -59,6 +61,7 @@ using LevelFunction = std::function<LevelData()>;
 取得指定關卡的配置資料。
 
 **參數**:
+
 - `id`: 關卡 ID
 
 **回傳值**: 該關卡的 LevelData 結構體
@@ -68,6 +71,7 @@ using LevelFunction = std::function<LevelData()>;
 註冊一個新的關卡。用於將關卡建立函式與關卡 ID 綁定。
 
 **參數**:
+
 - `id`: 關卡 ID
 - `function`: 返回 LevelData 的函式指標
 
@@ -78,6 +82,7 @@ using LevelFunction = std::function<LevelData()>;
 RegisterLevel(LevelId::LEVEL_1, []() {
     LevelData data;
     data.timeout = 30.0F;
+    data.strokeLimit = 3;
     data.targetText = "將球放入盒子";
     // ... 建立物理世界並指派給 data.world
     return data;

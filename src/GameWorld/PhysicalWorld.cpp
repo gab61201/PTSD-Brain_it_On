@@ -144,6 +144,13 @@ void PhysicalWorld::EndDrawing() {
     m_LastDrawingObject = nullptr;
 }
 
+bool PhysicalWorld::IsPassed() {
+    return m_PassCondition != nullptr ? m_PassCondition->Check() : false;
+}
+
+int PhysicalWorld::GetDrawnObjectCount() const {
+    return static_cast<int>(m_DrawnObjects.size());
+}
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
 // ==========================================

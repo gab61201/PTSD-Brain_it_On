@@ -6,7 +6,7 @@
 
 ## 描述
 
-`Level` 類別負責控制單一關卡的執行流程，包括等待開始、繪製階段、正式遊玩以及完成後的處理。它整合了物理世界、HUD 介面與過關條件檢測。
+`Level` 類別負責控制單一關卡的執行流程，包括等待開始、繪製階段、正式遊玩以及完成後的處理。它整合了物理世界、HUD 介面與過關條件檢測，也會同步顯示每關的筆劃限制。
 
 ## LevelId 列舉
 
@@ -45,6 +45,7 @@ Level(LevelId levelId);
 ### `void Reset()`
 
 重置關卡狀態，重新開始此關卡。會恢復初始物件位置並重設計時器。
+如果關卡有設定筆劃限制，HUD 也會一併重置成新的 `remaining/total` 顯示。
 
 ### `void Update()`
 
@@ -53,6 +54,7 @@ Level(LevelId levelId);
 2. 更新物理世界
 3. 檢查過關條件
 4. 更新 HUD 顯示
+5. 更新筆劃限制顯示
 
 ### `float GetRemainingTime() const`
 
@@ -99,13 +101,14 @@ State GetState() const
 | `m_state` | `State` | 當前狀態 (預設 WAITING) |
 | `m_Time` | `float` | 遊戲進行時間 (秒) |
 | `m_Timeout` | `float` | 遊戲限制時間 (秒) |
+| `m_StrokeLimit` | `int` | 當前關卡的筆劃限制 |
 | `m_World` | `std::shared_ptr<GameWorld::PhysicalWorld>` | 物理世界實體 |
 | `m_pass_conditions` | `std::vector<PassCondition>` | 過關條件列表 |
 | `m_HUD` | `std::unique_ptr<LevelHUD>` | HUD 介面物件 |
 
 ## 相關類別
 
-- **LevelData**: 關卡配置資料，包含時間限制與目標文字
+- **LevelData**: 關卡配置資料，包含時間限制、筆劃限制與目標文字
 - **PhysicalWorld**: 物理世界管理員，處理所有物理模擬
 - **PassCondition**: 過關條件基類
-- **LevelHUD**: 畫面上方顯示的時間與提示
+- **LevelHUD**: 畫面上方顯示的時間、提示與筆劃限制
