@@ -12,6 +12,7 @@
 Level::Level(LevelId levelId) : m_LevelId(levelId) {
     LevelData data = GetLevelData(levelId);
     m_World = data.world;
+    m_PassCondition = data.passCondition;
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;
     m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText,
@@ -29,6 +30,10 @@ void Level::Waiting() {
 }
 
 void Level::Drawing() {
+    if (!m_World) {
+        return;
+    }
+
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         m_state = State::PLAYING;
         m_World->EndDrawing();
@@ -38,12 +43,16 @@ void Level::Drawing() {
 }
 
 void Level::Playing() {
+    if (!m_World) {
+        return;
+    }
+
     if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
         m_state = State::DRAWING;
         m_World->DrawObject(Util::Input::GetCursorPosition());
     }
     // 檢查通關條件
-    if (m_World->IsPassed()) {
+    if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
         m_state = State::FINISHED;
         m_World->Stop();
     }
@@ -57,6 +66,7 @@ void Level::Reset() {
     m_state = State::WAITING;
     LevelData data = GetLevelData(m_LevelId);
     m_World = data.world;
+    m_PassCondition = data.passCondition;
     m_Time = 0.0F;
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;

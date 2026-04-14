@@ -60,7 +60,7 @@ class Level {
     float m_Timeout;      // 遊戲限制時間
     int m_StrokeLimit;
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
-    std::vector<PassCondition> m_pass_conditions;
+    std::shared_ptr<PassCondition> m_PassCondition;
     std::unique_ptr<LevelHUD> m_HUD;
 };
 

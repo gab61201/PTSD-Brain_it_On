@@ -20,6 +20,7 @@ struct LevelData {
     int strokeLimit = 3;
     std::string targetText = "";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
+    std::shared_ptr<PassCondition> passCondition;
 };
 
 using LevelFunction = std::function<LevelData()>;
