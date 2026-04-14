@@ -1,9 +1,10 @@
 #include "App.hpp"
 
+#include "Screen/ResultScreen.hpp"
+#include "Util/BGM.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
-#include "Util/BGM.hpp"
 
 void App::Start() {
     LOG_TRACE("Start");
@@ -17,8 +18,9 @@ void App::Start() {
 }
 
 void App::Update() {
+    const UI::ScreenType currentScreenType = m_Screen->GetScreenType();
     m_ScreenType = m_Screen->GetNextScreenType();
-    if (m_ScreenType != m_Screen->GetScreenType()) {
+    if (m_ScreenType != currentScreenType) {
         switch (m_ScreenType) {
             case UI::ScreenType::LOBBY:
                 m_Screen = std::make_unique<UI::LobbyScreen>();
@@ -31,6 +33,16 @@ void App::Update() {
                 break;
             case UI::ScreenType::GAME:
                 m_Screen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
+                break;
+            case UI::ScreenType::RESULT:
+                LevelResultData resultData{};
+                if (currentScreenType != UI::ScreenType::GAME ||
+                    !static_cast<UI::GameScreen*>(m_Screen.get())->TryGetResultData(&resultData)) {
+                    LOG_WARN("TryGetResultData failed during RESULT transition, fallback to MENU");
+                    m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
+                    break;
+                }
+                m_Screen = std::make_unique<UI::ResultScreen>(&m_SelectedLevelId, resultData);
                 break;
         }
         m_ScreenType = m_Screen->GetScreenType();

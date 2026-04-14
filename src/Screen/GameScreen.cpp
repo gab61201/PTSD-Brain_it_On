@@ -36,6 +36,11 @@ void GameScreen::Update() {
     m_Renderer.Update();
     m_Level.Update();
 
+    if (m_Level.GetState() == Level::State::FINISHED) {
+        m_NextScreenType = ScreenType::RESULT;
+        return;
+    }
+
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
         m_NextScreenType = ScreenType::MENU;
     }
@@ -47,6 +52,14 @@ ScreenType GameScreen::GetNextScreenType() {
 
 ScreenType GameScreen::GetScreenType() const {
     return ScreenType::GAME;
+}
+
+bool GameScreen::TryGetResultData(LevelResultData* outResult) const {
+    if (!outResult) {
+        return false;
+    }
+    *outResult = m_Level.GetResultData();
+    return true;
 }
 
 }  // namespace UI

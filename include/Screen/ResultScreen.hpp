@@ -1,14 +1,14 @@
-#ifndef GAME_SCREEN_HPP
-#define GAME_SCREEN_HPP
+#ifndef RESULT_SCREEN_HPP
+#define RESULT_SCREEN_HPP
 
 #include "Level/Level.hpp"
 #include "Screen/UIScreen.hpp"
 
 namespace UI {
 
-class GameScreen : public UIScreen {
+class ResultScreen : public UIScreen {
    public:
-    explicit GameScreen(LevelId* levelId);
+    ResultScreen(LevelId* levelId, const LevelResultData& resultData);
 
     void Update() override;
 
@@ -16,10 +16,8 @@ class GameScreen : public UIScreen {
 
     ScreenType GetScreenType() const override;
 
-    bool TryGetResultData(LevelResultData* outResult) const;
-
    private:
-    Level m_Level;
+    LevelResultData m_ResultData;
 };
 
 }  // namespace UI
