@@ -1,7 +1,7 @@
 #ifndef DRAWN_OBJECT_HPP
 #define DRAWN_OBJECT_HPP
 
-#include "GameWorld/CompositeObject.hpp"
+#include "GameWorld/CompositeObject/CompositeObject.hpp"
 
 namespace GameWorld {
 

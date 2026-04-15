@@ -1,4 +1,4 @@
-#include "GameWorld/DrawnObject.hpp"
+#include "GameWorld/CompositeObject/DrawnObject.hpp"
 
 #include "GameWorld/Shape/Capsule.hpp"
 #include "GameWorld/Shape/Circle.hpp"

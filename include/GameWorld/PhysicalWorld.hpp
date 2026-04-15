@@ -3,9 +3,9 @@
 
 #include <box2d/box2d.h>
 
-#include "GameWorld/CompositeObject.hpp"
-#include "GameWorld/DrawnObject.hpp"
-#include "GameWorld/MagnetObject.hpp"
+#include "GameWorld//CompositeObject/CompositeObject.hpp"
+#include "GameWorld/CompositeObject/DrawnObject.hpp"
+#include "GameWorld//CompositeObject/MagnetObject.hpp"
 
 namespace GameWorld {
 

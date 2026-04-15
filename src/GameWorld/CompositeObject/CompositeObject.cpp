@@ -1,4 +1,4 @@
-#include "GameWorld/CompositeObject.hpp"
+#include "GameWorld/CompositeObject/CompositeObject.hpp"
 
 #include "GameWorld/CoordinateHelper.hpp"
 
