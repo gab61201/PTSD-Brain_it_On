@@ -53,6 +53,12 @@ ResultScreen::ResultScreen(LevelId* levelId, const LevelResultData& resultData)
     (void)levelId;
     const bool withinTimeLimit = IsWithinTimeLimit(m_ResultData);
     const bool withinStrokeLimit = IsWithinStrokeLimit(m_ResultData);
+    const Util::Color solvedTimeColor = withinTimeLimit
+                                            ? Util::Color::FromRGB(56, 209, 83)
+                                            : Util::Color::FromRGB(255, 77, 77);
+    const Util::Color solvedStrokeColor = withinStrokeLimit
+                                              ? Util::Color::FromRGB(56, 209, 83)
+                                              : Util::Color::FromRGB(255, 77, 77);
 
     m_NextScreenType = ScreenType::RESULT;
 
@@ -60,21 +66,27 @@ ResultScreen::ResultScreen(LevelId* levelId, const LevelResultData& resultData)
     m_Renderer.AddChild(background);
 
     auto panel = CreateImageObject(
-        "Resources/Images/BasicShapes/black_square.png", {0.0f, -28.0f}, {1.72f, 0.98f}, 0.1f);
+        "Resources/Images/BasicShapes/blue_square.png",
+        {0.0f, -48.0f},
+        {1.72f, 0.98f},
+        0.1f);
     m_Renderer.AddChild(panel);
 
     auto header = CreateImageObject(
-        "Resources/Images/BasicShapes/orange_square.png", {0.0f, 176.0f}, {1.72f, 0.13f}, 0.2f);
+        "Resources/Images/BasicShapes/orange_square.png",
+        {0.0f, 156.0f},
+        {1.72f, 0.13f},
+        0.2f);
     m_Renderer.AddChild(header);
 
     const std::string title = m_ResultData.passed ? "Nice one!" : "Try again!";
     m_Renderer.AddChild(CreateTextObject(
-        title, 64, {0.0f, 312.0f}, Util::Color::FromRGB(255, 255, 255), 1.5f));
+        title, 64, {0.0f, 262.0f}, Util::Color::FromRGB(255, 255, 255), 1.5f));
 
     m_Renderer.AddChild(CreateTextObject(
         "Level #" + std::to_string(ToLevelNumber(m_ResultData.levelId)),
         48,
-        {-235.0f, 176.0f},
+        {0.0f, 156.0f},
         Util::Color::FromRGB(74, 74, 74),
         1.5f));
 
@@ -89,55 +101,62 @@ ResultScreen::ResultScreen(LevelId* levelId, const LevelResultData& resultData)
     m_Renderer.AddChild(CreateImageObject(
         m_ResultData.passed ? "Resources/Images/star_bright.png"
                             : "Resources/Images/star_dark.png",
-        {starLeft.x, 122.0f}, {0.24f, 0.24f}, 1.3f));
+        {starLeft.x, 80.0f}, {0.50, 0.50}, 1.3f));
     m_Renderer.AddChild(CreateImageObject(
         withinTimeLimit ? "Resources/Images/star_bright.png"
                         : "Resources/Images/star_dark.png",
-        {starMid.x, 122.0f}, {0.24f, 0.24f}, 1.3f));
+        {starMid.x, 80.0f}, {0.50, 0.50}, 1.3f));
     m_Renderer.AddChild(CreateImageObject(
         withinStrokeLimit ? "Resources/Images/star_bright.png"
                           : "Resources/Images/star_dark.png",
-        {starRight.x, 122.0f}, {0.24f, 0.24f}, 1.3f));
+        {starRight.x, 80.0f}, {0.50, 0.50}, 1.3f));
 
     m_Renderer.AddChild(CreateTextObject(
-        "✓", 46, {colLeft.x, 36.0f}, Util::Color::FromRGB(56, 209, 83), 1.4f));
+        "✓", 40, {colLeft.x, 0.0f}, Util::Color::FromRGB(56, 209, 83), 1.4f));
     m_Renderer.AddChild(CreateImageObject(
-        "Resources/Images/alarm.png", {colMid.x, 34.0f}, {0.078f, 0.078f}, 1.4f));
+        "Resources/Images/alarm.png", {colMid.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
     m_Renderer.AddChild(CreateImageObject(
-        "Resources/Images/stroke_limit.png", {colRight.x, 34.0f}, {0.078f, 0.078f}, 1.4f));
+        "Resources/Images/stroke_limit.png", {colRight.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
 
     m_Renderer.AddChild(CreateTextObject(
-        "Goal:", 52, {-215.0f, -38.0f}, Util::Color::FromRGB(245, 245, 245), 1.4f));
+        "Goal:", 48, {-215.0f, -70.0f}, Util::Color::FromRGB(245, 245, 245), 1.4f));
     m_Renderer.AddChild(CreateTextObject(
         FormatSeconds(m_ResultData.goalTime),
-        52,
-        {colMid.x, -38.0f},
+        48,
+        {colMid.x, -70.0f},
         Util::Color::FromRGB(245, 245, 245),
         1.4f));
     m_Renderer.AddChild(CreateTextObject(
         std::to_string(m_ResultData.goalStroke),
-        52,
-        {colRight.x, -38.0f},
+        48,
+        {colRight.x, -70.0f},
         Util::Color::FromRGB(245, 245, 245),
         1.4f));
 
     auto solvedStrip = CreateImageObject(
-        "Resources/Images/BasicShapes/white_square.png", {0.0f, -120.0f}, {1.16f, 0.16f}, 1.1f);
+        "Resources/Images/BasicShapes/white_square.png",
+        {0.0f, -152.0f},
+        {1.72f, 0.16f},
+        1.1f);
     m_Renderer.AddChild(solvedStrip);
 
     m_Renderer.AddChild(CreateTextObject(
-        "Solved", 52, {-215.0f, -120.0f}, Util::Color::FromRGB(11, 49, 80), 1.6f));
+        "Solved",
+        48,
+        {-215.0f, -152.0f},
+        Util::Color::FromRGB(11, 49, 80),
+        1.6f));
     m_Renderer.AddChild(CreateTextObject(
         FormatSeconds(m_ResultData.solvedTime),
-        52,
-        {colMid.x, -120.0f},
-        Util::Color::FromRGB(56, 209, 83),
+        48,
+        {colMid.x, -152.0f},
+        solvedTimeColor,
         1.6f));
     m_Renderer.AddChild(CreateTextObject(
         std::to_string(m_ResultData.usedStroke),
-        52,
-        {colRight.x, -120.0f},
-        Util::Color::FromRGB(56, 209, 83),
+        48,
+        {colRight.x, -152.0f},
+        solvedStrokeColor,
         1.6f));
 
     auto selectButton = UI::Element::CircleButton([this]() {

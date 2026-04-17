@@ -9,6 +9,8 @@
 void App::Start() {
     LOG_TRACE("Start");
 
+    m_ProgressStore.LoadOrCreateDefault();
+
     Util::BGM("Resources/Audios/BGM.mp3").Play();
 
     m_CurrentState = State::UPDATE;
@@ -29,7 +31,7 @@ void App::Update() {
                 m_Screen = std::make_unique<UI::SettingsScreen>();
                 break;
             case UI::ScreenType::MENU:
-                m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
+                m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId, &m_ProgressStore);
                 break;
             case UI::ScreenType::GAME:
                 m_Screen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
@@ -39,9 +41,19 @@ void App::Update() {
                 if (currentScreenType != UI::ScreenType::GAME ||
                     !static_cast<UI::GameScreen*>(m_Screen.get())->TryGetResultData(&resultData)) {
                     LOG_WARN("TryGetResultData failed during RESULT transition, fallback to MENU");
-                    m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
+                    m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId, &m_ProgressStore);
                     break;
                 }
+
+                {
+                    const auto conditions = ProgressStore::CalculateConditions(resultData);
+                    if (m_ProgressStore.UpdateBestStars(resultData.levelId, conditions)) {
+                        if (!m_ProgressStore.Save()) {
+                            LOG_WARN("Failed to save progress file");
+                        }
+                    }
+                }
+
                 m_Screen = std::make_unique<UI::ResultScreen>(&m_SelectedLevelId, resultData);
                 break;
         }

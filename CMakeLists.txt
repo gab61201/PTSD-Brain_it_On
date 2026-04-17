@@ -9,6 +9,7 @@ cmake_policy(SET CMP0135 NEW)
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 set(BOX2D_TAG v3.1.1)
+set(JSON_TAG v3.12.0)
 
 FetchContent_Declare(
     box2d
@@ -18,6 +19,13 @@ FetchContent_Declare(
 set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "" FORCE)
 set(BOX2D_BUILD_TESTBED OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(box2d)
+
+FetchContent_Declare(
+    nlohmann_json
+    URL         https://github.com/nlohmann/json/releases/download/${JSON_TAG}/json.tar.xz
+)
+
+FetchContent_MakeAvailable(nlohmann_json)
 
 FetchContent_Declare(
     ptsd
@@ -67,4 +75,5 @@ target_link_libraries(${PROJECT_NAME}
     SDL2::SDL2main
     PTSD
     box2d
+    nlohmann_json::nlohmann_json
 )

@@ -198,6 +198,9 @@ ipch/
 *.VC.db
 *.VC.VC.opendb
 
+# Runtime local save data
+Resources/Save/
+
 # Visual Studio profiler
 *.psess
 *.vsp
