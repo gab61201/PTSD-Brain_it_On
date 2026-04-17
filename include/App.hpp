@@ -1,13 +1,13 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "pch.hpp"  // IWYU pragma: export
-
-#include "Screen/UIScreen.hpp"
+#include "Progress/ProgressStore.hpp"
+#include "Screen/GameScreen.hpp"
 #include "Screen/LobbyScreen.hpp"
 #include "Screen/MenuScreen.hpp"
-#include "Screen/GameScreen.hpp"
 #include "Screen/SettingsScreen.hpp"
+#include "Screen/UIScreen.hpp"
+#include "pch.hpp"  // IWYU pragma: export
 
 class App {
    public:
@@ -27,11 +27,12 @@ class App {
 
    private:
     State m_CurrentState = State::START;
-    
+
     // UI
     UI::ScreenType m_ScreenType;
     std::unique_ptr<UI::UIScreen> m_Screen;
     LevelId m_SelectedLevelId;
+    ProgressStore m_ProgressStore;
 };
 
 #endif

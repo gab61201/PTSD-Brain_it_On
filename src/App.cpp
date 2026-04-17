@@ -9,6 +9,8 @@
 void App::Start() {
     LOG_TRACE("Start");
 
+    m_ProgressStore.LoadOrCreateDefault();
+
     Util::BGM("Resources/Audios/BGM.mp3").Play();
 
     m_CurrentState = State::UPDATE;
@@ -42,6 +44,19 @@ void App::Update() {
                     m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
                     break;
                 }
+
+                {
+                    const int stars = ProgressStore::CalculateStars(resultData);
+                    if (m_ProgressStore.UpdateBestStars(resultData.levelId, stars)) {
+                        LOG_INFO("Best stars updated: level={} stars={}",
+                                 static_cast<int>(resultData.levelId) + 1,
+                                 stars);
+                    }
+                    if (!m_ProgressStore.Save()) {
+                        LOG_WARN("Failed to save progress file");
+                    }
+                }
+
                 m_Screen = std::make_unique<UI::ResultScreen>(&m_SelectedLevelId, resultData);
                 break;
         }
