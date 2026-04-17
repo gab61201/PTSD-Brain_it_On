@@ -31,7 +31,7 @@ void App::Update() {
                 m_Screen = std::make_unique<UI::SettingsScreen>();
                 break;
             case UI::ScreenType::MENU:
-                m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
+                m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId, &m_ProgressStore);
                 break;
             case UI::ScreenType::GAME:
                 m_Screen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
@@ -41,7 +41,7 @@ void App::Update() {
                 if (currentScreenType != UI::ScreenType::GAME ||
                     !static_cast<UI::GameScreen*>(m_Screen.get())->TryGetResultData(&resultData)) {
                     LOG_WARN("TryGetResultData failed during RESULT transition, fallback to MENU");
-                    m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId);
+                    m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId, &m_ProgressStore);
                     break;
                 }
 

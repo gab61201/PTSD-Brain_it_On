@@ -2,13 +2,16 @@
 #define MENU_SCREEN_HPP
 
 #include "Level/Level.hpp"
+#include "Progress/ProgressStore.hpp"
 #include "Screen/UIScreen.hpp"
+
+class ProgressStore;
 
 namespace UI {
 
 class MenuScreen : public UIScreen {
    public:
-    explicit MenuScreen(LevelId* levelId);
+    explicit MenuScreen(LevelId* levelId, ProgressStore* progressStore);
 
     void Update() override;
 
@@ -17,7 +20,9 @@ class MenuScreen : public UIScreen {
     ScreenType GetScreenType() const override;
 
    private:
-    LevelId *m_LevelId;
+    LevelId* m_LevelId;
+    ProgressStore* m_ProgressStore;
+    ScreenType m_NextScreenType = ScreenType::MENU;
 };
 
 }  // namespace UI
