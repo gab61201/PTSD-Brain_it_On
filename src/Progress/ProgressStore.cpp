@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <stdexcept>
 
 #include "Util/Logger.hpp"
 
@@ -13,24 +14,45 @@ json MakeDefaultJson() {
     return json{{"levels", json::object()}};
 }
 
+StarConditions ConditionsFromLegacyStars(int stars) {
+    return StarConditions{stars > 0, stars > 1, stars > 2};
+}
+
+bool ParseConditions(const json& value, StarConditions& outConditions) {
+    if (!value.is_array() || value.size() != outConditions.size()) {
+        return false;
+    }
+
+    for (std::size_t i = 0; i < outConditions.size(); ++i) {
+        if (!value[i].is_boolean()) {
+            return false;
+        }
+        outConditions[i] = value[i].get<bool>();
+    }
+
+    return true;
+}
+
+constexpr const char* kProgressSavePath = "Resources/Save/progress.json";
+
 }  // namespace
 
-ProgressStore::ProgressStore(const std::filesystem::path& savePath) : m_SavePath(savePath) {}
-
-std::filesystem::path ProgressStore::DefaultSavePath() {
-    return std::filesystem::path(RESOURCE_DIR) / "Save" / "progress.json";
-}
+ProgressStore::ProgressStore() : m_SavePath(kProgressSavePath) {}
 
 std::string ProgressStore::LevelKey(LevelId levelId) {
     return std::to_string(static_cast<int>(levelId) + 1);
 }
 
-int ProgressStore::ClampStars(int stars) {
-    return std::max(0, std::min(3, stars));
+int ProgressStore::CountStars(const StarConditions& conditions) {
+    int stars = 0;
+    for (const bool conditionMet : conditions) {
+        stars += conditionMet ? 1 : 0;
+    }
+    return stars;
 }
 
 void ProgressStore::LoadOrCreateDefault() {
-    m_BestStars.clear();
+    m_BestConditions.clear();
 
     std::error_code ec;
     std::filesystem::create_directories(m_SavePath.parent_path(), ec);
@@ -54,19 +76,27 @@ void ProgressStore::LoadOrCreateDefault() {
 
         const auto& levels = root["levels"];
         for (auto it = levels.begin(); it != levels.end(); ++it) {
-            if (!it.value().is_number_integer()) {
-                continue;
-            }
             const int levelNumber = std::stoi(it.key());
             if (levelNumber <= 0) {
                 continue;
             }
+
             const LevelId levelId = static_cast<LevelId>(levelNumber - 1);
-            m_BestStars[levelId] = ClampStars(it.value().get<int>());
+            StarConditions parsedConditions{false, false, false};
+
+            if (ParseConditions(it.value(), parsedConditions)) {
+                m_BestConditions[levelId] = parsedConditions;
+                continue;
+            }
+
+            if (it.value().is_number_integer()) {
+                const int legacyStars = it.value().get<int>();
+                m_BestConditions[levelId] = ConditionsFromLegacyStars(legacyStars);
+            }
         }
     } catch (const std::exception& e) {
         LOG_WARN("Progress file is invalid, fallback to empty progress. reason='{}'", e.what());
-        m_BestStars.clear();
+        m_BestConditions.clear();
         Save();
     }
 }
@@ -81,8 +111,8 @@ bool ProgressStore::Save() const {
     json root = MakeDefaultJson();
     auto& levels = root["levels"];
 
-    for (const auto& [levelId, stars] : m_BestStars) {
-        levels[LevelKey(levelId)] = ClampStars(stars);
+    for (const auto& [levelId, conditions] : m_BestConditions) {
+        levels[LevelKey(levelId)] = json::array({conditions[0], conditions[1], conditions[2]});
     }
 
     std::ofstream ofs(m_SavePath);
@@ -94,37 +124,67 @@ bool ProgressStore::Save() const {
     return true;
 }
 
-int ProgressStore::GetBestStars(LevelId levelId) const {
-    const auto it = m_BestStars.find(levelId);
-    if (it == m_BestStars.end()) {
-        return 0;
+StarConditions ProgressStore::GetConditions(LevelId levelId) const {
+    const auto it = m_BestConditions.find(levelId);
+    if (it == m_BestConditions.end()) {
+        return {false, false, false};
     }
-    return ClampStars(it->second);
+
+    return it->second;
 }
 
-bool ProgressStore::UpdateBestStars(LevelId levelId, int stars) {
-    const int clampedStars = ClampStars(stars);
-    const int currentBest = GetBestStars(levelId);
+bool ProgressStore::UpdateBestStars(LevelId levelId, const StarConditions& conditions) {
+    const auto it = m_BestConditions.find(levelId);
+    if (it == m_BestConditions.end()) {
+        m_BestConditions[levelId] = conditions;
+        LOG_INFO("Best stars updated: level={} stars={}", static_cast<int>(levelId) + 1, CountStars(conditions));
+        return true;
+    }
 
-    if (clampedStars <= currentBest) {
+    const int newStars = CountStars(conditions);
+    const int currentStars = CountStars(it->second);
+
+    if (newStars < currentStars) {
+        // Downgrade attempt - reject
         return false;
     }
 
-    m_BestStars[levelId] = clampedStars;
-    return true;
+    if (newStars > currentStars) {
+        // Upgrade - accept
+        m_BestConditions[levelId] = conditions;
+        LOG_INFO("Best stars updated: level={} stars={}", static_cast<int>(levelId) + 1, newStars);
+        return true;
+    }
+
+    // Equal stars: check if new is superset of old
+    bool hasNewCondition = false;
+    for (std::size_t i = 0; i < conditions.size(); ++i) {
+        if (conditions[i] && !it->second[i]) {
+            hasNewCondition = true;
+            break;
+        }
+    }
+
+    if (hasNewCondition) {
+        m_BestConditions[levelId] = conditions;
+        return true;
+    }
+
+    return false;
 }
 
 int ProgressStore::GetTotalStars() const {
     int total = 0;
-    for (const auto& [_, stars] : m_BestStars) {
-        total += ClampStars(stars);
+    for (const auto& [_, conditions] : m_BestConditions) {
+        total += CountStars(conditions);
     }
     return total;
 }
 
-int ProgressStore::CalculateStars(const LevelResultData& resultData) {
-    const int conditionPassed = resultData.passed ? 1 : 0;
-    const int conditionTime = IsWithinTimeLimit(resultData) ? 1 : 0;
-    const int conditionStroke = IsWithinStrokeLimit(resultData) ? 1 : 0;
-    return conditionPassed + conditionTime + conditionStroke;
+StarConditions ProgressStore::CalculateConditions(const LevelResultData& resultData) {
+    return StarConditions{
+        resultData.passed,
+        IsWithinTimeLimit(resultData),
+        IsWithinStrokeLimit(resultData),
+    };
 }

@@ -46,14 +46,11 @@ void App::Update() {
                 }
 
                 {
-                    const int stars = ProgressStore::CalculateStars(resultData);
-                    if (m_ProgressStore.UpdateBestStars(resultData.levelId, stars)) {
-                        LOG_INFO("Best stars updated: level={} stars={}",
-                                 static_cast<int>(resultData.levelId) + 1,
-                                 stars);
-                    }
-                    if (!m_ProgressStore.Save()) {
-                        LOG_WARN("Failed to save progress file");
+                    const auto conditions = ProgressStore::CalculateConditions(resultData);
+                    if (m_ProgressStore.UpdateBestStars(resultData.levelId, conditions)) {
+                        if (!m_ProgressStore.Save()) {
+                            LOG_WARN("Failed to save progress file");
+                        }
                     }
                 }
 

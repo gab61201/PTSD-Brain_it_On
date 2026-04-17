@@ -1,30 +1,39 @@
 #ifndef PROGRESS_STORE_HPP
 #define PROGRESS_STORE_HPP
 
+#include <array>
 #include <filesystem>
+#include <unordered_map>
 
 #include "Level/Level.hpp"
 
+// Star conditions: [passed, time, stroke]
+using StarConditions = std::array<bool, 3>;
+
 class ProgressStore {
    public:
-    explicit ProgressStore(const std::filesystem::path& savePath = DefaultSavePath());
+    ProgressStore();
 
     void LoadOrCreateDefault();
     bool Save() const;
 
-    int GetBestStars(LevelId levelId) const;
-    bool UpdateBestStars(LevelId levelId, int stars);
+    // Query APIs
+    StarConditions GetConditions(LevelId levelId) const;
     int GetTotalStars() const;
 
-    static int CalculateStars(const LevelResultData& resultData);
+    // Update APIs - only upgrade strategy
+    bool UpdateBestStars(LevelId levelId, const StarConditions& conditions);
+
+    // Static helpers
+    static StarConditions CalculateConditions(const LevelResultData& resultData);
 
    private:
-    static std::filesystem::path DefaultSavePath();
     static std::string LevelKey(LevelId levelId);
-    static int ClampStars(int stars);
+    static int CountStars(const StarConditions& conditions);
 
     std::filesystem::path m_SavePath;
-    std::unordered_map<LevelId, int> m_BestStars;
+    // Stores per-level best conditions: [passed, time, stroke]
+    std::unordered_map<LevelId, StarConditions> m_BestConditions;
 };
 
 #endif
