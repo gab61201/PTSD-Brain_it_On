@@ -26,7 +26,7 @@ bool ReportPointShape(b2ShapeId shapeId, void* context) {
     return true;
 }
 
-struct DrawingRayCastContext {
+struct ShapeCastContext {
     bool hit = false;
     b2Vec2 hitPoint = {0.0f, 0.0f};
     float fraction = 1.0f;
@@ -35,7 +35,7 @@ struct DrawingRayCastContext {
 };
 
 float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float fraction, void* context) {
-    auto* castContext = static_cast<DrawingRayCastContext*>(context);
+    auto* castContext = static_cast<ShapeCastContext*>(context);
 
     if (B2_IS_NON_NULL(castContext->ignoreBody) && B2_ID_EQUALS(b2Shape_GetBody(shapeId), castContext->ignoreBody)) {
         return -1.0f;
@@ -112,20 +112,23 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
         if (glm::distance(p1, p2) < 2.0f) {
             return;
         }
-        DrawingRayCastContext callback;
+        ShapeCastContext callback;
         callback.ignoreBody = m_LastDrawingObject->Getb2BodyId();
         b2Vec2 startP = GameWorld::PixelsToMeters(p1);
         b2Vec2 endP = GameWorld::PixelsToMeters(p2);
         b2Vec2 translation = {endP.x - startP.x, endP.y - startP.y};
 
         b2QueryFilter filter = b2DefaultQueryFilter();
-        b2ShapeProxy circleProxy = {{startP}, 1, GameWorld::PixelsToMeters(STROKE_WIDTH * 0.5F)};
+        b2ShapeProxy circleProxy = {{startP}, 1, GameWorld::PixelsToMeters(1.0F)};
 
         b2World_CastShape(m_b2WorldId, &circleProxy, translation, filter, ReportDrawingShape, &callback);
+        // 如果有碰到東西，繪製到碰撞點附近
         if (callback.hit) {
             b2Vec2 centerAtHit = b2Add(startP, b2MulSV(callback.fraction, translation));
             b2Vec2 nextPoint = b2Add(centerAtHit, b2MulSV(GameWorld::PixelsToMeters(STROKE_WIDTH * 0.1F), callback.normal));
             m_LastDrawingObject->DrawNextPoint(GameWorld::MetersToPixels(nextPoint));
+
+            m_DrawingIndicator.DrawLine(GameWorld::MetersToPixels(centerAtHit), position);
             return;
         }
 
@@ -158,6 +161,7 @@ void PhysicalWorld::Update() {
     for (auto& obj : m_DrawnObjects) {
         obj->Update();
     }
+    m_DrawingIndicator.Update();
 }
 
 b2ContactEvents PhysicalWorld::GetContactEvents() {
