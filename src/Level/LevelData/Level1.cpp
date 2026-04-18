@@ -47,7 +47,7 @@ LevelData LevelData_1() {
     // ==========================================
     // 3. 建立 600x600 px 邊界（置中）
     // ==========================================
-    auto boundary = std::make_shared<GameWorld::Boundary>(glm::vec2{600.0F, 600.0F});
+    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
 
     // ==========================================
     // 4. 將所有組合件打包，並初始化物理世界
@@ -56,7 +56,7 @@ LevelData LevelData_1() {
         boxComp, circleComp, capsuleComp, boundary};
 
     // 實例化物理世界 (建構子會自動將這些 objects 透過 AttachToWorld 掛載到 Box2D)
-    data.world = std::make_shared<GameWorld::PhysicalWorld>(objects);
+    data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
     data.passCondition = std::make_shared<OneToOneContactPass>(boxPart->Getb2ShapeId(), circlePart->Getb2ShapeId(), TriggerType::TOUCHING, 3);
 
     // 回傳設定好的關卡資料
