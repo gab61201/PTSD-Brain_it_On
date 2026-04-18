@@ -2,6 +2,13 @@
 
 #include <glm/glm.hpp>
 
+namespace {
+
+float IMAGE_SIZE = 886.0F;
+std::string LEVEL_IMAGE_PATH = "Resources/Images/level_background.png";
+
+}
+
 namespace GameWorld {
 
 Boundary::Boundary(float x1, float x2, float y1, float y2) {
@@ -33,6 +40,12 @@ Boundary::Boundary(float x1, float x2, float y1, float y2) {
     m_Shapes = std::move(shapes);
     m_BodyType = BodyType::STATIC;
     m_X1 = x1; m_X2 = x2; m_Y1 = y1; m_Y2 = y2;
+
+    auto levelImage = std::make_shared<Util::Image>(LEVEL_IMAGE_PATH);
+    auto boundaryVisual = std::make_shared<Util::GameObject>(levelImage, -0.1F);
+    boundaryVisual->m_Transform.translation = {centerX, centerY};
+    boundaryVisual->m_Transform.scale = {width / IMAGE_SIZE, height / IMAGE_SIZE};
+    m_Renderer.AddChild(boundaryVisual);
 }
 
 bool Boundary::IsPointInside(glm::vec2 position) const {
