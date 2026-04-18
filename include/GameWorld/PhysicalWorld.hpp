@@ -5,6 +5,7 @@
 
 #include "GameWorld//CompositeObject/CompositeObject.hpp"
 #include "GameWorld/CompositeObject/DrawnObject.hpp"
+#include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld//CompositeObject/MagnetObject.hpp"
 #include "GameWorld/DrawingIndicator.hpp"
 
@@ -12,7 +13,10 @@ namespace GameWorld {
 
 class PhysicalWorld {
    public:
-    PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects);
+    PhysicalWorld(
+        std::vector<std::shared_ptr<CompositeObject>> compositeObjects,
+        std::shared_ptr<Boundary> boundary
+    );
     ~PhysicalWorld();
 
     // 更新碰撞並渲染
@@ -28,6 +32,7 @@ class PhysicalWorld {
     b2WorldId m_b2WorldId;
     // 地圖原有的物件
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
+    std::shared_ptr<Boundary> m_Boundary;
     // 玩家畫的物件
     std::vector<std::shared_ptr<DrawnObject>> m_DrawnObjects;
     std::shared_ptr<DrawnObject> m_LastDrawingObject;

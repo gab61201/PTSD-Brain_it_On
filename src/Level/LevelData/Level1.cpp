@@ -1,3 +1,4 @@
+#include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/Shape/Circle.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
 #include "GameWorld/Shape/Capsule.hpp"
@@ -10,20 +11,7 @@ LevelData LevelData_1() {
     data.strokeLimit = 3;
 
     // ==========================================
-    // 1. 建立「靜態地板」 (不會動，用來接住掉下來的物體)
-    // ==========================================
-    auto floorPart = std::make_shared<GameWorld::Rectangle>(
-        glm::vec2(800.0F, 50.0F),  // 800x50 像素的地板
-        glm::vec2(0.0F, 0.0F)      // 相對位置：以組合件中心為基準，地板往下偏移 (依據你的座標系微調)
-    );
-    auto floorComp = std::make_shared<GameWorld::CompositeObject>(
-        std::vector<std::shared_ptr<GameWorld::Shape>>{floorPart},
-        GameWorld::BodyType::STATIC,  // 靜態剛體 (不受重力影響)
-        glm::vec2(0.0F, -300.0F)      // 絕對位置：放在畫面偏下方 (依據你的座標系微調)
-    );
-
-    // ==========================================
-    // 2. 建立「動態掉落的方塊」
+    // 1. 建立「動態掉落的方塊」
     // ==========================================
     auto boxPart = std::make_shared<GameWorld::Rectangle>(
         glm::vec2(60.0F, 60.0F),  // 60x60 像素的方塊
@@ -35,7 +23,7 @@ LevelData LevelData_1() {
     );
 
     // ==========================================
-    // 3. 建立「動態掉落的圓球」 (用來測試滾動與旋轉)
+    // 2. 建立「動態掉落的圓球」 (用來測試滾動與旋轉)
     // ==========================================
     auto circlePart = std::make_shared<GameWorld::Circle>(
         50.0f,  // 直徑 50 像素 (半徑 25)
@@ -57,13 +45,18 @@ LevelData LevelData_1() {
         glm::vec2(-15.0F, 400.0F)       // 絕對位置：放在方塊正上方再稍微偏左，製造不平衡的撞擊！
     );
     // ==========================================
+    // 3. 建立 600x600 px 邊界（置中）
+    // ==========================================
+    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
+
+    // ==========================================
     // 4. 將所有組合件打包，並初始化物理世界
     // ==========================================
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
-        floorComp, boxComp, circleComp, capsuleComp};
+        boxComp, circleComp, capsuleComp, boundary};
 
     // 實例化物理世界 (建構子會自動將這些 objects 透過 AttachToWorld 掛載到 Box2D)
-    data.world = std::make_shared<GameWorld::PhysicalWorld>(objects);
+    data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
     data.passCondition = std::make_shared<OneToOneContactPass>(boxPart->Getb2ShapeId(), circlePart->Getb2ShapeId(), TriggerType::TOUCHING, 3);
 
     // 回傳設定好的關卡資料

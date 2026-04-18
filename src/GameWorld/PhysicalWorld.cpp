@@ -55,9 +55,12 @@ float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float f
 
 }  // namespace
 
-PhysicalWorld::PhysicalWorld(std::vector<std::shared_ptr<CompositeObject>> compositeObjects)
+PhysicalWorld::PhysicalWorld(
+    std::vector<std::shared_ptr<CompositeObject>> compositeObjects,
+    std::shared_ptr<Boundary> boundary = nullptr)
     : m_b2WorldId(b2_nullWorldId),
-      m_CompositeObject(std::move(compositeObjects)) {
+      m_CompositeObject(std::move(compositeObjects)),
+      m_Boundary(boundary) {
     b2WorldDef worldDef = b2DefaultWorldDef();
     worldDef.gravity = {0.0f, -9.8f};
     m_b2WorldId = b2CreateWorld(&worldDef);
@@ -84,6 +87,9 @@ void PhysicalWorld::Stop() {
 void PhysicalWorld::DrawObject(glm::vec2 position) {
     // 無正在畫的物件則先建立
     if (m_LastDrawingObject == nullptr) {
+        if (m_Boundary != nullptr && !m_Boundary->IsPointInside(position)) {
+            return;
+        }
         // 檢查點有沒有碰到其他東西
         PointQueryContext callback;
         b2Vec2 point = GameWorld::PixelsToMeters(position);
