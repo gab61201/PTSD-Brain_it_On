@@ -6,7 +6,7 @@
 
 ## 描述
 
-`OneToOneContactPass` 是 `PassCondition` 的具體實作，用於檢測兩個特定基礎物件之間的互動狀態。當它們達到指定的觸發條件並持續足夠時間後，即視為過關。
+`OneToOneContactPass` 是 `PassCondition` 的具體實作，用於檢測兩個特定 Shape 之間的互動狀態。當它們達到指定的觸發條件並持續足夠時間後，即視為過關。也支援單一物件自我檢測 (如檢測同一物件的多個 fixture 接觸)。
 
 ## 建構式
 
@@ -14,10 +14,10 @@
 
 ```cpp
 OneToOneContactPass(
-    std::shared_ptr<GameWorld::BaseObject> baseObjectA,   // 物件 A
-    std::shared_ptr<GameWorld::BaseObject> baseObjectB,   // 物件 B
-    TriggerType triggerType,                              // 觸發類型：接觸或分離
-    int duration                                          // 需要持續的幀數
+    b2ShapeId shapeA,           // Shape A handle
+    b2ShapeId shapeB,           // Shape B handle
+    TriggerType triggerType,    // 觸發類型：接觸或分離
+    int duration                // 需要持續的幀數
 );
 ```
 
@@ -25,71 +25,54 @@ OneToOneContactPass(
 
 ```cpp
 OneToOneContactPass(
-    std::shared_ptr<GameWorld::BaseObject> baseObject,    // 物件
-    TriggerType triggerType,                              // 觸發類型
-    int duration                                          // 需要持續的幀數
+    b2ShapeId shape,            // Shape handle
+    TriggerType triggerType,    // 觸發類型
+    int duration                // 需要持續的幀數
 );
 ```
 
 **參數說明**:
-- `baseObjectA/B`: 要檢測的兩個基礎物件指標
+- `shapeA` / `shapeB`: 要檢測的兩個 shape handle (`b2ShapeId`)
 - `triggerType`: 接觸 (TOUCHING) 或分離 (SEPARATED)
 - `duration`: 條件需維持的幀數，防止誤判
 
 ## 方法
 
-### `void AttachToWorld(b2WorldId world)`
+### `void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) override`
 
-將過關條件掛載到物理世界，並同步儲存目標物件的 shape handle。
-
-**參數**:
-- `world`: Box2D 世界 handle
-
-### `void OnContactEvent(b2ShapeId fixtureA, b2ShapeId fixtureB, TriggerType triggerType) override`
-
-處理碰撞事件的內部實作。當指定的兩個 shape 發生接觸或分離時呼叫。
+處理碰撞事件的內部實作。當指定的兩個 shape 發生接觸或分離時呼叫。會檢查事件中的 shape handle 是否與預設的 shapeA/shapeB 匹配，若匹配則遞增計時器；否則重設計時器。
 
 **參數**:
-- `fixtureA`: 第一個碰撞 shape handle
-- `fixtureB`: 第二個碰撞 shape handle
+- `shapeA`: 第一個碰撞 shape handle
+- `shapeB`: 第二個碰撞 shape handle
 - `triggerType`: 觸發類型
 
-## 成員變數
+## 成員變數 (私有)
 
 | 名稱 | 類型 | 說明 |
 |------|------|------|
-| `m_BaseObjectA` | `std::shared_ptr<GameWorld::BaseObject>` | 物件 A (私有) |
-| `m_BaseObjectB` | `std::shared_ptr<GameWorld::BaseObject>` | 物件 B (私有，可為 nullptr) |
-| `m_FixtureA` | `b2ShapeId` | Shape A handle (內部使用) |
-| `m_FixtureB` | `b2ShapeId` | Shape B handle (內部使用，可為 null) |
+| `m_ShapeA` | `b2ShapeId` | Shape A handle (`b2_nullShapeId` 表示未設定) |
+| `m_ShapeB` | `b2ShapeId` | Shape B handle (`b2_nullShapeId` 表示未設定) |
 
 ## 繼承關係
 
 - **繼承自**: `PassCondition`
-- **父類別方法**:
-  - `AttachToWorld()`: 掛載到物理世界
-  - `ConsumeContactEvents()`: 讀取本幀碰撞事件
-  - `Update()`: 更新計時器
-  - `Check()`: 檢查是否過關
+- **子類別**: 無
 
-## 使用範例
+## 使用流程
 
 ```cpp
-// 創建一個 OneToOneContactPass，當球體放入盒子內即過關
-auto ball = std::make_shared<BaseObject>(...);
-auto box = std::make_shared<BaseObject>(...);
+// 建立過關條件：當 shapeA 與 shapeB 接觸持續 60 幀即過關
+auto condition = std::make_shared<OneToOneContactPass>(shapeA, shapeB, TriggerType::TOUCHING, 60);
 
-auto passCondition = new OneToOneContactPass(
-    ball,      // 球體物件
-    box,       // 盒子物件
-    TriggerType::TOUCHING,  // 接觸時觸發
-    60         // 需要持續 60 幀 (約 1 秒)
-);
+// 每幀檢查
+if (condition->Check(physicalWorld->GetContactEvents())) {
+    // 過關！
+}
 ```
 
 ## 相關類別
 
-- **PassCondition**: 過關條件基類，定義通用介面
-- **TriggerType**: 觸發類型列舉 (TOUCHING, SEPARATED)
-- **BaseObject**: 基礎物件，代表物理世界中的實體
-- **PhysicalWorld**: 管理過關條件並執行檢測
+- **PassCondition**: 父類別，過關條件基類
+- **TriggerType**: 觸發類型列舉
+- **PhysicalWorld**: 提供 contact events

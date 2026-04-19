@@ -8,11 +8,15 @@
 
 | 文檔                                              | 說明                             |
 | ------------------------------------------------- | -------------------------------- |
-| [BaseObject](GameWorld/BaseObject.md)             | 基礎物理物件類別                 |
-| [CompositeObject](GameWorld/CompositeObject.md)   | 複合物件，由多個 BaseObject 組成 |
-| [CoordinateHelper](GameWorld/CoordinateHelper.md) | 座標轉換工具 (像素 ↔ 公尺)       |
+| [Shape](GameWorld/Shape.md)                       | 形狀抽象基類 (Circle, Rectangle, Capsule) |
+| [Circle](GameWorld/Circle.md)                     | 圓形碰撞體                       |
+| [Rectangle](GameWorld/Rectangle.md)               | 矩形碰撞體                       |
+| [Capsule](GameWorld/Capsule.md)                   | 膠囊形碰撞體                     |
+| [CompositeObject](GameWorld/CompositeObject.md)   | 複合物件，由多個 Shape 組成      |
 | [DrawnObject](GameWorld/DrawnObject.md)           | 玩家繪製的物件                   |
-| [MagnetObject](GameWorld/MagnetObject.md)         | 具有磁力效果的物件               |
+| [Boundary](GameWorld/Boundary.md)                 | 地圖邊界物件                     |
+| [DrawingIndicator](GameWorld/DrawingIndicator.md) | 繪製指示器 (視覺回饋)            |
+| [CoordinateHelper](GameWorld/CoordinateHelper.md) | 座標轉換工具 (像素 ↔ 公尺)       |
 | [PhysicalWorld](GameWorld/PhysicalWorld.md)       | 物理世界管理員                   |
 
 ### Level - 關卡系統
@@ -46,6 +50,7 @@
 | [LobbyScreen](Screen/LobbyScreen.md)       | 大廳畫面，供玩家選擇關卡 |
 | [SettingsScreen](Screen/SettingsScreen.md) | 設定畫面                 |
 | [GameScreen](Screen/GameScreen.md)         | 遊戲進行畫面             |
+| [ResultScreen](Screen/ResultScreen.md)     | 結果畫面 (關卡完成後顯示) |
 
 ### App - 應用程式核心
 
@@ -53,28 +58,34 @@
 | ------------- | ---------------------------------- |
 | [App](App.md) | 應用程式核心，管理狀態機與生命週期 |
 
+### Progress - 進度追蹤
+
+| 文檔                                      | 說明                     |
+| ----------------------------------------- | ------------------------ |
+| [ProgressStore](Progress/ProgressStore.md) | 進度存檔 (JSON 持久化)   |
+
 ## 系統架構概述
 
 ### 更新流程鏈
 
 ```
 App::Update()
-    ↓ (根據 m_ScreenType 分派)
+    ↓ (根據 GetNextScreenType != GetScreenType 切換畫面)
 UIScreen::Update()
     ↓
 Level::Update()
     ↓ (並行執行)
-├── PhysicalWorld::Update()      // 物理模擬
-├── PassCondition::Update()      // 過關條件檢測
+├── PhysicalWorld::Update()      // Box2D 物理模擬
+├── PassCondition::Check(...)    // 過關條件檢測
 └── LevelHUD::UpdateTimer()      // HUD 更新
 ```
 
 ### 畫面切換流程
 
 ```
-MenuScreen → LobbyScreen → GameScreen
-    ↓           ↓            ↓
-Settings   Level Select  Finished
+LobbyScreen → MenuScreen → GameScreen → ResultScreen → MenuScreen
+    ↓            ↓
+Settings   Level Select (自動)
 ```
 
 ## 相關資源

@@ -1,6 +1,6 @@
 # App
 
-**檔案**: `include/App.hpp`
+**檔案**: `include/App.hpp`, `src/App.cpp`
 
 應用程式核心，管理整個遊戲的生命週期與狀態機。
 
@@ -29,66 +29,89 @@
 ### `void Start()`
 
 啟動應用程式。執行以下操作：
-1. 初始化 PTSD 框架
-2. 建立初始畫面 (主選單)
-3. 準備進入 UPDATE 狀態
+1. 載入或建立進度存檔 (`ProgressStore::LoadOrCreateDefault()`)
+2. 播放背景音樂 (`BGM("Resources/Audios/BGM.mp3")`)
+3. 設定初始畫面為 LOBBY (`LobbyScreen`)
+4. 準備進入 UPDATE 狀態
 
 ### `void Update()`
 
 更新應用程式狀態。每幀執行以下邏輯：
-1. 根據當前畫面類型呼叫對應畫面的 Update 方法
-2. 處理畫面切換邏輯
-3. 更新關卡狀態
+1. 從當前畫面取得 `GetScreenType()` 與 `GetNextScreenType()`
+2. 若兩者不同，根據 `m_ScreenType` 建立新的畫面物件並切換
+3. 呼叫 `m_Screen->Update()` 更新當前畫面
+4. 檢查退出輸入 (`Util::Input::IfExit()`)，若是則進入 END 狀態
 
-**流程**:
+**畫面切換邏輯**:
 ```cpp
 switch (m_ScreenType) {
-    case ScreenType::LOBBY:
-        m_Screen->Update();
-        // 檢查是否需要切換到 MENU、SETTINGS 或 GAME
+    case UI::ScreenType::LOBBY:
+        m_Screen = std::make_unique<UI::LobbyScreen>();
         break;
-    case ScreenType::MENU:
-        static_cast<MenuScreen*>(m_Screen.get())->Update();
+    case UI::ScreenType::SETTINGS:
+        m_Screen = std::make_unique<UI::SettingsScreen>();
         break;
-    // ... 其他畫面
+    case UI::ScreenType::MENU:
+        m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId, &m_ProgressStore);
+        break;
+    case UI::ScreenType::GAME:
+        m_Screen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
+        break;
+    case UI::ScreenType::RESULT: {
+        // 從 GameScreen 取得結算資料，更新進度後儲存
+        LevelResultData resultData{};
+        if (static_cast<UI::GameScreen*>(m_Screen.get())->TryGetResultData(&resultData)) {
+            m_ProgressStore.UpdateBestStars(resultData.levelId, ...);
+            m_ProgressStore.Save();
+        }
+        m_Screen = std::make_unique<UI::ResultScreen>(&m_SelectedLevelId, resultData);
+        break;
+    }
 }
 ```
 
 ### `void End()`
 
 結束應用程式。執行清理工作：
-1. 釋放所有資源
-2. 關閉框架
-3. 準備退出程式
+1. 記錄追蹤訊息 (`LOG_TRACE`)
 
 ## 成員變數 (私有)
 
 | 名稱 | 類型 | 說明 |
 |------|------|------|
 | `m_CurrentState` | `State` | 當前應用程式狀態 (預設 START) |
-| `m_ScreenType` | `Screen::ScreenType` | 當前畫面類型 |
-| `m_Screen` | `std::unique_ptr<UIScreen>` | 當前畫面的指標 |
+| `m_ScreenType` | `UI::ScreenType` | 當前畫面類型 |
+| `m_Screen` | `std::unique_ptr<UI::UIScreen>` | 當前畫面的指標 |
 | `m_SelectedLevelId` | `LevelId` | 玩家選擇的關卡 ID |
+| `m_ProgressStore` | `ProgressStore` | 進度存檔管理器 |
 
 ## 相關類別
 
 - **UIScreen**: 抽象基類，定義所有畫面的共同介面
+- **LobbyScreen**: 大廳畫面 (初始畫面)
 - **MenuScreen**: 主選單畫面
-- **LobbyScreen**: 大廳畫面
-- **SettingsScreen**: 設定畫面
 - **GameScreen**: 遊戲進行畫面
+- **ResultScreen**: 結果畫面
+- **SettingsScreen**: 設定畫面
 - **Level**: 關卡控制器
+- **ProgressStore**: 進度存檔管理
 
 ## App 生命週期
 
 ```
 1. Start()
+   → LoadOrCreateDefault()
+   → BGM.Play()
+   → m_Screen = LobbyScreen
    ↓
 2. UPDATE 狀態，每幀執行 Update()
+   → 檢查畫面切換 (GetNextScreenType != GetScreenType)
+   → 建立新畫面並替換 m_Screen
    → m_Screen->Update()
-   → 處理畫面切換
+   → 檢查退出輸入
    ↓
 3. End()
+   → LOG_TRACE("End")
    ↓
 4. 程式結束
 ```
@@ -97,3 +120,4 @@ switch (m_ScreenType) {
 
 - `src/App.cpp`: App 類別的實作檔案
 - `include/Screen/UIScreen.hpp`: 畫面基類
+- `include/Progress/ProgressStore.hpp`: 進度存檔管理

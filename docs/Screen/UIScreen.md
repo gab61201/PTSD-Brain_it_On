@@ -25,6 +25,7 @@
 | `SETTINGS` | 設定畫面 |
 | `MENU` | 主選單畫面 |
 | `GAME` | 遊戲進行畫面 |
+| `RESULT` | 結果畫面，顯示關卡完成後的星星與統計 |
 
 ## 建構式
 
@@ -49,7 +50,7 @@ virtual ~UIScreen() = default;
 
 **純虛函式**: 子類別必須實作
 
-**回傳值**: 下一畫面類型 (`LOBBY`, `SETTINGS`, `MENU`, `GAME`)
+**回傳值**: 下一畫面類型 (`LOBBY`, `SETTINGS`, `MENU`, `GAME`, `RESULT`)
 
 ### `virtual ScreenType GetScreenType() const = 0`
 
@@ -57,7 +58,7 @@ virtual ~UIScreen() = default;
 
 **純虛函式**: 子類別必須實作
 
-**回傳值**: 當前畫面類型 (`LOBBY`, `SETTINGS`, `MENU`, `GAME`)
+**回傳值**: 當前畫面類型 (`LOBBY`, `SETTINGS`, `MENU`, `GAME`, `RESULT`)
 
 ## 成員變數 (受保護)
 
@@ -75,21 +76,24 @@ virtual ~UIScreen() = default;
   - `LobbyScreen`: 大廳
   - `SettingsScreen`: 設定
   - `GameScreen`: 遊戲進行
+  - `ResultScreen`: 結果畫面
 
 ## App 整合流程
 
 ```cpp
-// App.hpp 中的使用方式
-enum class ScreenType { ... };
-std::unique_ptr<UIScreen> m_Screen;
-
+// App::Update() 中的使用方式
 void Update() {
-    switch (m_ScreenType) {
-        case ScreenType::MENU:
-            static_cast<MenuScreen*>(m_Screen.get())->Update();
-            break;
-        // ... 其他畫面
+    const ScreenType currentScreenType = m_Screen->GetScreenType();
+    m_ScreenType = m_Screen->GetNextScreenType();
+    if (m_ScreenType != currentScreenType) {
+        switch (m_ScreenType) {
+            case UI::ScreenType::LOBBY:
+                m_Screen = std::make_unique<UI::LobbyScreen>();
+                break;
+            // ... 其他畫面切換邏輯
+        }
     }
+    m_Screen->Update();
 }
 ```
 
@@ -99,5 +103,6 @@ void Update() {
 - **LobbyScreen**: 大廳實現
 - **SettingsScreen**: 設定實現
 - **GameScreen**: 遊戲進行實現
+- **ResultScreen**: 結果實現
 - **UI::Button**: 按鈕元件
 - **UI::Element**: UI 工具集合
