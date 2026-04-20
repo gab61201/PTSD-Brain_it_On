@@ -24,7 +24,11 @@ class PassCondition {
         int duration);
     virtual ~PassCondition() = default;
 
+    // 檢查是否達成通關條件
     bool Check(b2ContactEvents events);
+
+    // 取得接觸倒數計時器的剩餘時間（無接觸回傳 0）
+    int GetContactCountDown() const;
 
    protected:
     virtual void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) = 0;

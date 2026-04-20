@@ -26,6 +26,9 @@ class LevelHUD {
     /// 更新筆劃限制顯示
     void UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit);
 
+    /// 更新接觸倒數計時器顯示
+    void UpdateContactTimer(int contactCountDown);
+
     /// 繪製所有 HUD 元素
     void Update();
 
@@ -36,6 +39,8 @@ class LevelHUD {
     std::shared_ptr<Util::GameObject> m_TargetTextObject;
     std::shared_ptr<Util::Text> m_StrokeLimitText;
     std::shared_ptr<Util::GameObject> m_StrokeLimitObject;
+    std::shared_ptr<Util::Text> m_ContactTimerText;
+    std::shared_ptr<Util::GameObject> m_ContactTimerObject;
 };
 
 #endif

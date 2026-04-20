@@ -88,6 +88,15 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
     m_StrokeLimitObject = std::make_shared<Util::GameObject>(m_StrokeLimitText, 0.5f);
     m_StrokeLimitObject->m_Transform.translation = {LEFT_UI_X + 8.0f, 7.0f};
     m_Renderer.AddChild(m_StrokeLimitObject);
+
+    // 8. 接觸倒數計時器（初始為隱藏）
+    m_ContactTimerText = std::make_shared<Util::Text>(
+        "PTSD/assets/fonts/Inter.ttf", 256, " ",
+        Util::Color::FromRGB(255, 255, 255));
+    m_ContactTimerObject =
+        std::make_shared<Util::GameObject>(m_ContactTimerText, 0.5f);
+    m_ContactTimerObject->SetVisible(false);  // 初始隱藏
+    m_Renderer.AddChild(m_ContactTimerObject);
 }
 
 void LevelHUD::UpdateTimer(float remainingTime) {
@@ -126,6 +135,14 @@ void LevelHUD::UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit) {
     }
 }
 
+void LevelHUD::UpdateContactTimer(int contactCountDown) {
+    if (m_ContactTimerText) {
+        m_ContactTimerObject->SetVisible(true);  // 顯示接觸倒數計時器
+        m_ContactTimerText->SetText(std::to_string(contactCountDown));
+    }
+}
+
 void LevelHUD::Update() {
     m_Renderer.Update();
+    m_ContactTimerObject->SetVisible(false);  // 每幀更新後隱藏接觸倒數計時器，直到下一次需要顯示
 }
