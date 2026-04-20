@@ -31,7 +31,7 @@ LevelData LevelData_1() {
     auto circleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{circlePart},
         GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)
-        glm::vec2(15.0F, 400.0F)       // 絕對位置：放在方塊正上方再稍微偏右，製造不平衡的撞擊！
+        glm::vec2(100.0F, 200.0F)       // 絕對位置：放在方塊正上方再稍微偏右，製造不平衡的撞擊！
     );
 
     auto capsulePart = std::make_shared<GameWorld::Capsule>(
@@ -42,7 +42,7 @@ LevelData LevelData_1() {
     auto capsuleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{capsulePart},
         GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)
-        glm::vec2(-15.0F, 400.0F)       // 絕對位置：放在方塊正上方再稍微偏左，製造不平衡的撞擊！
+        glm::vec2(-100.0F, 200.0F)       // 絕對位置：放在方塊正上方再稍微偏左，製造不平衡的撞擊！
     );
     // ==========================================
     // 3. 建立 600x600 px 邊界（置中）

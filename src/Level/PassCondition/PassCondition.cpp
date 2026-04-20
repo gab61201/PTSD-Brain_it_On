@@ -27,3 +27,11 @@ bool PassCondition::Check(b2ContactEvents events) {
     }
     return m_Timer > m_Duration * FPS;
 }
+
+
+int PassCondition::GetContactCountDown() const {
+    if (m_Timer > 0) {
+        return m_Duration - m_Timer / FPS;
+    }
+    return 0;
+}
