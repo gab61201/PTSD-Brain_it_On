@@ -61,7 +61,9 @@ void ProgressStore::LoadOrCreateDefault() {
     }
 
     if (!std::filesystem::exists(m_SavePath)) {
-        Save();
+        if (!Save()) {
+            LOG_WARN("Failed to initialize progress file: '{}'", m_SavePath.string());
+        }
         return;
     }
 
@@ -97,7 +99,9 @@ void ProgressStore::LoadOrCreateDefault() {
     } catch (const std::exception& e) {
         LOG_WARN("Progress file is invalid, fallback to empty progress. reason='{}'", e.what());
         m_BestConditions.clear();
-        Save();
+        if (!Save()) {
+            LOG_WARN("Failed to rewrite fallback progress file: '{}'", m_SavePath.string());
+        }
     }
 }
 
@@ -171,6 +175,20 @@ bool ProgressStore::UpdateBestStars(LevelId levelId, const StarConditions& condi
     }
 
     return false;
+}
+
+bool ProgressStore::ApplyResultAndSave(const LevelResultData& resultData) {
+    const StarConditions conditions = CalculateConditions(resultData);
+    if (!UpdateBestStars(resultData.levelId, conditions)) {
+        return true;
+    }
+
+    if (!Save()) {
+        LOG_WARN("Failed to save progress file");
+        return false;
+    }
+
+    return true;
 }
 
 int ProgressStore::GetTotalStars() const {
