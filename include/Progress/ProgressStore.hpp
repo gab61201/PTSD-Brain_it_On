@@ -21,13 +21,13 @@ class ProgressStore {
     StarConditions GetConditions(LevelId levelId) const;
     int GetTotalStars() const;
 
-    // Update APIs - only upgrade strategy
-    bool UpdateBestStars(LevelId levelId, const StarConditions& conditions);
-
-    // Static helpers
-    static StarConditions CalculateConditions(const LevelResultData& resultData);
+    // Returns true if result application succeeds (including no-change); false if save fails.
+    bool ApplyResultAndSave(const LevelResultData& resultData);
 
    private:
+    bool UpdateBestStars(LevelId levelId, const StarConditions& conditions);
+    static StarConditions CalculateConditions(const LevelResultData& resultData);
+
     static std::string LevelKey(LevelId levelId);
     static int CountStars(const StarConditions& conditions);
 

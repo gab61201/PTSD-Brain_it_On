@@ -37,22 +37,8 @@ void App::Update() {
                 m_Screen = std::make_unique<UI::GameScreen>(&m_SelectedLevelId);
                 break;
             case UI::ScreenType::RESULT:
-                LevelResultData resultData{};
-                if (currentScreenType != UI::ScreenType::GAME ||
-                    !static_cast<UI::GameScreen*>(m_Screen.get())->TryGetResultData(&resultData)) {
-                    LOG_WARN("TryGetResultData failed during RESULT transition, fallback to MENU");
-                    m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId, &m_ProgressStore);
-                    break;
-                }
-
-                {
-                    const auto conditions = ProgressStore::CalculateConditions(resultData);
-                    if (m_ProgressStore.UpdateBestStars(resultData.levelId, conditions)) {
-                        if (!m_ProgressStore.Save()) {
-                            LOG_WARN("Failed to save progress file");
-                        }
-                    }
-                }
+                const LevelResultData resultData = static_cast<UI::GameScreen*>(m_Screen.get())->GetResultData();
+                m_ProgressStore.ApplyResultAndSave(resultData);
 
                 m_Screen = std::make_unique<UI::ResultScreen>(&m_SelectedLevelId, resultData);
                 break;

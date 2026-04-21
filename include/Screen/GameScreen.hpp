@@ -16,7 +16,7 @@ class GameScreen : public UIScreen {
 
     ScreenType GetScreenType() const override;
 
-    bool TryGetResultData(LevelResultData* outResult) const;
+    LevelResultData GetResultData() const;
 
    private:
     Level m_Level;
