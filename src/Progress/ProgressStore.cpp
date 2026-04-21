@@ -180,15 +180,15 @@ bool ProgressStore::UpdateBestStars(LevelId levelId, const StarConditions& condi
 bool ProgressStore::ApplyResultAndSave(const LevelResultData& resultData) {
     const StarConditions conditions = CalculateConditions(resultData);
     if (!UpdateBestStars(resultData.levelId, conditions)) {
+        // nothing to save
         return true;
     }
 
-    if (!Save()) {
-        LOG_WARN("Failed to save progress file");
-        return false;
+    if (Save()) {
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 int ProgressStore::GetTotalStars() const {
