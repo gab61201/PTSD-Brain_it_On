@@ -13,7 +13,6 @@ namespace {
 
 constexpr int MENU_CARD_COUNT = 10;
 constexpr int MENU_COLUMNS = 5;
-constexpr int PROMPT_DURATION_FRAMES = 120;
 
 constexpr float PANEL_WIDTH = 1.88f;
 constexpr float PANEL_HEIGHT = 1.42f;
@@ -77,10 +76,6 @@ bool IsLevelUnlocked(int index) {
     return registry.find(levelId) != registry.end();
 }
 
-std::string BuildLockedPrompt(int levelNumber) {
-    return "Level " + std::to_string(levelNumber) + " is not available";
-}
-
 }  // namespace
 
 namespace UI {
@@ -105,13 +100,6 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
         Util::Color::FromRGB(255, 255, 255),
         1.0f);
     m_Renderer.AddChild(totalStarsText);
-
-    m_PromptText = std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 28, " ",
-                                                Util::Color::FromRGB(255, 97, 97));
-    m_PromptObject = std::make_shared<Util::GameObject>(m_PromptText, 1.2f);
-    m_PromptObject->m_Transform.translation = {0.0f, 260.0f};
-    m_PromptObject->SetVisible(false);
-    m_Renderer.AddChild(m_PromptObject);
 
     auto backButton = UI::Element::CircleButton([this]() {
         m_NextScreenType = ScreenType::LOBBY;
@@ -140,11 +128,6 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
         auto cardButton = UI::Element::SquareButton(
             [this, index, unlocked, levelNumber]() {
                 if (!unlocked || !m_LevelId) {
-                    if (m_PromptText && m_PromptObject) {
-                        m_PromptText->SetText(BuildLockedPrompt(levelNumber));
-                        m_PromptObject->SetVisible(true);
-                        m_PromptFramesRemaining = PROMPT_DURATION_FRAMES;
-                    }
                     return;
                 }
 
@@ -182,13 +165,6 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
 void MenuScreen::Update() {
     for (auto button : m_Buttons) {
         button->Update();
-    }
-
-    if (m_PromptFramesRemaining > 0) {
-        --m_PromptFramesRemaining;
-        if (m_PromptFramesRemaining == 0 && m_PromptObject) {
-            m_PromptObject->SetVisible(false);
-        }
     }
 
     m_Renderer.Update();
