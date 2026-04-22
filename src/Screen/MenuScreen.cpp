@@ -67,7 +67,7 @@ glm::vec2 GetCardPosition(int index) {
 }
 
 bool IsLevelUnlocked(int index) {
-    if (index < 0 || index >= static_cast<int>(LevelId::LEVEL_5) + 1) {
+    if (index < 0) {
         return false;
     }
 
@@ -160,7 +160,7 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
 }
 
 void MenuScreen::Update() {
-    for (auto button : m_Buttons) {
+    for (const auto& button : m_Buttons) {
         button->Update();
     }
 
