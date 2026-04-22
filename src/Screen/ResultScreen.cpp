@@ -16,7 +16,7 @@ std::shared_ptr<Util::GameObject> CreateTextObject(
     const Util::Color& color,
     float z = 1.0f) {
     auto drawable =
-        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", size, text, color);
+        std::make_shared<Util::Text>("Resources/Fonts/Inter.ttf", size, text, color);
     auto object = std::make_shared<Util::GameObject>(drawable, z);
     object->m_Transform.translation = position;
     return object;

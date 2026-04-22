@@ -8,7 +8,7 @@ SettingsScreen::SettingsScreen() {
 
     auto title = std::make_shared<Util::GameObject>();
     title->SetDrawable(
-        std::make_shared<Util::Text>("PTSD/assets/fonts/Inter.ttf", 48, "SettingsScreen"));
+        std::make_shared<Util::Text>("Resources/Fonts/Inter.ttf", 48, "SettingsScreen"));
     m_Renderer.AddChild(title);
 }
 

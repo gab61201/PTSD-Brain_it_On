@@ -77,16 +77,6 @@ else()
         ${CMAKE_CURRENT_SOURCE_DIR}/Resources
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources
     )
-
-    # 強制覆寫 PTSD 引擎的巨集，讓它也使用相對路徑尋找 Shader
-    target_compile_definitions(PTSD PRIVATE PTSD_ASSETS_DIR="assets/")
-
-    # 將 PTSD 引擎的 assets 資料夾也複製到執行檔旁邊
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/PTSD/assets
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
-    )
 endif()
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${DEPENDENCY_INCLUDE_DIRS})

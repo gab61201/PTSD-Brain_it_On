@@ -15,7 +15,7 @@ std::shared_ptr<Util::GameObject> CreateTargetText(
     auto targetText = std::make_shared<Util::GameObject>();
     if (!text.empty()) {
         targetText->SetDrawable(std::make_shared<Util::Text>(
-            "PTSD/assets/fonts/Inter.ttf", 30, text,
+            "Resources/Fonts/Inter.ttf", 30, text,
             Util::Color::FromRGB(255, 255, 255)));
         targetText->m_Transform.translation = {0.0f, 250.0f};
     }
@@ -23,10 +23,10 @@ std::shared_ptr<Util::GameObject> CreateTargetText(
 }
 
 std::shared_ptr<Util::GameObject> CreateLevelNumberText(LevelId id,
-                                                         float x) {
+                                                        float x) {
     int levelNum = static_cast<int>(id) + 1;
     auto drawable = std::make_shared<Util::Text>(
-        "PTSD/assets/fonts/Inter.ttf", 36, std::to_string(levelNum),
+        "Resources/Fonts/Inter.ttf", 36, std::to_string(levelNum),
         Util::Color::FromRGB(255, 255, 255));
     auto obj = std::make_shared<Util::GameObject>(drawable, 0.5f);
     obj->m_Transform.translation = {x + 8, 290.0f};
@@ -60,7 +60,7 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
 
     // 4. 計時器文字
     m_TimerText = std::make_shared<Util::Text>(
-        "PTSD/assets/fonts/Inter.ttf", 26, "0.0",
+        "Resources/Fonts/Inter.ttf", 26, "0.0",
         Util::Color::FromRGB(255, 255, 255));
     m_TimerObject =
         std::make_shared<Util::GameObject>(m_TimerText, 0.5f);
@@ -82,7 +82,7 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
 
     // 7. 限制筆劃次數文字
     m_StrokeLimitText = std::make_shared<Util::Text>(
-        "PTSD/assets/fonts/Inter.ttf", 24,
+        "Resources/Fonts/Inter.ttf", 24,
         std::to_string(strokeLimit) + "/" + std::to_string(strokeLimit),
         Util::Color::FromRGB(255, 255, 255));
     m_StrokeLimitObject = std::make_shared<Util::GameObject>(m_StrokeLimitText, 0.5f);
@@ -91,7 +91,7 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
 
     // 8. 接觸倒數計時器（初始為隱藏）
     m_ContactTimerText = std::make_shared<Util::Text>(
-        "PTSD/assets/fonts/Inter.ttf", 256, " ",
+        "Resources/Fonts/Inter.ttf", 256, " ",
         Util::Color::FromRGB(255, 255, 255));
     m_ContactTimerObject =
         std::make_shared<Util::GameObject>(m_ContactTimerText, 0.5f);
