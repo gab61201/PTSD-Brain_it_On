@@ -126,7 +126,7 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
         m_Renderer.AddChild(cardBackground);
 
         auto cardButton = UI::Element::SquareButton(
-            [this, index, unlocked, levelNumber]() {
+            [this, index, unlocked]() {
                 if (!unlocked || !m_LevelId) {
                     return;
                 }
@@ -134,14 +134,11 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
                 *m_LevelId = static_cast<LevelId>(index);
                 m_NextScreenType = ScreenType::GAME;
             },
-            "Resources/Images/Btn_MainButton_Gray.png");
+            GetThumbnailPath(levelNumber));
         cardButton->m_Transform.translation = cardPosition;
-        cardButton->m_Transform.scale = {CARD_SCALE, CARD_SCALE};
+        cardButton->m_Transform.scale = {THUMB_SCALE, THUMB_SCALE};
         m_Buttons.push_back(cardButton);
         m_Renderer.AddChild(cardButton);
-
-        auto thumbnail = CreateImageObject(GetThumbnailPath(levelNumber), cardPosition, {THUMB_SCALE, THUMB_SCALE}, 0.6f);
-        m_Renderer.AddChild(thumbnail);
 
         auto levelText = CreateTextObject(std::to_string(levelNumber), 30,
                                           {cardPosition.x + 8.0f, cardPosition.y + 6.0f},
