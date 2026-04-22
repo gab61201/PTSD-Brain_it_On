@@ -166,21 +166,23 @@ void Context::SetWindowIcon(const std::string &path) {
 }
 
 void Context::TakeScreenshot(int levelId) {
-    const int width = WINDOW_WIDTH;
-    const int height = WINDOW_HEIGHT;
-    const int stride = width * 4;
+    const int screenshotWidth = 840;
+    const int screenshotHeight = 640;
+    const int xOff = (WINDOW_WIDTH - screenshotWidth) / 2;
+    const int yOff = (WINDOW_HEIGHT - screenshotHeight) / 2;
+    const int stride = screenshotWidth * 4;
 
-    std::vector<Uint8> buffer(static_cast<size_t>(height) * stride);
-    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
+    std::vector<Uint8> buffer(static_cast<size_t>(screenshotHeight) * stride);
+    glReadPixels(xOff, yOff, screenshotWidth, screenshotHeight, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
 
-    for (int y1 = 0, y2 = height - 1; y1 < y2; ++y1, --y2) {
+    for (int y1 = 0, y2 = screenshotHeight - 1; y1 < y2; ++y1, --y2) {
         Uint8 *row1 = buffer.data() + static_cast<size_t>(y1) * stride;
         Uint8 *row2 = buffer.data() + static_cast<size_t>(y2) * stride;
         std::swap_ranges(row1, row1 + stride, row2);
     }
 
     SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(
-        buffer.data(), width, height, 32, stride,
+        buffer.data(), screenshotWidth, screenshotHeight, 32, stride,
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
         0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
 #else
