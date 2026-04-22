@@ -54,10 +54,18 @@ add_executable(${PROJECT_NAME}
     ${INCLUDE_FILES}
 )
 
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
+    # Release 模式使用相對路徑
+    target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="Resources")
+
+    # 建置完成後，自動將 Resources 資料夾複製到執行檔所在的目錄
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/Resources
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources
+    )
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
