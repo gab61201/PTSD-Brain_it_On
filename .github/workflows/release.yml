@@ -1,0 +1,62 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*' # 當你 push 例如 v1.0.0 的標籤時觸發
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: PTSD-Brain_it_On-Windows.zip
+            executable_name: PTSD-Brain_it_On.exe
+          - os: ubuntu-latest
+            artifact_name: PTSD-Brain_it_On-Linux.tar.gz
+            executable_name: PTSD-Brain_it_On
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # (僅限 Linux) 安裝 SDL2 依賴，因為 PTSD 有用到 SDL2
+      - name: Install Linux Dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      # 打包檔案 (包含執行檔和資源檔)
+      - name: Package for Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          mkdir release_package
+          copy build\Release\${{ matrix.executable_name }} release_package\
+          xcopy Resources release_package\Resources\ /E /I
+          Compress-Archive -Path release_package\* -DestinationPath ${{ matrix.artifact_name }}
+
+      - name: Package for Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          mkdir release_package
+          cp build/${{ matrix.executable_name }} release_package/
+          cp -r Resources release_package/
+          tar -czvf ${{ matrix.artifact_name }} -C release_package .
+
+      # 上傳檔案到 GitHub Release
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.artifact_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
