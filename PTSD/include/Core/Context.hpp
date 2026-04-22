@@ -36,6 +36,8 @@ public:
     void Setup();
     void Update();
 
+    static void TakeScreenshot();
+
 private:
     SDL_Window *m_Window;
     SDL_GLContext m_GlContext;

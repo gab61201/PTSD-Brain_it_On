@@ -1,7 +1,9 @@
 #include "Screen/GameScreen.hpp"
 
+#include "Core/Context.hpp"
 #include "Util/Image.hpp"
 #include "Level/LevelData.hpp"
+#include "Util/Keycode.hpp"
 
 namespace UI {
 
@@ -35,6 +37,10 @@ void GameScreen::Update() {
 
     m_Renderer.Update();
     m_Level.Update();
+
+    if (Util::Input::IsKeyDown(Util::Keycode::F9)) {
+        Core::Context::TakeScreenshot();
+    }
 
     if (m_Level.GetState() == Level::State::FINISHED) {
         m_NextScreenType = ScreenType::RESULT;

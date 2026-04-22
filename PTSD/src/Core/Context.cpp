@@ -1,5 +1,6 @@
 #include "Core/Context.hpp"
 
+#include <ctime>
 #include <memory>
 
 #include "Core/DebugMessageCallback.hpp"
@@ -161,5 +162,47 @@ std::shared_ptr<Context> Context::GetInstance() {
 void Context::SetWindowIcon(const std::string &path) {
     SDL_Surface *image = IMG_Load(path.c_str());
     SDL_SetWindowIcon(m_Window, image);
+}
+
+void Context::TakeScreenshot() {
+    const int width = WINDOW_WIDTH;
+    const int height = WINDOW_HEIGHT;
+    const int stride = width * 4;
+
+    std::vector<Uint8> buffer(static_cast<size_t>(height) * stride);
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
+
+    for (int y1 = 0, y2 = height - 1; y1 < y2; ++y1, --y2) {
+        Uint8 *row1 = buffer.data() + static_cast<size_t>(y1) * stride;
+        Uint8 *row2 = buffer.data() + static_cast<size_t>(y2) * stride;
+        std::swap_ranges(row1, row1 + stride, row2);
+    }
+
+    SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(
+        buffer.data(), width, height, 32, stride,
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+        0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
+#else
+        0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF
+#endif
+    );
+
+    if (surface == nullptr) {
+        LOG_ERROR("Failed to create SDL surface for screenshot: {}", SDL_GetError());
+        return;
+    }
+
+    time_t now = time(nullptr);
+    struct tm *timeinfo = localtime(&now);
+    char filename[128];
+    strftime(filename, sizeof(filename), "screenshot_%Y%m%d_%H%M%S.bmp", timeinfo);
+
+    if (SDL_SaveBMP(surface, filename) != 0) {
+        LOG_ERROR("Failed to save screenshot: {}", SDL_GetError());
+    } else {
+        LOG_INFO("Screenshot saved: {}", filename);
+    }
+
+    SDL_FreeSurface(surface);
 }
 } // namespace Core
