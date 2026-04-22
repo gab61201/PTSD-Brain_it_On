@@ -37,6 +37,7 @@ FetchContent_Declare(
     # GIT_TAG         <git_tag>
 
     SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/PTSD
+    PATCH_COMMAND git apply "${CMAKE_CURRENT_SOURCE_DIR}/screenshot.patch"
 )
 
 FetchContent_MakeAvailable(ptsd)
