@@ -36,7 +36,7 @@ public:
     void Setup();
     void Update();
 
-    static void TakeScreenshot();
+    static void TakeScreenshot(int levelId);
 
 private:
     SDL_Window *m_Window;

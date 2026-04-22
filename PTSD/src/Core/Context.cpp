@@ -1,6 +1,7 @@
 #include "Core/Context.hpp"
 
-#include <ctime>
+#include <cstdio>
+#include <filesystem>
 #include <memory>
 
 #include "Core/DebugMessageCallback.hpp"
@@ -164,7 +165,7 @@ void Context::SetWindowIcon(const std::string &path) {
     SDL_SetWindowIcon(m_Window, image);
 }
 
-void Context::TakeScreenshot() {
+void Context::TakeScreenshot(int levelId) {
     const int width = WINDOW_WIDTH;
     const int height = WINDOW_HEIGHT;
     const int stride = width * 4;
@@ -192,10 +193,11 @@ void Context::TakeScreenshot() {
         return;
     }
 
-    time_t now = time(nullptr);
-    struct tm *timeinfo = localtime(&now);
+    const std::string dir = "Resources/Images/LevelScreenshots";
+    std::filesystem::create_directories(dir);
+
     char filename[128];
-    strftime(filename, sizeof(filename), "screenshot_%Y%m%d_%H%M%S.bmp", timeinfo);
+    snprintf(filename, sizeof(filename), "Resources/Images/LevelScreenshots/level_%d.bmp", levelId + 1);
 
     if (SDL_SaveBMP(surface, filename) != 0) {
         LOG_ERROR("Failed to save screenshot: {}", SDL_GetError());

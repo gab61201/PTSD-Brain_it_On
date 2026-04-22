@@ -38,11 +38,8 @@ void GameScreen::Update() {
     m_Renderer.Update();
     m_Level.Update();
 
-    if (Util::Input::IsKeyDown(Util::Keycode::F9)) {
-        Core::Context::TakeScreenshot();
-    }
-
     if (m_Level.GetState() == Level::State::FINISHED) {
+        Core::Context::TakeScreenshot(static_cast<int>(m_Level.GetLevelId()));
         m_NextScreenType = ScreenType::RESULT;
         return;
     }
