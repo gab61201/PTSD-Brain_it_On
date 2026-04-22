@@ -23,6 +23,9 @@ class MenuScreen : public UIScreen {
     LevelId* m_LevelId;
     ProgressStore* m_ProgressStore;
     ScreenType m_NextScreenType = ScreenType::MENU;
+    std::shared_ptr<Util::Text> m_PromptText;
+    std::shared_ptr<Util::GameObject> m_PromptObject;
+    int m_PromptFramesRemaining = 0;
 };
 
 }  // namespace UI
