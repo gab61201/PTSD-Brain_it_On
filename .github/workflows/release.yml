@@ -46,7 +46,7 @@ jobs:
           mkdir release_package
           copy build\Release\${{ matrix.executable_name }} release_package\
           xcopy Resources release_package\Resources\ /E /I
-          xcopy PTSD\assets release_package\assets\ /E /I
+          xcopy build\_deps\ptsd-src\assets release_package\assets\ /E /I
           Compress-Archive -Path release_package\* -DestinationPath ${{ matrix.artifact_name }}
 
       - name: Package for Linux
@@ -55,7 +55,7 @@ jobs:
           mkdir release_package
           cp build/${{ matrix.executable_name }} release_package/
           cp -r Resources release_package/
-          cp -r PTSD/assets release_package/
+          cp -r build/_deps/ptsd-src/assets release_package/
           tar -czvf ${{ matrix.artifact_name }} -C release_package .
 
       # 上傳檔案到 GitHub Release
