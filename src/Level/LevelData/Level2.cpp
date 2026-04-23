@@ -21,7 +21,7 @@ LevelData LevelData_2() {
         glm::vec2(0.0F, 200.0F)
     );
 
-    auto boundary = std::make_shared<GameWorld::Boundary>(-350.0F, 350.0F, -350.0F, 350.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
 
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         ballComp, boundary};
