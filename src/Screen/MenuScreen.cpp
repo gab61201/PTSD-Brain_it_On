@@ -49,7 +49,7 @@ std::shared_ptr<Util::GameObject> CreateImageObject(const std::string& path,
 
 std::string GetThumbnailPath(int levelNumber) {
     std::ostringstream thumbnailPath;
-    thumbnailPath << "Resources/Screenshots/level_" << std::setw(2) << std::setfill('0') << levelNumber << ".png";
+    thumbnailPath << "Resources/Save/LevelScreenshots/level_" << levelNumber << ".bmp";
 
     const std::string candidate = thumbnailPath.str();
     if (std::filesystem::exists(candidate)) {
