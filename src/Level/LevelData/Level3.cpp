@@ -1,7 +1,7 @@
+#include "GameWorld/CompositeObject/Boundary.hpp"
+#include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
-#include "GameWorld/Shape/Rectangle.hpp"
-#include "GameWorld/CompositeObject/Boundary.hpp"
 
 LevelData LevelData_3() {
     LevelData data;
@@ -12,29 +12,25 @@ LevelData LevelData_3() {
     // 2. Seesaw Shape
     auto bar = std::make_shared<GameWorld::Rectangle>(
         glm::vec2(500.0F, 20.0F),
-        glm::vec2(0.0F, 0.0F)
-    );
+        glm::vec2(0.0F, 0.0F));
     auto pivot1 = std::make_shared<GameWorld::Rectangle>(
         glm::vec2(20.0F, 100.0F),
-        glm::vec2(0.0F, -60.0F) // centered
+        glm::vec2(0.0F, -60.0F)  // centered
     );
     // Add specific shapes for the tips to check for floor contact and look symmetrical
     auto leftTip = std::make_shared<GameWorld::Rectangle>(
         glm::vec2(20.0F, 20.0F),
-        glm::vec2(-240.0F, -20.0F)
-    );
+        glm::vec2(-240.0F, -20.0F));
     auto rightTip = std::make_shared<GameWorld::Rectangle>(
         glm::vec2(20.0F, 20.0F),
-        glm::vec2(240.0F, -20.0F)
-    );
-    
-    // We start it a bit high, slightly tilted left (rotation = -0.1) so it falls to the left side
+        glm::vec2(240.0F, -20.0F));
+
+    // We start it a bit high, slightly tilted left (rotation = 0.1) so it falls to the left side
     auto seesawComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{bar, pivot1, leftTip, rightTip},
         GameWorld::BodyType::DYNAMIC,
         glm::vec2(0.0F, -100.0F),
-        -0.1F
-    );
+        0.1F);
 
     auto boundary = std::make_shared<GameWorld::Boundary>(-350.0F, 350.0F, -350.0F, 350.0F);
 
@@ -49,11 +45,11 @@ LevelData LevelData_3() {
 }
 
 namespace {
-    struct Register {
-        Register() {
-            RegisterLevel(LevelId::LEVEL_3, LevelData_3);
-        }
-    };
+struct Register {
+    Register() {
+        RegisterLevel(LevelId::LEVEL_3, LevelData_3);
+    }
+};
 
-    static Register reg;
-}
+static Register reg;
+}  // namespace
