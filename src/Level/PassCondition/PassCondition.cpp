@@ -11,8 +11,12 @@ PassCondition::PassCondition(
       m_Duration(duration) {}
 
 bool PassCondition::Check(b2ContactEvents events) {
+    // 通關
     if (m_Timer > m_Duration * FPS) {
         return true;
+    // 未通關，但正在計時中
+    } else if (m_Timer > 0) {
+        m_Timer++;
     }
     for (int i = 0; i < events.beginCount; i++) {
         const b2ContactBeginTouchEvent& event = events.beginEvents[i];
@@ -21,9 +25,6 @@ bool PassCondition::Check(b2ContactEvents events) {
     for (int i = 0; i < events.endCount; i++) {
         const b2ContactEndTouchEvent& event = events.endEvents[i];
         OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::SEPARATED);
-    }
-    if (m_Timer > 0) {
-        m_Timer++;
     }
     return m_Timer > m_Duration * FPS;
 }
