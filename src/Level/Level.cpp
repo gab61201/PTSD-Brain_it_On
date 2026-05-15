@@ -57,7 +57,7 @@ void Level::Playing() {
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
-        Core::Context::TakeScreenshot(static_cast<int>(m_Level.GetLevelId()));
+        Core::Context::TakeScreenshot(static_cast<int>(m_LevelId));
         m_state = State::FINISHED;
         m_World->Stop();
     }
@@ -91,6 +91,16 @@ void Level::Update() {
         m_Time += static_cast<float>(Util::Time::GetDeltaTimeMs()) / 1000.0f;
     }
 
+    // 繪製物體
+    if (m_World) {
+        m_World->Update();
+    }
+
+    // 更新 HUD（計時器、提示文字）
+    m_HUD->UpdateTimer(GetRemainingTime());
+    m_HUD->UpdateStrokeLimit(m_StrokeLimit - m_World->GetDrawnObjectCount(), m_StrokeLimit);
+    m_HUD->Update();
+
     switch (m_state) {
         case State::WAITING:
             Waiting();
@@ -103,14 +113,4 @@ void Level::Update() {
             Playing();
             break;
     }
-
-    // 繪製物體
-    if (m_World) {
-        m_World->Update();
-    }
-
-    // 更新 HUD（計時器、提示文字）
-    m_HUD->UpdateTimer(GetRemainingTime());
-    m_HUD->UpdateStrokeLimit(m_StrokeLimit - m_World->GetDrawnObjectCount(), m_StrokeLimit);
-    m_HUD->Update();
 }

@@ -9,7 +9,7 @@
 
 void App::Start() {
     LOG_TRACE("Start");
-    LoadOrCreateDefault();
+    ProgressStore::LoadOrCreateDefault();
     Util::BGM("Resources/Audios/BGM.mp3").Play();
     m_CurrentState = State::UPDATE;
     m_Screen = std::make_unique<UI::LobbyScreen>();
@@ -34,7 +34,7 @@ void App::Update() {
                 break;
             case UI::ScreenType::RESULT:
                 const LevelResultData resultData = static_cast<UI::GameScreen*>(m_Screen.get())->GetResultData();
-                ApplyResultAndSave(resultData);
+                ProgressStore::ApplyResultAndSave(resultData);
                 m_Screen = std::make_unique<UI::ResultScreen>(&m_SelectedLevelId, resultData);
                 break;
         }

@@ -93,7 +93,7 @@ MenuScreen::MenuScreen() {
     m_Renderer.AddChild(panel);
 
     auto totalStarsText = CreateTextObject(
-        "Total Stars: " + std::to_string(GetTotalStars()),
+        "Total Stars: " + std::to_string(ProgressStore::GetTotalStars()),
         40,
         {0.0f, 230.0f},
         Util::Color::FromRGB(255, 255, 255),
@@ -114,7 +114,7 @@ MenuScreen::MenuScreen() {
         const bool unlocked = IsLevelUnlocked(index);
         const bool hasProgress = unlocked;
         const StarConditions conditions = hasProgress
-                                              ? GetConditions(static_cast<LevelId>(index))
+                                              ? ProgressStore::GetConditions(static_cast<LevelId>(index))
                                               : StarConditions{false, false, false};
 
         auto cardBackground = CreateImageObject(
