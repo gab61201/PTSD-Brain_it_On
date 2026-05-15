@@ -1,9 +1,8 @@
 #include "GameWorld/PhysicalWorld.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
+#include "Constants.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
-
-#define STROKE_WIDTH 10.0F
 
 namespace GameWorld {
 

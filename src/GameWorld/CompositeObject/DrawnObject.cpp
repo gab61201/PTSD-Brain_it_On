@@ -1,10 +1,8 @@
 #include "GameWorld/CompositeObject/DrawnObject.hpp"
+#include "Constants.hpp"
 
 #include "GameWorld/Shape/Capsule.hpp"
 #include "GameWorld/Shape/Circle.hpp"
-
-#define MIN_STROKE_LENGTH 2.0F
-#define STROKE_WIDTH 10.0F
 
 namespace GameWorld {
 

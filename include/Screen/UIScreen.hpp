@@ -10,9 +10,6 @@
 #include "Util/Renderer.hpp"
 #include "Util/Text.hpp"
 
-#define RESOLUTION_X 1280.0F
-#define RESOLUTION_Y 720.0F
-
 namespace UI {
 
 enum class ScreenType {

@@ -1,8 +1,7 @@
 #include "Level/PassCondition/PassCondition.hpp"
+#include "Constants.hpp"
 
 #include <box2d/box2d.h>
-
-#define FPS 60
 
 PassCondition::PassCondition(
     TriggerType triggerType,

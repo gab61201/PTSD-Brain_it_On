@@ -1,10 +1,10 @@
 #include "GameWorld/DrawingIndicator.hpp"
+#include "Constants.hpp"
 
 namespace {
 
-float STROKE_WIDTH = 10.0F;
-float IMAGE_SIZE = 417.0F;
-float SCALE = STROKE_WIDTH / IMAGE_SIZE;
+constexpr float IMAGE_SIZE = 417.0F;
+constexpr float SCALE = STROKE_WIDTH / IMAGE_SIZE;
 std::string CIRCLE_IMAGE_PATH = "Resources/Images/BasicShapes/red_circle_trans.png";
 std::string RECTANGLE_IMAGE_PATH = "Resources/Images/BasicShapes/red_square_trans.png";
 
