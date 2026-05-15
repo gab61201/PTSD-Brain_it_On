@@ -21,7 +21,6 @@ class MenuScreen : public UIScreen {
    private:
     LevelId m_LevelId;
     ProgressStore* m_ProgressStore;
-    ScreenType m_NextScreenType = ScreenType::MENU;
 };
 
 }  // namespace UI
