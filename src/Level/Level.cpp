@@ -53,9 +53,7 @@ void Level::Playing() {
     }
     // 更新接觸倒數計時器
     int contactCountDown = m_PassCondition->GetContactCountDown();
-    if (contactCountDown > 0) {
-        m_HUD->UpdateContactTimer(contactCountDown);
-    }
+    m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
         m_state = State::FINISHED;

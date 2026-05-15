@@ -136,13 +136,14 @@ void LevelHUD::UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit) {
 }
 
 void LevelHUD::UpdateContactTimer(int contactCountDown) {
-    if (m_ContactTimerText) {
-        m_ContactTimerObject->SetVisible(true);  // 顯示接觸倒數計時器
+    if (m_ContactTimerText && contactCountDown > 0) {
+        m_ContactTimerObject->SetVisible(true);
         m_ContactTimerText->SetText(std::to_string(contactCountDown));
+    } else {
+        m_ContactTimerObject->SetVisible(false);
     }
 }
 
 void LevelHUD::Update() {
     m_Renderer.Update();
-    m_ContactTimerObject->SetVisible(false);  // 每幀更新後隱藏接觸倒數計時器，直到下一次需要顯示
 }
