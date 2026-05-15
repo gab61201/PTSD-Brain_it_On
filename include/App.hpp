@@ -1,7 +1,6 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "Progress/ProgressStore.hpp"
 #include "Screen/GameScreen.hpp"
 #include "Screen/LobbyScreen.hpp"
 #include "Screen/MenuScreen.hpp"
@@ -31,7 +30,6 @@ class App {
     // UI
     std::unique_ptr<UI::UIScreen> m_Screen;
     LevelId m_SelectedLevelId;
-    ProgressStore m_ProgressStore;
 };
 
 #endif

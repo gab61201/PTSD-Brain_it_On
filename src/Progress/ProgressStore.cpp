@@ -1,14 +1,22 @@
 #include "Progress/ProgressStore.hpp"
 
+#include <filesystem>
 #include <fstream>
-#include <nlohmann/json.hpp>
 #include <stdexcept>
+#include <unordered_map>
+
+#include <nlohmann/json.hpp>
 
 #include "Util/Logger.hpp"
 
 namespace {
 
 using json = nlohmann::json;
+
+constexpr const char* kProgressSavePath = "Resources/Save/progress.json";
+
+std::filesystem::path g_SavePath(kProgressSavePath);
+std::unordered_map<LevelId, StarConditions> g_BestConditions;
 
 json MakeDefaultJson() {
     return json{{"levels", json::object()}};
@@ -33,17 +41,11 @@ bool ParseConditions(const json& value, StarConditions& outConditions) {
     return true;
 }
 
-constexpr const char* kProgressSavePath = "Resources/Save/progress.json";
-
-}  // namespace
-
-ProgressStore::ProgressStore() : m_SavePath(kProgressSavePath) {}
-
-std::string ProgressStore::LevelKey(LevelId levelId) {
+std::string LevelKey(LevelId levelId) {
     return std::to_string(static_cast<int>(levelId) + 1);
 }
 
-int ProgressStore::CountStars(const StarConditions& conditions) {
+int CountStars(const StarConditions& conditions) {
     int stars = 0;
     for (const bool conditionMet : conditions) {
         stars += conditionMet ? 1 : 0;
@@ -51,24 +53,71 @@ int ProgressStore::CountStars(const StarConditions& conditions) {
     return stars;
 }
 
-void ProgressStore::LoadOrCreateDefault() {
-    m_BestConditions.clear();
+StarConditions CalculateConditions(const LevelResultData& resultData) {
+    return StarConditions{
+        resultData.passed,
+        IsWithinTimeLimit(resultData),
+        IsWithinStrokeLimit(resultData),
+    };
+}
 
-    std::error_code ec;
-    std::filesystem::create_directories(m_SavePath.parent_path(), ec);
-    if (ec) {
-        LOG_WARN("Failed to create save directory '{}': {}", m_SavePath.parent_path().string(), ec.message());
+bool UpdateBestStars(LevelId levelId, const StarConditions& conditions) {
+    const auto it = g_BestConditions.find(levelId);
+    if (it == g_BestConditions.end()) {
+        g_BestConditions[levelId] = conditions;
+        LOG_INFO("Best stars updated: level={} stars={}", static_cast<int>(levelId) + 1, CountStars(conditions));
+        return true;
     }
 
-    if (!std::filesystem::exists(m_SavePath)) {
+    const int newStars = CountStars(conditions);
+    const int currentStars = CountStars(it->second);
+
+    if (newStars < currentStars) {
+        return false;
+    }
+
+    if (newStars > currentStars) {
+        g_BestConditions[levelId] = conditions;
+        LOG_INFO("Best stars updated: level={} stars={}", static_cast<int>(levelId) + 1, newStars);
+        return true;
+    }
+
+    bool hasNewCondition = false;
+    for (std::size_t i = 0; i < conditions.size(); ++i) {
+        if (conditions[i] && !it->second[i]) {
+            hasNewCondition = true;
+            break;
+        }
+    }
+
+    if (hasNewCondition) {
+        g_BestConditions[levelId] = conditions;
+        return true;
+    }
+
+    return false;
+}
+
+}  // namespace
+
+void LoadOrCreateDefault() {
+    g_BestConditions.clear();
+
+    std::error_code ec;
+    std::filesystem::create_directories(g_SavePath.parent_path(), ec);
+    if (ec) {
+        LOG_WARN("Failed to create save directory '{}': {}", g_SavePath.parent_path().string(), ec.message());
+    }
+
+    if (!std::filesystem::exists(g_SavePath)) {
         if (!Save()) {
-            LOG_WARN("Failed to initialize progress file: '{}'", m_SavePath.string());
+            LOG_WARN("Failed to initialize progress file: '{}'", g_SavePath.string());
         }
         return;
     }
 
     try {
-        std::ifstream ifs(m_SavePath);
+        std::ifstream ifs(g_SavePath);
         json root;
         ifs >> root;
 
@@ -87,100 +136,67 @@ void ProgressStore::LoadOrCreateDefault() {
             StarConditions parsedConditions{false, false, false};
 
             if (ParseConditions(it.value(), parsedConditions)) {
-                m_BestConditions[levelId] = parsedConditions;
+                g_BestConditions[levelId] = parsedConditions;
                 continue;
             }
 
             if (it.value().is_number_integer()) {
                 const int legacyStars = it.value().get<int>();
-                m_BestConditions[levelId] = ConditionsFromLegacyStars(legacyStars);
+                g_BestConditions[levelId] = ConditionsFromLegacyStars(legacyStars);
             }
         }
     } catch (const std::exception& e) {
         LOG_WARN("Progress file is invalid, fallback to empty progress. reason='{}'", e.what());
-        m_BestConditions.clear();
+        g_BestConditions.clear();
         if (!Save()) {
-            LOG_WARN("Failed to rewrite fallback progress file: '{}'", m_SavePath.string());
+            LOG_WARN("Failed to rewrite fallback progress file: '{}'", g_SavePath.string());
         }
     }
 }
 
-bool ProgressStore::Save() const {
+bool Save() {
     std::error_code ec;
-    std::filesystem::create_directories(m_SavePath.parent_path(), ec);
+    std::filesystem::create_directories(g_SavePath.parent_path(), ec);
     if (ec) {
-        LOG_WARN("Failed to create save directory '{}': {}", m_SavePath.parent_path().string(), ec.message());
+        LOG_WARN("Failed to create save directory '{}': {}", g_SavePath.parent_path().string(), ec.message());
     }
 
     json root = MakeDefaultJson();
     auto& levels = root["levels"];
 
-    for (const auto& [levelId, conditions] : m_BestConditions) {
+    for (const auto& [levelId, conditions] : g_BestConditions) {
         levels[LevelKey(levelId)] = json::array({conditions[0], conditions[1], conditions[2]});
     }
 
-    std::ofstream ofs(m_SavePath);
+    std::ofstream ofs(g_SavePath);
     if (!ofs.is_open()) {
-        LOG_WARN("Failed to open progress file for writing: '{}'", m_SavePath.string());
+        LOG_WARN("Failed to open progress file for writing: '{}'", g_SavePath.string());
         return false;
     }
     ofs << root.dump(2);
     return true;
 }
 
-StarConditions ProgressStore::GetConditions(LevelId levelId) const {
-    const auto it = m_BestConditions.find(levelId);
-    if (it == m_BestConditions.end()) {
+StarConditions GetConditions(LevelId levelId) {
+    const auto it = g_BestConditions.find(levelId);
+    if (it == g_BestConditions.end()) {
         return {false, false, false};
     }
 
     return it->second;
 }
 
-bool ProgressStore::UpdateBestStars(LevelId levelId, const StarConditions& conditions) {
-    const auto it = m_BestConditions.find(levelId);
-    if (it == m_BestConditions.end()) {
-        m_BestConditions[levelId] = conditions;
-        LOG_INFO("Best stars updated: level={} stars={}", static_cast<int>(levelId) + 1, CountStars(conditions));
-        return true;
+int GetTotalStars() {
+    int total = 0;
+    for (const auto& [_, conditions] : g_BestConditions) {
+        total += CountStars(conditions);
     }
-
-    const int newStars = CountStars(conditions);
-    const int currentStars = CountStars(it->second);
-
-    if (newStars < currentStars) {
-        // Downgrade attempt - reject
-        return false;
-    }
-
-    if (newStars > currentStars) {
-        // Upgrade - accept
-        m_BestConditions[levelId] = conditions;
-        LOG_INFO("Best stars updated: level={} stars={}", static_cast<int>(levelId) + 1, newStars);
-        return true;
-    }
-
-    // Equal stars: check if new is superset of old
-    bool hasNewCondition = false;
-    for (std::size_t i = 0; i < conditions.size(); ++i) {
-        if (conditions[i] && !it->second[i]) {
-            hasNewCondition = true;
-            break;
-        }
-    }
-
-    if (hasNewCondition) {
-        m_BestConditions[levelId] = conditions;
-        return true;
-    }
-
-    return false;
+    return total;
 }
 
-bool ProgressStore::ApplyResultAndSave(const LevelResultData& resultData) {
+bool ApplyResultAndSave(const LevelResultData& resultData) {
     const StarConditions conditions = CalculateConditions(resultData);
     if (!UpdateBestStars(resultData.levelId, conditions)) {
-        // nothing to save
         return true;
     }
 
@@ -189,20 +205,4 @@ bool ProgressStore::ApplyResultAndSave(const LevelResultData& resultData) {
     }
 
     return false;
-}
-
-int ProgressStore::GetTotalStars() const {
-    int total = 0;
-    for (const auto& [_, conditions] : m_BestConditions) {
-        total += CountStars(conditions);
-    }
-    return total;
-}
-
-StarConditions ProgressStore::CalculateConditions(const LevelResultData& resultData) {
-    return StarConditions{
-        resultData.passed,
-        IsWithinTimeLimit(resultData),
-        IsWithinStrokeLimit(resultData),
-    };
 }

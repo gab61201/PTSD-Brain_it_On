@@ -80,8 +80,7 @@ bool IsLevelUnlocked(int index) {
 
 namespace UI {
 
-MenuScreen::MenuScreen(ProgressStore* progressStore)
-    : m_ProgressStore(progressStore) {
+MenuScreen::MenuScreen() {
     m_NextScreenType = ScreenType::MENU;
 
     auto background = UI::Element::Background("Resources/Images/background.png");
@@ -94,7 +93,7 @@ MenuScreen::MenuScreen(ProgressStore* progressStore)
     m_Renderer.AddChild(panel);
 
     auto totalStarsText = CreateTextObject(
-        "Total Stars: " + std::to_string(m_ProgressStore ? m_ProgressStore->GetTotalStars() : 0),
+        "Total Stars: " + std::to_string(GetTotalStars()),
         40,
         {0.0f, 230.0f},
         Util::Color::FromRGB(255, 255, 255),
@@ -113,9 +112,9 @@ MenuScreen::MenuScreen(ProgressStore* progressStore)
         const int levelNumber = index + 1;
         const glm::vec2 cardPosition = GetCardPosition(index);
         const bool unlocked = IsLevelUnlocked(index);
-        const bool hasProgress = unlocked && m_ProgressStore != nullptr;
+        const bool hasProgress = unlocked;
         const StarConditions conditions = hasProgress
-                                              ? m_ProgressStore->GetConditions(static_cast<LevelId>(index))
+                                              ? GetConditions(static_cast<LevelId>(index))
                                               : StarConditions{false, false, false};
 
         auto cardBackground = CreateImageObject(
