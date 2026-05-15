@@ -8,7 +8,7 @@ namespace UI {
 
 class GameScreen : public UIScreen {
    public:
-    explicit GameScreen(LevelId* levelId);
+    explicit GameScreen(LevelId levelId);
 
     ScreenType Update() override;
 

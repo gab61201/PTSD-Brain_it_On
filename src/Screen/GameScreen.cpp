@@ -7,7 +7,7 @@
 
 namespace UI {
 
-GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
+GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
     m_NextScreenType = ScreenType::GAME;
 
     auto background = UI::Element::Background("Resources/Images/background.png");
