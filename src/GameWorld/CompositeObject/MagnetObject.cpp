@@ -1,142 +1,116 @@
-// #include "GameWorld/MagnetObject.hpp"
+#include "GameWorld/CompositeObject/MagnetObject.hpp"
 
-// #include <box2d/box2d.h>
-// #include <cmath>
-// #include <glm/fwd.hpp>
-// #include <vector>
+#include <cmath>
 
-// #include "GameWorld/BaseObject.hpp"
+#include "GameWorld/CoordinateHelper.hpp"
 
-// namespace GameWorld {
+namespace GameWorld {
 
-// MagnetObject::MagnetObject(
-//     std::vector<std::shared_ptr<BaseObject>> baseObjects,
-//     BodyType bodyType,
-//     glm::vec2 position,
-//     float rotation,
-//     float magnetism)
-//     : CompositeObject(std::move(baseObjects), bodyType, position, rotation),
-//       m_Magnetism(magnetism) {
-//     // 磁場範圍與磁力成正比（直徑 = |magnetism| * 10 像素）
-//     float fieldSize = std::abs(magnetism) * 10.0f;
-//     BaseObject magneticField(GameWorld::ShapeType::CIRCLE,
-//                              glm::vec2(fieldSize, fieldSize),
-//                              glm::vec2(0.0f, 0.0f),
-//                              0.0f,
-//                              true);
-//     m_BaseObjects.push_back(std::make_shared<BaseObject>(magneticField));
-// }
+namespace {
 
-// // ==========================================
-// // 掛載到物理世界，並在 Body 上標記 this 指標
-// // 這樣其他磁鐵就能透過 UserData 辨識這個 Body 是磁鐵
-// // ==========================================
-// void MagnetObject::AttachToWorld(b2WorldId world) {
-//     CompositeObject::AttachToWorld(world);
+constexpr float kMaxForce = 500.0F;
+constexpr float kMinDistance = 10.0F;       // pixels
+constexpr float kInfluenceRadius = 200.0F;  // pixels
 
-//     if (B2_IS_NON_NULL(m_Body)) {
-//         // 將 this 指標存入 Box2D 的 UserData
-//         // 其他磁鐵在 Update() 中可以用這個來辨識「對方是不是磁鐵」
-//         b2Body_SetUserData(m_Body, this);
-//     }
-// }
+struct MagnetQueryContext {
+    b2BodyId magnetBodyId = b2_nullBodyId;
+    float magnetism = 0.0F;
+    b2Vec2 magnetPosition = {0.0F, 0.0F};
+};
 
-// void MagnetObject::Update() {
-//     // 1. 先呼叫父類的 Update()，更新座標與子零件的圖片位置
-//     CompositeObject::Update();
+bool MagnetQueryCallback(b2ShapeId shapeId, void* context) {
+    auto* ctx = static_cast<MagnetQueryContext*>(context);
+    b2BodyId bodyId = b2Shape_GetBody(shapeId);
 
-//     // 2. 如果骨架還沒生成，就無法施加力
-//     if (B2_IS_NULL(m_Body)) {
-//         return;
-//     }
+    if (B2_ID_EQUALS(bodyId, ctx->magnetBodyId)) {
+        return true;
+    }
 
-//     // 取得磁鐵自身的位置（公尺座標）
-//     b2Vec2 magnetPos = b2Body_GetPosition(m_Body);
+    if (b2Shape_IsSensor(shapeId)) {
+        return true;
+    }
 
-//     int contactCapacity = b2Body_GetContactCapacity(m_Body);
-//     if (contactCapacity <= 0) {
-//         return;
-//     }
+    b2Vec2 targetPos = b2Body_GetPosition(bodyId);
+    b2Vec2 delta = {targetPos.x - ctx->magnetPosition.x, targetPos.y - ctx->magnetPosition.y};
+    float distance = b2Length(delta);
 
-//     std::vector<b2ContactData> contacts(contactCapacity);
-//     int contactCount = b2Body_GetContactData(m_Body, contacts.data(), contactCapacity);
+    float minDistMeters = PixelsToMeters(kMinDistance);
+    if (distance < minDistMeters) {
+        distance = minDistMeters;
+    }
 
-//     // 3. 遍歷這個 Body 的所有接觸 (Contact)
-//     for (int i = 0; i < contactCount; i++) {
-//         const b2ContactData& contact = contacts[i];
+    float otherMagnetism = 0.0F;
+    void* userData = b2Body_GetUserData(bodyId);
+    if (userData != nullptr) {
+        auto* otherMagnet = static_cast<MagnetObject*>(userData);
+        otherMagnetism = otherMagnet->GetMagnetism();
+    }
 
-//         // 確認這個接觸至少有一方是 Sensor（我們的磁場）
-//         bool fixtureAIsSensor = b2Shape_IsSensor(contact.shapeIdA);
-//         bool fixtureBIsSensor = b2Shape_IsSensor(contact.shapeIdB);
-//         if (!fixtureAIsSensor && !fixtureBIsSensor) {
-//             continue;
-//         }
+    if (otherMagnetism == 0.0F) {
+        return true;
+    }
 
-//         // 取得「另一個物體」的 Body
-//         b2BodyId bodyA = b2Shape_GetBody(contact.shapeIdA);
-//         b2BodyId bodyB = b2Shape_GetBody(contact.shapeIdB);
+    float forceMag;
+    float product = ctx->magnetism * otherMagnetism;
+    forceMag = -product / (distance * distance);
 
-//         b2BodyId otherBody = b2_nullBodyId;
-//         if (B2_ID_EQUALS(bodyA, m_Body) && !B2_ID_EQUALS(bodyB, m_Body)) {
-//             otherBody = bodyB;
-//         } else if (B2_ID_EQUALS(bodyB, m_Body) && !B2_ID_EQUALS(bodyA, m_Body)) {
-//             otherBody = bodyA;
-//         }
-//         if (B2_IS_NULL(otherBody)) {
-//             continue;
-//         }
+    float maxForceMeters = PixelsToMeters(kMaxForce);
+    if (forceMag > maxForceMeters) {
+        forceMag = maxForceMeters;
+    }
+    if (forceMag < -maxForceMeters) {
+        forceMag = -maxForceMeters;
+    }
 
-//         // ====================================================
-//         // 關鍵：只影響其他磁鐵！
-//         // 如果 otherBody 的 UserData 是 0，代表它不是 MagnetObject
-//         // ====================================================
-//         void* otherData = b2Body_GetUserData(otherBody);
-//         if (otherData == nullptr) {
-//             continue;  // 不是磁鐵，跳過
-//         }
+    b2Vec2 direction;
+    if (distance > 0.0001F) {
+        direction = {-delta.x / distance, -delta.y / distance};
+    } else {
+        direction = {0.0F, 0.0F};
+    }
 
-//         // 將 UserData 還原成 MagnetObject 指標，讀取對方的磁力值
-//         auto* otherMagnet = static_cast<MagnetObject*>(otherData);
-//         float otherMagnetism = otherMagnet->GetMagnetism();
+    b2Vec2 force = {direction.x * forceMag, direction.y * forceMag};
+    b2Body_ApplyForceToCenter(bodyId, force, true);
 
-//         // 4. 計算方向（從對方指向自己）
-//         b2Vec2 otherPos = b2Body_GetPosition(otherBody);
-//         b2Vec2 direction = {magnetPos.x - otherPos.x, magnetPos.y - otherPos.y};
-//         float distanceSq = direction.x * direction.x + direction.y * direction.y;
+    return true;
+}
 
-//         // 避免距離太近導致力過大
-//         constexpr float kMinDistanceSq = 1.0f;  // 提高最小距離上限
-//         if (distanceSq < kMinDistanceSq) {
-//             distanceSq = kMinDistanceSq;
-//         }
+}  // namespace
 
-//         // 正規化方向向量
-//         float distance = std::sqrt(distanceSq);
-//         direction.x /= distance;
-//         direction.y /= distance;
+MagnetObject::MagnetObject(
+    std::vector<std::shared_ptr<Shape>> shapes,
+    BodyType bodyType,
+    glm::vec2 position,
+    float rotation,
+    float magnetism)
+    : CompositeObject(std::move(shapes), bodyType, position, rotation),
+      m_Magnetism(magnetism) {}
 
-//         // 5. 計算力的大小與方向
-//         //    product < 0 → 異極相吸（力指向磁鐵，即 direction 方向）
-//         //    product > 0 → 同極相斥（力背離磁鐵，即 -direction 方向）
-//         float product = m_Magnetism * otherMagnetism;
-//         float forceMagnitude = std::abs(product) / distanceSq;
+void MagnetObject::AttachToWorld(b2WorldId world) {
+    CompositeObject::AttachToWorld(world);
+    m_WorldId = world;
+    b2Body_SetUserData(m_b2BodyId, this);
+}
 
-//         // 限制最大力，避免碰撞瞬間力爆炸
-//         constexpr float kMaxForce = 40.0f;
-//         if (forceMagnitude > kMaxForce) {
-//             forceMagnitude = kMaxForce;
-//         }
+void MagnetObject::Update() {
+    if (B2_IS_NON_NULL(m_WorldId) && B2_IS_NON_NULL(m_b2BodyId) && m_Magnetism != 0.0F) {
+        b2Vec2 pos = b2Body_GetPosition(m_b2BodyId);
+        float radius = PixelsToMeters(kInfluenceRadius);
 
-//         // product < 0 時 sign = 1（吸引，direction 指向自己）
-//         // product > 0 時 sign = -1（排斥，direction 反轉）
-//         float sign = (product < 0) ? 1.0f : -1.0f;
+        b2AABB aabb;
+        aabb.lowerBound = {pos.x - radius, pos.y - radius};
+        aabb.upperBound = {pos.x + radius, pos.y + radius};
 
-//         b2Vec2 force = {sign * direction.x * forceMagnitude,
-//                         sign * direction.y * forceMagnitude};
+        MagnetQueryContext ctx;
+        ctx.magnetBodyId = m_b2BodyId;
+        ctx.magnetism = m_Magnetism;
+        ctx.magnetPosition = pos;
 
-//         // 6. 對另一個磁鐵的質心施加力
-//         b2Body_ApplyForceToCenter(otherBody, force, true);
-//     }
-// }
+        b2QueryFilter filter = b2DefaultQueryFilter();
+        b2World_OverlapAABB(m_WorldId, aabb, filter, MagnetQueryCallback, &ctx);
+    }
 
-// }  // namespace GameWorld
+    CompositeObject::Update();
+}
+
+}  // namespace GameWorld
