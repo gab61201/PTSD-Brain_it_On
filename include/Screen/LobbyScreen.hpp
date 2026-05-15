@@ -9,9 +9,7 @@ class LobbyScreen : public UIScreen {
    public:
     LobbyScreen();
 
-    void Update() override;
-
-    ScreenType GetNextScreenType() override;
+    ScreenType Update() override;
 
     ScreenType GetScreenType() const override;
 

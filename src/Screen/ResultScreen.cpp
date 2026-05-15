@@ -185,7 +185,7 @@ ResultScreen::ResultScreen(LevelId* levelId, const LevelResultData& resultData)
     m_Renderer.AddChild(nextButton);
 }
 
-void ResultScreen::Update() {
+ScreenType ResultScreen::Update() {
     for (const auto& button : m_Buttons) {
         button->Update();
     }
@@ -195,9 +195,6 @@ void ResultScreen::Update() {
     }
 
     m_Renderer.Update();
-}
-
-ScreenType ResultScreen::GetNextScreenType() {
     return m_NextScreenType;
 }
 

@@ -8,22 +8,16 @@
 
 void App::Start() {
     LOG_TRACE("Start");
-
     m_ProgressStore.LoadOrCreateDefault();
-
     Util::BGM("Resources/Audios/BGM.mp3").Play();
-
     m_CurrentState = State::UPDATE;
-
-    m_ScreenType = UI::ScreenType::LOBBY;
     m_Screen = std::make_unique<UI::LobbyScreen>();
 }
 
 void App::Update() {
-    const UI::ScreenType currentScreenType = m_Screen->GetScreenType();
-    m_ScreenType = m_Screen->GetNextScreenType();
-    if (m_ScreenType != currentScreenType) {
-        switch (m_ScreenType) {
+    UI::ScreenType nextScreenType = m_Screen->Update();
+    if (nextScreenType != m_Screen->GetScreenType()) {
+        switch (nextScreenType) {
             case UI::ScreenType::LOBBY:
                 m_Screen = std::make_unique<UI::LobbyScreen>();
                 break;
@@ -39,13 +33,10 @@ void App::Update() {
             case UI::ScreenType::RESULT:
                 const LevelResultData resultData = static_cast<UI::GameScreen*>(m_Screen.get())->GetResultData();
                 m_ProgressStore.ApplyResultAndSave(resultData);
-
                 m_Screen = std::make_unique<UI::ResultScreen>(&m_SelectedLevelId, resultData);
                 break;
         }
-        m_ScreenType = m_Screen->GetScreenType();
     }
-    m_Screen->Update();
 
     if (Util::Input::IfExit()) {
         m_CurrentState = State::END;

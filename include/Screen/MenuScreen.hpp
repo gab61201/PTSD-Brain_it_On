@@ -13,9 +13,7 @@ class MenuScreen : public UIScreen {
    public:
     explicit MenuScreen(LevelId* levelId, ProgressStore* progressStore);
 
-    void Update() override;
-
-    ScreenType GetNextScreenType() override;
+    ScreenType Update() override;
 
     ScreenType GetScreenType() const override;
 

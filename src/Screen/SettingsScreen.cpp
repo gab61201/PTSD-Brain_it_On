@@ -12,15 +12,12 @@ SettingsScreen::SettingsScreen() {
     m_Renderer.AddChild(title);
 }
 
-void SettingsScreen::Update() {
-    m_Renderer.Update();
-}
-
-ScreenType SettingsScreen::GetNextScreenType() {
+ScreenType SettingsScreen::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
-        return ScreenType::MENU;
+        m_NextScreenType = ScreenType::MENU;
     }
-    return ScreenType::LOBBY;
+    m_Renderer.Update();
+    return m_NextScreenType;
 }
 
 ScreenType SettingsScreen::GetScreenType() const {

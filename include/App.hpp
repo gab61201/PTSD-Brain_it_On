@@ -29,7 +29,6 @@ class App {
     State m_CurrentState = State::START;
 
     // UI
-    UI::ScreenType m_ScreenType;
     std::unique_ptr<UI::UIScreen> m_Screen;
     LevelId m_SelectedLevelId;
     ProgressStore m_ProgressStore;

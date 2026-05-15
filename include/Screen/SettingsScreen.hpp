@@ -9,9 +9,7 @@ class SettingsScreen : public UIScreen {
    public:
     SettingsScreen();
 
-    void Update() override;
-    
-    ScreenType GetNextScreenType() override;
+    ScreenType Update() override;
 
     ScreenType GetScreenType() const override;
 };

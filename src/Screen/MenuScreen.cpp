@@ -159,15 +159,12 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
     }
 }
 
-void MenuScreen::Update() {
+ScreenType MenuScreen::Update() {
     for (const auto& button : m_Buttons) {
         button->Update();
     }
 
     m_Renderer.Update();
-}
-
-ScreenType MenuScreen::GetNextScreenType() {
     return m_NextScreenType;
 }
 

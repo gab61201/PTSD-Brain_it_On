@@ -10,9 +10,7 @@ class ResultScreen : public UIScreen {
    public:
     ResultScreen(LevelId* levelId, const LevelResultData& resultData);
 
-    void Update() override;
-
-    ScreenType GetNextScreenType() override;
+    ScreenType Update() override;
 
     ScreenType GetScreenType() const override;
 

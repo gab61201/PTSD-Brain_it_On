@@ -34,14 +34,11 @@ LobbyScreen::LobbyScreen() {
     m_Renderer.AddChild(playButton);
 }
 
-void LobbyScreen::Update() {
+ScreenType LobbyScreen::Update() {
     for (auto button : m_Buttons) {
         button->Update();
     }
     m_Renderer.Update();
-}
-
-ScreenType LobbyScreen::GetNextScreenType() {
     return m_NextScreenType;
 }
 

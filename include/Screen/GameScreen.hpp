@@ -10,9 +10,7 @@ class GameScreen : public UIScreen {
    public:
     explicit GameScreen(LevelId* levelId);
 
-    void Update() override;
-
-    ScreenType GetNextScreenType() override;
+    ScreenType Update() override;
 
     ScreenType GetScreenType() const override;
 

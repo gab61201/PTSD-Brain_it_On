@@ -30,7 +30,7 @@ GameScreen::GameScreen(LevelId* levelId) : m_Level(*levelId) {
     m_Renderer.AddChild(resetButton);
 }
 
-void GameScreen::Update() {
+ScreenType GameScreen::Update() {
     for (auto button : m_Buttons) {
         button->Update();
     }
@@ -41,15 +41,11 @@ void GameScreen::Update() {
     if (m_Level.GetState() == Level::State::FINISHED) {
         Core::Context::TakeScreenshot(static_cast<int>(m_Level.GetLevelId()));
         m_NextScreenType = ScreenType::RESULT;
-        return;
     }
 
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
         m_NextScreenType = ScreenType::MENU;
     }
-}
-
-ScreenType GameScreen::GetNextScreenType() {
     return m_NextScreenType;
 }
 
