@@ -29,7 +29,7 @@ void OneToOneContactPass::OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, Tri
         if ((B2_IS_NON_NULL(m_ShapeB) && (B2_ID_EQUALS(shapeA, m_ShapeB) || B2_ID_EQUALS(shapeB, m_ShapeB)))  // 有指定 B 且找到 B
             || B2_IS_NULL(m_ShapeB)) {                                                               // 無指定 B
             if (triggerType == m_TriggerType) {
-                m_Timer++;
+                m_Timer = 1;
             } else {
                 m_Timer = 0;
             }
