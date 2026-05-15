@@ -3,7 +3,7 @@
 
 #include <array>
 #include <filesystem>
-#include <unordered_map>
+#include <map>
 
 #include "Level/Level.hpp"
 
@@ -28,7 +28,7 @@ private:
     static bool UpdateBestRecord(LevelId levelId, const ProgressRecord& candidate);
 
     static std::filesystem::path s_SavePath;
-    static std::unordered_map<LevelId, ProgressRecord> s_Records;
+    static std::map<LevelId, ProgressRecord> s_Records;
 };
 
 #endif
