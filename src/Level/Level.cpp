@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <sstream>
 
+#include "Core/Context.hpp"
 #include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -56,13 +57,10 @@ void Level::Playing() {
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
+        Core::Context::TakeScreenshot(static_cast<int>(m_Level.GetLevelId()));
         m_state = State::FINISHED;
         m_World->Stop();
     }
-}
-
-void Level::Finished() {
-    // 預留：未來可在此觸發結算畫面
 }
 
 void Level::Reset() {
@@ -103,9 +101,6 @@ void Level::Update() {
             break;
         case State::PLAYING:
             Playing();
-            break;
-        case State::FINISHED:
-            Finished();
             break;
     }
 

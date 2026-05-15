@@ -52,7 +52,6 @@ class Level {
     void Waiting();
     void Drawing();
     void Playing();
-    void Finished();
 
     LevelId m_LevelId;
     State m_state = State::WAITING;
