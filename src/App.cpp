@@ -25,7 +25,8 @@ void App::Update() {
                 m_Screen = std::make_unique<UI::SettingsScreen>();
                 break;
             case UI::ScreenType::MENU:
-                m_Screen = std::make_unique<UI::MenuScreen>(&m_SelectedLevelId, &m_ProgressStore);
+                m_Screen = std::make_unique<UI::MenuScreen>(&m_ProgressStore);
+                m_SelectedLevelId = static_cast<UI::MenuScreen*>(m_Screen.get())->GetSelectedLevelId();
                 break;
             case UI::ScreenType::GAME:
                 m_Screen = std::make_unique<UI::GameScreen>(m_SelectedLevelId);

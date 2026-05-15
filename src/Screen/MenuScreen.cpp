@@ -80,8 +80,8 @@ bool IsLevelUnlocked(int index) {
 
 namespace UI {
 
-MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
-    : m_LevelId(levelId), m_ProgressStore(progressStore) {
+MenuScreen::MenuScreen(ProgressStore* progressStore)
+    : m_ProgressStore(progressStore) {
     m_NextScreenType = ScreenType::MENU;
 
     auto background = UI::Element::Background("Resources/Images/background.png");
@@ -127,11 +127,11 @@ MenuScreen::MenuScreen(LevelId* levelId, ProgressStore* progressStore)
 
         auto cardButton = UI::Element::SquareButton(
             [this, index, unlocked]() {
-                if (!unlocked || !m_LevelId) {
+                if (!unlocked) {
                     return;
                 }
 
-                *m_LevelId = static_cast<LevelId>(index);
+                m_LevelId = static_cast<LevelId>(index);
                 m_NextScreenType = ScreenType::GAME;
             },
             GetThumbnailPath(levelNumber));
@@ -170,6 +170,10 @@ ScreenType MenuScreen::Update() {
 
 ScreenType MenuScreen::GetScreenType() const {
     return ScreenType::MENU;
+}
+
+LevelId MenuScreen::GetSelectedLevelId() const {
+    return m_LevelId;
 }
 
 }  // namespace UI

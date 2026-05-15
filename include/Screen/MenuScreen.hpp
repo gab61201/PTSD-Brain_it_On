@@ -11,14 +11,15 @@ namespace UI {
 
 class MenuScreen : public UIScreen {
    public:
-    explicit MenuScreen(LevelId* levelId, ProgressStore* progressStore);
+    explicit MenuScreen(ProgressStore* progressStore);
 
     ScreenType Update() override;
 
     ScreenType GetScreenType() const override;
 
+    LevelId GetSelectedLevelId() const;
    private:
-    LevelId* m_LevelId;
+    LevelId m_LevelId;
     ProgressStore* m_ProgressStore;
     ScreenType m_NextScreenType = ScreenType::MENU;
 };
