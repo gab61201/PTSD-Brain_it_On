@@ -57,8 +57,8 @@ void Level::Playing() {
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
-        std::string filename = "Resources/Save/LevelScreenshots/level_" + std::to_string(static_cast<int>(m_LevelId) + 1) + ".bmp";
-        Util::Screenshot::Capture(filename);
+        std::string id = std::to_string(static_cast<int>(m_LevelId) + 1);
+        Util::Screenshot::Capture("level_" + id);
         m_state = State::FINISHED;
         m_World->Stop();
     }

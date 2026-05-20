@@ -41,15 +41,15 @@ void Screenshot::Capture(std::string filename) {
         return;
     }
 
-    std::filesystem::path filepath(filename);
+    std::filesystem::path filepath("Resources/Save/LevelScreenshots/" + filename + ".bmp");
     if (filepath.has_parent_path()) {
         std::filesystem::create_directories(filepath.parent_path());
     }
 
-    if (SDL_SaveBMP(surface, filename.c_str()) != 0) {
+    if (SDL_SaveBMP(surface, filepath.c_str()) != 0) {
         LOG_ERROR("Failed to save screenshot: {}", SDL_GetError());
     } else {
-        LOG_INFO("Screenshot saved: {}", filename);
+        LOG_INFO("Screenshot saved: {}", filepath.c_str());
     }
 
     SDL_FreeSurface(surface);
