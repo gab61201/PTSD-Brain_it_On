@@ -33,9 +33,6 @@ FetchContent_Declare(
     GIT_REPOSITORY  https://github.com/ntut-open-source-club/practical-tools-for-simple-design.git
     GIT_TAG         v0.2
     GIT_SHALLOW     TRUE
-
-    PATCH_COMMAND   git apply --ignore-whitespace ${CMAKE_CURRENT_SOURCE_DIR}/screenshot.patch
-                    || git apply --ignore-whitespace --check --reverse ${CMAKE_CURRENT_SOURCE_DIR}/screenshot.patch
 )
 
 FetchContent_MakeAvailable(ptsd)

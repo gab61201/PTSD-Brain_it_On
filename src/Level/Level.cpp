@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include "Core/Context.hpp"
+#include "Util/Screenshot.hpp"
 #include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
@@ -57,7 +57,8 @@ void Level::Playing() {
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
-        Core::Context::TakeScreenshot(static_cast<int>(m_LevelId));
+        std::string filename = "Resources/Save/LevelScreenshots/level_" + std::to_string(static_cast<int>(m_LevelId) + 1) + ".bmp";
+        Util::Screenshot::Capture(filename);
         m_state = State::FINISHED;
         m_World->Stop();
     }
