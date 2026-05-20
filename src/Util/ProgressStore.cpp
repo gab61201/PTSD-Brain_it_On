@@ -1,4 +1,4 @@
-#include "Progress/ProgressStore.hpp"
+#include "Util/ProgressStore.hpp"
 
 #include <algorithm>
 #include <fstream>
@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "Util/Logger.hpp"
+
+namespace Util {
 
 namespace {
 
@@ -140,3 +142,5 @@ bool ProgressStore::UpdateBestRecord(LevelId levelId, const ProgressRecord& cand
              candidate.remainingTime, candidate.usedStrokes);
     return true;
 }
+
+}  // namespace Util

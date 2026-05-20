@@ -1,13 +1,12 @@
 #include "Screen/MenuScreen.hpp"
 
 #include <filesystem>
-#include <iomanip>
 #include <sstream>
 
 #include "Level/LevelData.hpp"
-#include "Progress/ProgressStore.hpp"
 #include "Util/Color.hpp"
 #include "Util/Image.hpp"
+#include "Util/ProgressStore.hpp"
 
 namespace {
 
@@ -93,7 +92,7 @@ MenuScreen::MenuScreen() {
     m_Renderer.AddChild(panel);
 
     auto totalStarsText = CreateTextObject(
-        "Total Stars: " + std::to_string(ProgressStore::GetTotalStars()),
+        "Total Stars: " + std::to_string(Util::ProgressStore::GetTotalStars()),
         40,
         {0.0f, 230.0f},
         Util::Color::FromRGB(255, 255, 255),
@@ -113,9 +112,9 @@ MenuScreen::MenuScreen() {
         const glm::vec2 cardPosition = GetCardPosition(index);
         const bool unlocked = IsLevelUnlocked(index);
         const bool hasProgress = unlocked;
-        const StarConditions conditions = hasProgress
-                                              ? ProgressStore::GetConditions(static_cast<LevelId>(index))
-                                              : StarConditions{false, false, false};
+        const Util::StarConditions conditions = hasProgress
+                                                    ? Util::ProgressStore::GetConditions(static_cast<LevelId>(index))
+                                                    : Util::StarConditions{false, false, false};
 
         auto cardBackground = CreateImageObject(
             "Resources/Images/BasicShapes/light_blue_square.png",

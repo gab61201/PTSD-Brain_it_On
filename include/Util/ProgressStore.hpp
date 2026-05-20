@@ -1,11 +1,13 @@
-#ifndef PROGRESS_STORE_HPP
-#define PROGRESS_STORE_HPP
+#ifndef UTIL_PROGRESS_STORE_HPP
+#define UTIL_PROGRESS_STORE_HPP
 
 #include <array>
 #include <filesystem>
 #include <map>
 
 #include "Level/Level.hpp"
+
+namespace Util {
 
 using StarConditions = std::array<bool, 3>;
 
@@ -31,4 +33,6 @@ private:
     static std::map<LevelId, ProgressRecord> s_Records;
 };
 
-#endif
+} // namespace Util
+
+#endif // UTIL_PROGRESS_STORE_HPP
