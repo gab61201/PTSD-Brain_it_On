@@ -1,6 +1,7 @@
 #include "Screen/GameScreen.hpp"
-#include "Util/Image.hpp"
+
 #include "Level/LevelData.hpp"
+#include "Util/Image.hpp"
 #include "Util/Keycode.hpp"
 
 namespace UI {
@@ -12,18 +13,20 @@ GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
     m_Renderer.AddChild(background);
 
     // 返回按鈕
-    auto backButton = UI::Element::CircleButton([this]{
+    auto backButton = UI::Element::CircleButton([this] {
         m_NextScreenType = ScreenType::MENU;
-    }, "Resources/Images/Btn_Back.png");
-    backButton->m_Transform.translation ={-560.0f, -300.0f};
+    },
+                                                "Resources/Images/Btn_Back.png");
+    backButton->m_Transform.translation = {-560.0f, -300.0f};
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
     // 重試按鈕
-    auto resetButton = UI::Element::CircleButton([this]{
+    auto resetButton = UI::Element::CircleButton([this] {
         m_Level.Reset();
-    }, "Resources/Images/Btn_Retry.png");
-    resetButton->m_Transform.translation ={560.0f, -300.0f};
+    },
+                                                 "Resources/Images/Btn_Retry.png");
+    resetButton->m_Transform.translation = {560.0f, -300.0f};
     m_Buttons.push_back(resetButton);
     m_Renderer.AddChild(resetButton);
 }

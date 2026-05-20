@@ -16,10 +16,9 @@ class Shape {
     Shape() = default;
 
     Shape(std::variant<glm::vec2, float> m_Size,
-        const glm::vec2& relativePosition,
-        float relativeRotation,
-        bool isSensor = false
-    );
+          const glm::vec2& relativePosition,
+          float relativeRotation,
+          bool isSensor = false);
 
     virtual ~Shape() = default;
 

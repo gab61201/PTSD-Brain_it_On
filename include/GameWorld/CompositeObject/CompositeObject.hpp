@@ -33,7 +33,7 @@ class CompositeObject {
     virtual void Update();
 
     virtual void AttachToWorld(b2WorldId world);
-    
+
     b2BodyId Getb2BodyId() const { return m_b2BodyId; }
     const std::vector<std::shared_ptr<Shape>>& GetShapes() const { return m_Shapes; }
 

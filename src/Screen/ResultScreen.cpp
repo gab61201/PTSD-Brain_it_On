@@ -112,7 +112,7 @@ ResultScreen::ResultScreen(LevelId* levelId, const LevelResultData& resultData)
         {starRight.x, 80.0f}, {0.50, 0.50}, 1.3f));
 
     m_Renderer.AddChild(CreateTextObject(
-        "✓", 40, {colLeft.x, 0.0f}, Util::Color::FromRGB(56, 209, 83), 1.4f));
+        "\u2713", 40, {colLeft.x, 0.0f}, Util::Color::FromRGB(56, 209, 83), 1.4f));
     m_Renderer.AddChild(CreateImageObject(
         "Resources/Images/alarm.png", {colMid.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
     m_Renderer.AddChild(CreateImageObject(

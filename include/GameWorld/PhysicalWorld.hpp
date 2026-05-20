@@ -3,9 +3,9 @@
 
 #include <box2d/box2d.h>
 
+#include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/CompositeObject/CompositeObject.hpp"
 #include "GameWorld/CompositeObject/DrawnObject.hpp"
-#include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/CompositeObject/MagnetObject.hpp"
 #include "GameWorld/DrawingIndicator.hpp"
 
@@ -15,8 +15,7 @@ class PhysicalWorld {
    public:
     PhysicalWorld(
         std::vector<std::shared_ptr<CompositeObject>> compositeObjects,
-        std::shared_ptr<Boundary> boundary
-    );
+        std::shared_ptr<Boundary> boundary);
     ~PhysicalWorld();
 
     // 更新碰撞並渲染

@@ -2,14 +2,14 @@
 #define DRAWING_INDICATOR_HPP
 
 #include "Util/AssetStore.hpp"
+#include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include "Util/Renderer.hpp"
-#include "Util/GameObject.hpp"
 
 namespace GameWorld {
 
 class DrawingIndicator {
-public:
+   public:
     DrawingIndicator();
 
     // 在兩點之間繪製一條線段
@@ -18,7 +18,7 @@ public:
     // 更新繪製指示器
     void Update();
 
-private:
+   private:
     static Util::AssetStore<std::shared_ptr<Util::Image>> s_ImageCache;
     Util::Renderer m_Renderer;
     std::shared_ptr<Util::GameObject> m_P1;
@@ -26,6 +26,6 @@ private:
     std::shared_ptr<Util::GameObject> m_Line;
 };
 
-} // namespace GameWorld
+}  // namespace GameWorld
 
 #endif  // DRAWING_INDICATOR_HPP

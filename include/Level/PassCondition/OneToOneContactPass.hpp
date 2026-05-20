@@ -9,13 +9,11 @@ class OneToOneContactPass : public PassCondition {
         b2ShapeId shapeA,
         b2ShapeId shapeB,
         TriggerType triggerType,
-        int duration
-    );
+        int duration);
     OneToOneContactPass(
         b2ShapeId shape,
         TriggerType triggerType,
-        int duration
-    );
+        int duration);
     ~OneToOneContactPass() = default;
 
    private:

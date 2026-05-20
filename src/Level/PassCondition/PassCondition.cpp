@@ -1,7 +1,8 @@
 #include "Level/PassCondition/PassCondition.hpp"
-#include "Constants.hpp"
 
 #include <box2d/box2d.h>
+
+#include "Constants.hpp"
 
 PassCondition::PassCondition(
     TriggerType triggerType,
@@ -13,7 +14,7 @@ bool PassCondition::Check(b2ContactEvents events) {
     // 通關
     if (m_Timer > m_Duration * FPS) {
         return true;
-    // 未通關，但正在計時中
+        // 未通關，但正在計時中
     } else if (m_Timer > 0) {
         m_Timer++;
     }
@@ -27,7 +28,6 @@ bool PassCondition::Check(b2ContactEvents events) {
     }
     return m_Timer > m_Duration * FPS;
 }
-
 
 int PassCondition::GetContactCountDown() const {
     if (m_Timer > 0) {

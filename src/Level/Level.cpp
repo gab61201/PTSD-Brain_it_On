@@ -3,10 +3,10 @@
 #include <iomanip>
 #include <sstream>
 
-#include "Util/Screenshot.hpp"
 #include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
+#include "Util/Screenshot.hpp"
 #include "Util/Text.hpp"
 #include "Util/Time.hpp"
 
@@ -17,7 +17,7 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;
     m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText,
-                                        m_StrokeLimit);
+                                       m_StrokeLimit);
 }
 
 void Level::Waiting() {

@@ -11,13 +11,16 @@
 namespace GameWorld {
 
 class Boundary : public CompositeObject {
-public:
-   Boundary(float x1, float x2, float y1, float y2);
-   ~Boundary() = default;
-   bool IsPointInside(glm::vec2 position) const;
+   public:
+    Boundary(float x1, float x2, float y1, float y2);
+    ~Boundary() = default;
+    bool IsPointInside(glm::vec2 position) const;
 
-private:
-   float m_X1 = 0.0F, m_X2 = 0.0F, m_Y1 = 0.0F, m_Y2 = 0.0F;
+   private:
+    float m_X1 = 0.0F;
+    float m_X2 = 0.0F;
+    float m_Y1 = 0.0F;
+    float m_Y2 = 0.0F;
 };
 
 }  // namespace GameWorld

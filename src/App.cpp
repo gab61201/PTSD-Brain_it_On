@@ -1,10 +1,10 @@
 #include "App.hpp"
 
-#include "Util/ProgressStore.hpp"
 #include "Screen/ResultScreen.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
 #include "Util/Logger.hpp"
+#include "Util/ProgressStore.hpp"
 
 void App::Start() {
     LOG_TRACE("Start");

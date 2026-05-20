@@ -2,6 +2,7 @@
 #define GAMEWORLD_COORDINATE_HELPER_HPP
 
 #include <box2d/box2d.h>
+
 #include <glm/glm.hpp>
 
 namespace GameWorld {

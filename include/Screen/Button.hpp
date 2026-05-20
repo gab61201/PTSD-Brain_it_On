@@ -2,6 +2,7 @@
 #define UI_BUTTON_HPP
 
 #include <functional>
+
 #include "Util/GameObject.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"

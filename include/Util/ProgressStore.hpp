@@ -18,7 +18,7 @@ struct ProgressRecord {
 };
 
 class ProgressStore {
-public:
+   public:
     static void LoadOrCreateDefault();
     static bool Save();
 
@@ -26,13 +26,13 @@ public:
     static int GetTotalStars();
     static bool ApplyResultAndSave(const LevelResultData& resultData);
 
-private:
+   private:
     static bool UpdateBestRecord(LevelId levelId, const ProgressRecord& candidate);
 
     static std::filesystem::path s_SavePath;
     static std::map<LevelId, ProgressRecord> s_Records;
 };
 
-} // namespace Util
+}  // namespace Util
 
-#endif // UTIL_PROGRESS_STORE_HPP
+#endif  // UTIL_PROGRESS_STORE_HPP

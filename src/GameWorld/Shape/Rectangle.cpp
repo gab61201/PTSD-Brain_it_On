@@ -10,7 +10,7 @@ std::string RECTANGLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_square.pn
 namespace GameWorld {
 
 Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor)
-: Shape(size, relativePosition, relativeRotation, isSensor) {}
+    : Shape(size, relativePosition, relativeRotation, isSensor) {}
 
 void Rectangle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {

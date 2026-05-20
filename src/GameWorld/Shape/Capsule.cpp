@@ -15,8 +15,9 @@ Capsule::Capsule(
     const glm::vec2& pointA,
     const glm::vec2& pointB,
     bool isSensor)
-    : Shape(diameter, (pointA+pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor),
-    m_PointA(pointA), m_PointB(pointB) {}
+    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor),
+      m_PointA(pointA),
+      m_PointB(pointB) {}
 
 void Capsule::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
@@ -28,11 +29,11 @@ void Capsule::AttachToBody(b2BodyId body) {
 
     float diameter = std::get<float>(m_Size);
     b2Capsule capsuleShape = {
-        PixelsToMeters(m_PointA),  // 第一個半圓中心
-        PixelsToMeters(m_PointB),  // 第二個半圓中心
-        PixelsToMeters(diameter * 0.5f)    // 半徑
+        PixelsToMeters(m_PointA),        // 第一個半圓中心
+        PixelsToMeters(m_PointB),        // 第二個半圓中心
+        PixelsToMeters(diameter * 0.5f)  // 半徑
     };
-    
+
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreateCapsuleShape(body, &shapeDef, &capsuleShape);
@@ -82,7 +83,7 @@ void Capsule::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation)
     m_Visual->m_Transform.translation = globalPosition;
     m_Visual->m_Transform.rotation = globalRotation;
 
-    float halfLength = glm::distance(m_PointA, m_PointB) * 0.5f;    // 2. 計算膠囊體在「世界空間」中的 X 軸方向向量
+    float halfLength = glm::distance(m_PointA, m_PointB) * 0.5f;  // 2. 計算膠囊體在「世界空間」中的 X 軸方向向量
     float cosGlobal = std::cos(globalRotation);
     float sinGlobal = std::sin(globalRotation);
     glm::vec2 globalDirection(cosGlobal, sinGlobal);

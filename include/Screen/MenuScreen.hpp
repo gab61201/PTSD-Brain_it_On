@@ -15,6 +15,7 @@ class MenuScreen : public UIScreen {
     ScreenType GetScreenType() const override;
 
     LevelId GetSelectedLevelId() const;
+
    private:
     LevelId m_LevelId;
 };

@@ -1,4 +1,5 @@
 #include "Level/LevelData.hpp"
+
 #include <stdexcept>
 
 std::unordered_map<LevelId, LevelFunction>& GetLevelRegistry() {

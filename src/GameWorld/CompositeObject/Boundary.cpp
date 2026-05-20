@@ -7,7 +7,7 @@ namespace {
 float IMAGE_SIZE = 886.0F;
 std::string LEVEL_IMAGE_PATH = "Resources/Images/level_background.png";
 
-}
+}  // namespace
 
 namespace GameWorld {
 

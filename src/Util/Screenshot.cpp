@@ -1,13 +1,13 @@
 #include "Util/Screenshot.hpp"
 
+#include <algorithm>
 #include <cstdio>
 #include <filesystem>
 #include <vector>
-#include <algorithm>
 
-#include "pch.hpp"
-#include "config.hpp"
 #include "Util/Logger.hpp"
+#include "config.hpp"
+#include "pch.hpp"
 
 namespace Util {
 
@@ -46,13 +46,13 @@ void Screenshot::Capture(std::string filename) {
         std::filesystem::create_directories(filepath.parent_path());
     }
 
-    if (SDL_SaveBMP(surface, filepath.c_str()) != 0) {
+    if (SDL_SaveBMP(surface, filepath.string().c_str()) != 0) {
         LOG_ERROR("Failed to save screenshot: {}", SDL_GetError());
     } else {
-        LOG_INFO("Screenshot saved: {}", filepath.c_str());
+        LOG_INFO("Screenshot saved: {}", filepath.string().c_str());
     }
 
     SDL_FreeSurface(surface);
 }
 
-} // namespace Util
+}  // namespace Util

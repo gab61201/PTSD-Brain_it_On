@@ -6,10 +6,10 @@
 namespace Util {
 
 class Screenshot {
-public:
+   public:
     static void Capture(std::string filename);
 };
 
-} // namespace Util
+}  // namespace Util
 
-#endif // UTIL_SCREENSHOT_HPP
+#endif  // UTIL_SCREENSHOT_HPP
