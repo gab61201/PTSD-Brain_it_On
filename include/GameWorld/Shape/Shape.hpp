@@ -5,7 +5,6 @@
 
 #include <variant>
 
-#include "GameWorld/CoordinateHelper.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 

@@ -1,5 +1,7 @@
 #include "Screen/LobbyScreen.hpp"
 
+#include "Screen/UIElement.hpp"
+
 namespace {
 
 std::shared_ptr<Util::GameObject> Title() {

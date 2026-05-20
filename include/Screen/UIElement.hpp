@@ -1,7 +1,7 @@
 #ifndef UI_ELEMENT_HPP
 #define UI_ELEMENT_HPP
 
-#include "Screen/UIScreen.hpp"
+#include "Screen/Button.hpp"
 
 namespace UI::Element {
 

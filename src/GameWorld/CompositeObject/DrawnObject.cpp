@@ -1,4 +1,5 @@
 #include "GameWorld/CompositeObject/DrawnObject.hpp"
+
 #include "Constants.hpp"
 #include "GameWorld/Shape/Capsule.hpp"
 #include "GameWorld/Shape/Circle.hpp"

@@ -1,10 +1,7 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "Screen/GameScreen.hpp"
-#include "Screen/LobbyScreen.hpp"
-#include "Screen/MenuScreen.hpp"
-#include "Screen/SettingsScreen.hpp"
+#include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 #include "pch.hpp"  // IWYU pragma: export
 

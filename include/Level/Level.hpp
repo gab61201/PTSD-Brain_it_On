@@ -5,8 +5,6 @@
 
 #include "Level/LevelData.hpp"
 #include "Level/LevelHUD.hpp"
-#include "Util/GameObject.hpp"
-#include "Util/Text.hpp"
 
 struct LevelResultData {
     LevelId levelId = LevelId::LEVEL_1;

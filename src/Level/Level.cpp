@@ -1,13 +1,8 @@
 #include "Level/Level.hpp"
 
-#include <iomanip>
-#include <sstream>
-
-#include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Screenshot.hpp"
-#include "Util/Text.hpp"
 #include "Util/Time.hpp"
 
 Level::Level(LevelId levelId) : m_LevelId(levelId) {

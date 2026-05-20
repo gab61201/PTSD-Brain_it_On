@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include "GameWorld/Shape/Rectangle.hpp"
+
 namespace {
 
 float IMAGE_SIZE = 886.0F;

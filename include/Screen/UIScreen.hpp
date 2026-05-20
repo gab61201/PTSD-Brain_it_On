@@ -2,13 +2,7 @@
 #define UI_SCREEN_HPP
 
 #include "Screen/Button.hpp"
-#include "Screen/UIElement.hpp"
-#include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
-#include "Util/Input.hpp"
-#include "Util/Keycode.hpp"
 #include "Util/Renderer.hpp"
-#include "Util/Text.hpp"
 
 namespace UI {
 

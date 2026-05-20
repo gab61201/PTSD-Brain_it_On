@@ -2,8 +2,6 @@
 
 #include "Constants.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
-#include "Util/Input.hpp"
-#include "Util/Keycode.hpp"
 
 namespace GameWorld {
 

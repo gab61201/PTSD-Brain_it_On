@@ -2,11 +2,8 @@
 #define BOUNDARY_HPP
 
 #include <glm/glm.hpp>
-#include <memory>
-#include <vector>
 
 #include "GameWorld/CompositeObject/CompositeObject.hpp"
-#include "GameWorld/Shape/Rectangle.hpp"
 
 namespace GameWorld {
 

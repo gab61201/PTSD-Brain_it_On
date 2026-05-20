@@ -1,6 +1,5 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/Shape/Circle.hpp"
-#include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 

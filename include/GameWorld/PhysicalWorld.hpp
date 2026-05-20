@@ -6,7 +6,6 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/CompositeObject/CompositeObject.hpp"
 #include "GameWorld/CompositeObject/DrawnObject.hpp"
-#include "GameWorld/CompositeObject/MagnetObject.hpp"
 #include "GameWorld/DrawingIndicator.hpp"
 
 namespace GameWorld {

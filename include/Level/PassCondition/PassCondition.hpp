@@ -3,8 +3,6 @@
 
 #include <box2d/box2d.h>
 
-#include "GameWorld/Shape/Shape.hpp"
-
 // 放一個物體到盒子內
 // 將球放到盒子內
 

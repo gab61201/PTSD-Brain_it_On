@@ -1,3 +1,4 @@
+#include "Util/Image.hpp"
 #include "Screen/UIElement.hpp"
 
 #include "Constants.hpp"

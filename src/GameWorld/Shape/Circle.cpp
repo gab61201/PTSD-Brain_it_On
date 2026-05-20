@@ -1,5 +1,7 @@
 #include "GameWorld/Shape/Circle.hpp"
 
+#include "GameWorld/CoordinateHelper.hpp"
+
 namespace {
 
 float IMAGE_SIZE = 417.0F;

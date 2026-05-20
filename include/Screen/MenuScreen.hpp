@@ -1,7 +1,7 @@
 #ifndef MENU_SCREEN_HPP
 #define MENU_SCREEN_HPP
 
-#include "Level/Level.hpp"
+#include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 
 namespace UI {

@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Level/LevelData.hpp"
+#include "Screen/UIElement.hpp"
 #include "Util/Color.hpp"
 #include "Util/Image.hpp"
 #include "Util/ProgressStore.hpp"

@@ -1,5 +1,7 @@
 #include "Screen/SettingsScreen.hpp"
 
+#include "Screen/UIElement.hpp"
+
 namespace UI {
 
 SettingsScreen::SettingsScreen() {
