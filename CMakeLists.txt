@@ -86,8 +86,8 @@ else()
 endif()
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${DEPENDENCY_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${ptsd_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${ptsd_SOURCE_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME}
     SDL2::SDL2main
