@@ -1,7 +1,7 @@
 #include "Screen/MenuScreen.hpp"
 
-#include <filesystem>
-#include <sstream>
+#include <string>
+#include <vector>
 
 #include "Level/LevelData.hpp"
 #include "Screen/UIElement.hpp"
@@ -47,33 +47,11 @@ std::shared_ptr<Util::GameObject> CreateImageObject(const std::string& path,
     return object;
 }
 
-std::string GetThumbnailPath(int levelNumber) {
-    std::ostringstream thumbnailPath;
-    thumbnailPath << "Resources/Save/LevelScreenshots/level_" << levelNumber << ".bmp";
-
-    const std::string candidate = thumbnailPath.str();
-    if (std::filesystem::exists(candidate)) {
-        return candidate;
-    }
-
-    return "Resources/Images/level_frame.png";
-}
-
 glm::vec2 GetCardPosition(int index) {
     const int column = index % MENU_COLUMNS;
     const int row = index / MENU_COLUMNS;
     return {CARD_X_START + CARD_X_STEP * static_cast<float>(column),
             CARD_Y_START + CARD_Y_STEP * static_cast<float>(row)};
-}
-
-bool IsLevelUnlocked(int index) {
-    if (index < 0) {
-        return false;
-    }
-
-    const auto levelId = static_cast<LevelId>(index);
-    const auto& registry = GetLevelRegistry();
-    return registry.find(levelId) != registry.end();
 }
 
 }  // namespace
@@ -93,7 +71,7 @@ MenuScreen::MenuScreen() {
     m_Renderer.AddChild(panel);
 
     auto totalStarsText = CreateTextObject(
-        "Total Stars: " + std::to_string(Util::ProgressStore::GetTotalStars()),
+        "Total Stars: " + std::to_string(Util::ProgressStore::GetTotalStarCount()),
         40,
         {0.0f, 230.0f},
         Util::Color::FromRGB(255, 255, 255),
@@ -109,14 +87,9 @@ MenuScreen::MenuScreen() {
     m_Renderer.AddChild(backButton);
 
     for (int index = 0; index < MENU_CARD_COUNT; ++index) {
-        const int levelNumber = index + 1;
+        LevelId levelId = static_cast<LevelId>(index);
+        std::string levelNumberStr = std::to_string(index + 1);
         const glm::vec2 cardPosition = GetCardPosition(index);
-        const bool unlocked = IsLevelUnlocked(index);
-        const bool hasProgress = unlocked;
-        const Util::StarConditions conditions = hasProgress
-                                                    ? Util::ProgressStore::GetConditions(static_cast<LevelId>(index))
-                                                    : Util::StarConditions{false, false, false};
-
         auto cardBackground = CreateImageObject(
             "Resources/Images/BasicShapes/light_blue_square.png",
             {cardPosition.x, cardPosition.y - 12.0f},
@@ -124,36 +97,36 @@ MenuScreen::MenuScreen() {
             -0.1f);
         m_Renderer.AddChild(cardBackground);
 
-        auto cardButton = UI::Element::SquareButton(
-            [this, index, unlocked]() {
-                if (!unlocked) {
-                    return;
-                }
+        std::string thumbnailPath = Util::ProgressStore::HasProgress(levelId)
+                                        ? "Resources/Save/LevelScreenshots/level_" + levelNumberStr + ".bmp"
+                                        : "Resources/Images/level_frame.png";
 
+        auto cardButton = UI::Element::SquareButton(
+            [this, index]() {
                 m_LevelId = static_cast<LevelId>(index);
                 m_NextScreenType = ScreenType::GAME;
             },
-            GetThumbnailPath(levelNumber));
+            thumbnailPath);
         cardButton->m_Transform.translation = cardPosition;
         cardButton->m_Transform.scale = {THUMB_SCALE, THUMB_SCALE};
         m_Buttons.push_back(cardButton);
         m_Renderer.AddChild(cardButton);
 
-        auto levelText = CreateTextObject(std::to_string(levelNumber), 30,
+        auto levelText = CreateTextObject(levelNumberStr, 30,
                                           {cardPosition.x + 8.0f, cardPosition.y + 6.0f},
                                           Util::Color::FromRGB(245, 245, 245), 0.9f);
         m_Renderer.AddChild(levelText);
 
         const float starXOffsets[3] = {-38.0f, 0.0f, 38.0f};
+        std::array<bool, 3> stars = Util::ProgressStore::GetStars(levelId);
         for (int starIndex = 0; starIndex < 3; ++starIndex) {
-            const std::string starPath = conditions[starIndex]
-                                             ? "Resources/Images/star_bright.png"
-                                             : "Resources/Images/star_dark.png";
-            auto star = CreateImageObject(starPath,
-                                          {cardPosition.x + starXOffsets[starIndex], cardPosition.y - 58.0f},
-                                          {STAR_SCALE, STAR_SCALE},
-                                          0.8f);
-            m_Renderer.AddChild(star);
+            std::string starPath = stars.at(starIndex) ? "Resources/Images/star_bright.png"
+                                                       : "Resources/Images/star_dark.png";
+            auto starImg = CreateImageObject(starPath,
+                                             {cardPosition.x + starXOffsets[starIndex], cardPosition.y - 58.0f},
+                                             {STAR_SCALE, STAR_SCALE},
+                                             0.8f);
+            m_Renderer.AddChild(starImg);
         }
     }
 }

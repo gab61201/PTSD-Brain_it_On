@@ -20,7 +20,6 @@ class App {
     void Update();
 
     void End();  // NOLINT(readability-convert-member-functions-to-static)
-
    private:
     State m_CurrentState = State::START;
 

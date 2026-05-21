@@ -1,6 +1,8 @@
 #include "Util/ProgressStore.hpp"
+#include "Util/Screenshot.hpp"
+#include "App.hpp"
 
-#include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <sstream>
@@ -13,11 +15,11 @@ namespace Util {
 
 namespace {
 
+constexpr const char* kCsvHeader = "level,screenshot,passed,within_time,within_stroke,remaining_time,used_strokes";
 constexpr const char* kProgressSavePath = "Resources/Save/progress.csv";
-constexpr const char* kCsvHeader = "level,passed,within_time,within_stroke,remaining_time,used_strokes";
 
-int CountStars(const StarConditions& c) {
-    return (c[0] ? 1 : 0) + (c[1] ? 1 : 0) + (c[2] ? 1 : 0);
+int CountStars(const std::array<bool, 3>& c) {
+    return c[0] + c[1] + c[2];
 }
 
 std::vector<std::string> SplitCsvLine(const std::string& line) {
@@ -30,25 +32,46 @@ std::vector<std::string> SplitCsvLine(const std::string& line) {
     return tokens;
 }
 
-}  // namespace
+bool WriteCSV(std::map<LevelId, ProgressRecord> &record) {
+    std::error_code ec;
+    std::filesystem::path savePath(kProgressSavePath);
+    std::filesystem::create_directories(savePath.parent_path(), ec);
 
-std::filesystem::path ProgressStore::s_SavePath(kProgressSavePath);
-std::map<LevelId, ProgressRecord> ProgressStore::s_Records;
+    std::ofstream ofs(savePath);
+    if (!ofs.is_open()) {
+        LOG_WARN("Failed to open progress file for writing: '{}'", savePath.string());
+        return false;
+    }
+
+    ofs << kCsvHeader << '\n';
+    for (const auto& [levelId, r] : record) {
+        ofs << (static_cast<int>(levelId) + 1) << ','
+            << (r.stars[0] ? 1 : 0) << ','
+            << (r.stars[1] ? 1 : 0) << ','
+            << (r.stars[2] ? 1 : 0) << ','
+            << std::fixed << std::setprecision(2) << r.remainingTime << std::defaultfloat << ','
+            << r.usedStrokes << '\n';
+    }
+    return true;
+}
+
+}  // namespace
 
 void ProgressStore::LoadOrCreateDefault() {
     s_Records.clear();
 
     std::error_code ec;
-    std::filesystem::create_directories(s_SavePath.parent_path(), ec);
+    std::filesystem::path savePath(kProgressSavePath);
+    std::filesystem::create_directories(savePath.parent_path(), ec);
 
-    if (!std::filesystem::exists(s_SavePath)) {
-        Save();
+    if (!std::filesystem::exists(savePath)) {
+        WriteCSV(s_Records);
         return;
     }
 
-    std::ifstream ifs(s_SavePath);
+    std::ifstream ifs(savePath);
     if (!ifs.is_open()) {
-        LOG_WARN("Failed to open progress file for reading: '{}'", s_SavePath.string());
+        LOG_WARN("Failed to open progress file for reading: '{}'", savePath.string());
         return;
     }
 
@@ -79,68 +102,28 @@ void ProgressStore::LoadOrCreateDefault() {
     }
 }
 
-bool ProgressStore::Save() {
-    std::error_code ec;
-    std::filesystem::create_directories(s_SavePath.parent_path(), ec);
-
-    std::ofstream ofs(s_SavePath);
-    if (!ofs.is_open()) {
-        LOG_WARN("Failed to open progress file for writing: '{}'", s_SavePath.string());
-        return false;
+std::array<bool, 3> ProgressStore::GetStars(LevelId levelId) {
+    if (auto it = s_Records.find(levelId); it != s_Records.end()) {
+        return it->second.stars;
     }
-
-    ofs << kCsvHeader << '\n';
-    for (const auto& [levelId, r] : s_Records) {
-        ofs << (static_cast<int>(levelId) + 1) << ','
-            << (r.conditions[0] ? 1 : 0) << ','
-            << (r.conditions[1] ? 1 : 0) << ','
-            << (r.conditions[2] ? 1 : 0) << ','
-            << std::fixed << std::setprecision(2) << r.remainingTime << std::defaultfloat << ','
-            << r.usedStrokes << '\n';
-    }
-    return true;
+    return std::array<bool, 3>{false, false, false};
 }
 
-StarConditions ProgressStore::GetConditions(LevelId levelId) {
-    const auto it = s_Records.find(levelId);
-    return it == s_Records.end() ? StarConditions{false, false, false} : it->second.conditions;
-}
-
-int ProgressStore::GetTotalStars() {
+int ProgressStore::GetTotalStarCount() {
     int total = 0;
     for (const auto& [_, record] : s_Records) {
-        total += CountStars(record.conditions);
+        total += CountStars(record.stars);
     }
     return total;
 }
 
-bool ProgressStore::ApplyResultAndSave(const LevelResultData& r) {
-    const ProgressRecord candidate{
-        {r.passed, IsWithinTimeLimit(r), IsWithinStrokeLimit(r)},
-        std::max(0.0f, r.goalTime - r.solvedTime),
-        r.usedStroke,
-    };
-    if (!UpdateBestRecord(r.levelId, candidate)) return true;
-    return Save();
-}
+void ProgressStore::ApplyResultAndSave(const LevelResultData& data) {
+    s_LastPlayedLevelData = data;
+    std::string id = std::to_string(static_cast<int>(data.levelId) + 1);
+    Screenshot::Capture(id);
+    // todo: 更新 s_Records 
 
-bool ProgressStore::UpdateBestRecord(LevelId levelId, const ProgressRecord& candidate) {
-    const auto it = s_Records.find(levelId);
-    const int newStars = CountStars(candidate.conditions);
-    const int oldStars = it == s_Records.end() ? -1 : CountStars(it->second.conditions);
-
-    bool shouldUpdate = newStars > oldStars;
-    if (!shouldUpdate && newStars == oldStars) {
-        shouldUpdate = candidate.remainingTime > it->second.remainingTime ||
-                       candidate.usedStrokes < it->second.usedStrokes;
-    }
-    if (!shouldUpdate) return false;
-
-    s_Records[levelId] = candidate;
-    LOG_INFO("Progress updated: level={} stars={} remaining_time={:.2f} used_strokes={}",
-             static_cast<int>(levelId) + 1, newStars,
-             candidate.remainingTime, candidate.usedStrokes);
-    return true;
+    WriteCSV(s_Records);
 }
 
 }  // namespace Util

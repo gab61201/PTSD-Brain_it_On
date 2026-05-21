@@ -53,8 +53,4 @@ ScreenType GameScreen::GetScreenType() const {
     return ScreenType::GAME;
 }
 
-LevelResultData GameScreen::GetResultData() const {
-    return m_Level.GetResultData();
-}
-
 }  // namespace UI

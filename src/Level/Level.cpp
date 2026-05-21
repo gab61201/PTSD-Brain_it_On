@@ -1,8 +1,7 @@
 #include "Level/Level.hpp"
-
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
-#include "Util/Screenshot.hpp"
+#include "Util/ProgressStore.hpp"
 #include "Util/Time.hpp"
 
 Level::Level(LevelId levelId) : m_LevelId(levelId) {
@@ -52,8 +51,7 @@ void Level::Playing() {
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
-        std::string id = std::to_string(static_cast<int>(m_LevelId) + 1);
-        Util::Screenshot::Capture("level_" + id);
+        Util::ProgressStore::ApplyResultAndSave(this->GetResultData());
         m_state = State::FINISHED;
         m_World->Stop();
     }

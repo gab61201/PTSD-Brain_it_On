@@ -8,7 +8,7 @@ namespace UI {
 
 class ResultScreen : public UIScreen {
    public:
-    ResultScreen(LevelId* levelId, const LevelResultData& resultData);
+    ResultScreen(LevelId* levelId, LevelResultData& resultData);
 
     ScreenType Update() override;
 

@@ -49,7 +49,7 @@ int ToLevelNumber(LevelId id) {
 
 namespace UI {
 
-ResultScreen::ResultScreen(LevelId* levelId, const LevelResultData& resultData)
+ResultScreen::ResultScreen(LevelId* levelId, LevelResultData& resultData)
     : m_ResultData(resultData) {
     (void)levelId;
     const bool withinTimeLimit = IsWithinTimeLimit(m_ResultData);
