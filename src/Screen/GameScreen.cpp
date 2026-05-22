@@ -12,20 +12,18 @@ GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
     auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
-    auto backButton = UI::Element::CircleButton([this] {
+    auto backButton = UI::Element::Button(Path::BtnBack, [this] {
         m_Level.Save();
         m_NextScreenType = ScreenType::MENU;
-    },
-                                                Path::BtnBack);
+    });
     backButton->m_Transform.translation = {-560.0f, -300.0f};
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
     // 重試按鈕
-    auto resetButton = UI::Element::CircleButton([this] {
+    auto resetButton = UI::Element::Button(Path::BtnRetry, [this] {
         m_Level.Reset();
-    },
-                                                 Path::BtnRetry);
+    });
     resetButton->m_Transform.translation = {560.0f, -300.0f};
     m_Buttons.push_back(resetButton);
     m_Renderer.AddChild(resetButton);

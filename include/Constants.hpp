@@ -33,6 +33,7 @@ inline const std::string LevelBackground = "Resources/Images/level_background.pn
 inline const std::string BtnBack = "Resources/Images/Btn_Back.png";
 inline const std::string BtnRetry = "Resources/Images/Btn_Retry.png";
 inline const std::string BtnNext = "Resources/Images/Btn_Next.png";
+inline const std::string BtnMainButtonGray = "Resources/Images/Btn_MainButton_Gray.png";
 
 }  // namespace Path
 

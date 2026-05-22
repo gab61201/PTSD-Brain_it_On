@@ -58,10 +58,9 @@ MenuScreen::MenuScreen() {
         1.0f);
     m_Renderer.AddChild(totalStarsText);
 
-    auto backButton = UI::Element::CircleButton([this]() {
+    auto backButton = UI::Element::Button(Path::BtnBack, [this]() {
         m_NextScreenType = ScreenType::LOBBY;
-    },
-                                                Path::BtnBack);
+    });
     backButton->m_Transform.translation = {-560.0f, -300.0f};
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
@@ -80,12 +79,12 @@ MenuScreen::MenuScreen() {
             -0.1f);
         m_Renderer.AddChild(cardBackground);
 
-        auto cardButton = UI::Element::SquareButton(
+        auto cardButton = UI::Element::Button(
+            Util::ProgressStore::GetScreenshotPath(levelId),
             [this, index]() {
                 m_LevelId = static_cast<LevelId>(index);
                 m_NextScreenType = ScreenType::GAME;
-            },
-            Util::ProgressStore::GetScreenshotPath(levelId));
+            });
         cardButton->m_Transform.translation = cardPosition;
         cardButton->m_Transform.scale = {THUMB_SCALE, THUMB_SCALE};
         m_Buttons.push_back(cardButton);

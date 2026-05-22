@@ -19,7 +19,7 @@ LobbyScreen::LobbyScreen() {
         "Brain It On!", 72, {3.0f, 197.0f}, Util::Color::FromRGB(64, 64, 64), 0, "Resources/Fonts/KaushanScript-Regular.ttf");
     m_Renderer.AddChild(titleShadow);
 
-    auto playButton = UI::Element::SquareButton([this]() {
+    auto playButton = UI::Element::Button(Path::BtnMainButtonGray, [this]() {
         m_NextScreenType = ScreenType::MENU;
     });
     m_Buttons.push_back(playButton);

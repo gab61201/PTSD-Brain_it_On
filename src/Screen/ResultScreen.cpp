@@ -131,26 +131,23 @@ ResultScreen::ResultScreen(LevelResult resultData)
         solvedStrokeColor,
         1.6f));
 
-    auto selectButton = UI::Element::CircleButton([this]() {
+    auto selectButton = UI::Element::Button(Path::BtnBack, [this]() {
         m_NextScreenType = ScreenType::MENU;
-    },
-                                                  Path::BtnBack);
+    });
     selectButton->m_Transform.translation = {-220.0f, -322.0f};
     m_Buttons.push_back(selectButton);
     m_Renderer.AddChild(selectButton);
 
-    auto retryButton = UI::Element::CircleButton([this]() {
+    auto retryButton = UI::Element::Button(Path::BtnRetry, [this]() {
         m_NextScreenType = ScreenType::GAME;
-    },
-                                                 Path::BtnRetry);
+    });
     retryButton->m_Transform.translation = {0.0f, -322.0f};
     m_Buttons.push_back(retryButton);
     m_Renderer.AddChild(retryButton);
 
-    auto nextButton = UI::Element::CircleButton([this]() {
+    auto nextButton = UI::Element::Button(Path::BtnNext, [this]() {
         m_NextScreenType = ScreenType::MENU;
-    },
-                                                Path::BtnNext);
+    });
     nextButton->m_Transform.translation = {220.0f, -322.0f};
 
     m_Buttons.push_back(nextButton);

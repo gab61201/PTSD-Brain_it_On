@@ -15,17 +15,12 @@ std::shared_ptr<Util::GameObject> Background(const std::string& path) {
     return background;
 }
 
-std::shared_ptr<UI::Button> SquareButton(std::function<void()> OnClickHandler, const std::string& path) {
-    auto ButtonImage = std::make_shared<Util::Image>(path);
-    auto Button = std::make_shared<UI::Button>(ButtonImage, 0);
-    Button->m_Transform.scale = {0.5f, 0.5f};
-    Button->OnClick(OnClickHandler);
-    return Button;
-}
-
-std::shared_ptr<UI::Button> CircleButton(std::function<void()> OnClickHandler, const std::string& path) {
-    // TODO: 將 hit-test 改為圓形以符合名稱語義；目前與 SquareButton 行為相同。
-    return SquareButton(std::move(OnClickHandler), path);
+std::shared_ptr<UI::Button> Button(const std::string& path, std::function<void()> OnClickHandler) {
+    auto buttonImage = std::make_shared<Util::Image>(path);
+    auto button = std::make_shared<UI::Button>(buttonImage, 0);
+    button->m_Transform.scale = {0.5f, 0.5f};
+    button->OnClick(OnClickHandler);
+    return button;
 }
 
 std::shared_ptr<Util::GameObject> Text(
