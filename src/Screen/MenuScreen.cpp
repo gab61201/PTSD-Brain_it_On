@@ -25,27 +25,7 @@ constexpr float CARD_X_STEP = 150.0f;
 constexpr float CARD_Y_START = 100.0f;
 constexpr float CARD_Y_STEP = -235.0f;
 
-std::shared_ptr<Util::GameObject> CreateTextObject(const std::string& text,
-                                                   int size,
-                                                   const glm::vec2& position,
-                                                   const Util::Color& color,
-                                                   float z = 1.0f) {
-    auto drawable = std::make_shared<Util::Text>("Resources/Fonts/Inter.ttf", size, text, color);
-    auto object = std::make_shared<Util::GameObject>(drawable, z);
-    object->m_Transform.translation = position;
-    return object;
-}
 
-std::shared_ptr<Util::GameObject> CreateImageObject(const std::string& path,
-                                                    const glm::vec2& position,
-                                                    const glm::vec2& scale,
-                                                    float z = 1.0f) {
-    auto drawable = std::make_shared<Util::Image>(path);
-    auto object = std::make_shared<Util::GameObject>(drawable, z);
-    object->m_Transform.translation = position;
-    object->m_Transform.scale = scale;
-    return object;
-}
 
 glm::vec2 GetCardPosition(int index) {
     const int column = index % MENU_COLUMNS;
@@ -70,7 +50,7 @@ MenuScreen::MenuScreen() {
     panel->m_Transform.scale = {PANEL_WIDTH, PANEL_HEIGHT};
     m_Renderer.AddChild(panel);
 
-    auto totalStarsText = CreateTextObject(
+    auto totalStarsText = UI::Element::Text(
         "Total Stars: " + std::to_string(Util::ProgressStore::GetTotalStarCount()),
         40,
         {0.0f, 230.0f},
@@ -90,7 +70,7 @@ MenuScreen::MenuScreen() {
         LevelId levelId = static_cast<LevelId>(index);
         std::string levelNumberStr = std::to_string(index + 1);
         const glm::vec2 cardPosition = GetCardPosition(index);
-        auto cardBackground = CreateImageObject(
+        auto cardBackground = UI::Element::Image(
             "Resources/Images/BasicShapes/light_blue_square.png",
             {cardPosition.x, cardPosition.y - 12.0f},
             {CARD_SCALE * 0.80f, CARD_SCALE * 0.80f},
@@ -108,7 +88,7 @@ MenuScreen::MenuScreen() {
         m_Buttons.push_back(cardButton);
         m_Renderer.AddChild(cardButton);
 
-        auto levelText = CreateTextObject(levelNumberStr, 30,
+        auto levelText = UI::Element::Text(levelNumberStr, 30,
                                           {cardPosition.x + 8.0f, cardPosition.y + 6.0f},
                                           Util::Color::FromRGB(245, 245, 245), 0.9f);
         m_Renderer.AddChild(levelText);
@@ -118,7 +98,7 @@ MenuScreen::MenuScreen() {
         for (int starIndex = 0; starIndex < 3; ++starIndex) {
             std::string starPath = stars.at(starIndex) ? "Resources/Images/star_bright.png"
                                                        : "Resources/Images/star_dark.png";
-            auto starImg = CreateImageObject(starPath,
+            auto starImg = UI::Element::Image(starPath,
                                              {cardPosition.x + starXOffsets[starIndex], cardPosition.y - 58.0f},
                                              {STAR_SCALE, STAR_SCALE},
                                              0.8f);

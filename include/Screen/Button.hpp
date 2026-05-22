@@ -4,10 +4,6 @@
 #include <functional>
 
 #include "Util/GameObject.hpp"
-#include "Util/Input.hpp"
-#include "Util/Keycode.hpp"
-#include "Util/Renderer.hpp"
-#include "Util/Text.hpp"
 
 namespace UI {
 

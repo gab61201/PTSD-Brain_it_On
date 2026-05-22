@@ -1,5 +1,7 @@
 #include "Screen/Button.hpp"
 
+#include "Util/Input.hpp"
+
 namespace UI {
 
 Button::Button(

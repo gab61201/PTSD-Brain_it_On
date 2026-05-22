@@ -1,4 +1,5 @@
 #include "Util/Image.hpp"
+#include "Util/Text.hpp"
 #include "Screen/UIElement.hpp"
 
 #include "Constants.hpp"
@@ -28,6 +29,31 @@ std::shared_ptr<UI::Button> CircleButton(std::function<void()> OnClickHandler, c
     Button->m_Transform.scale = {0.5f, 0.5f};
     Button->OnClick(OnClickHandler);
     return Button;
+}
+
+std::shared_ptr<Util::GameObject> Text(
+    const std::string& text,
+    int size,
+    const glm::vec2& position,
+    const Util::Color& color,
+    float z,
+    const std::string& fontPath) {
+    auto drawable = std::make_shared<Util::Text>(fontPath, size, text, color);
+    auto object = std::make_shared<Util::GameObject>(drawable, z);
+    object->m_Transform.translation = position;
+    return object;
+}
+
+std::shared_ptr<Util::GameObject> Image(
+    const std::string& path,
+    const glm::vec2& position,
+    const glm::vec2& scale,
+    float z) {
+    auto drawable = std::make_shared<Util::Image>(path);
+    auto object = std::make_shared<Util::GameObject>(drawable, z);
+    object->m_Transform.translation = position;
+    object->m_Transform.scale = scale;
+    return object;
 }
 
 }  // namespace UI::Element

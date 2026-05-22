@@ -6,35 +6,10 @@
 #include "Level/LevelData.hpp"
 #include "Screen/UIElement.hpp"
 #include "Util/Color.hpp"
-#include "Util/Image.hpp"
+#include "Util/Input.hpp"
 #include "Util/ProgressStore.hpp"
 
 namespace {
-
-std::shared_ptr<Util::GameObject> CreateTextObject(
-    const std::string& text,
-    int size,
-    const glm::vec2& position,
-    const Util::Color& color,
-    float z = 1.0f) {
-    auto drawable =
-        std::make_shared<Util::Text>("Resources/Fonts/Inter.ttf", size, text, color);
-    auto object = std::make_shared<Util::GameObject>(drawable, z);
-    object->m_Transform.translation = position;
-    return object;
-}
-
-std::shared_ptr<Util::GameObject> CreateImageObject(
-    const std::string& path,
-    const glm::vec2& position,
-    const glm::vec2& scale,
-    float z = 1.0f) {
-    auto drawable = std::make_shared<Util::Image>(path);
-    auto object = std::make_shared<Util::GameObject>(drawable, z);
-    object->m_Transform.translation = position;
-    object->m_Transform.scale = scale;
-    return object;
-}
 
 std::string FormatSeconds(float seconds) {
     std::stringstream ss;
@@ -63,14 +38,14 @@ ResultScreen::ResultScreen(LevelId* levelId)
     auto background = UI::Element::Background("Resources/Images/background.png");
     m_Renderer.AddChild(background);
 
-    auto panel = CreateImageObject(
+    auto panel = UI::Element::Image(
         "Resources/Images/BasicShapes/blue_square.png",
         {0.0f, -48.0f},
         {1.72f, 0.98f},
         0.1f);
     m_Renderer.AddChild(panel);
 
-    auto header = CreateImageObject(
+    auto header = UI::Element::Image(
         "Resources/Images/BasicShapes/orange_square.png",
         {0.0f, 156.0f},
         {1.72f, 0.13f},
@@ -78,10 +53,10 @@ ResultScreen::ResultScreen(LevelId* levelId)
     m_Renderer.AddChild(header);
 
     const std::string title = m_ResultData.passed ? "Nice one!" : "Try again!";
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         title, 64, {0.0f, 262.0f}, Util::Color::FromRGB(255, 255, 255), 1.5f));
 
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         "Level #" + std::to_string(static_cast<int>(m_ResultData.levelId) + 1),
         48,
         {0.0f, 156.0f},
@@ -96,61 +71,61 @@ ResultScreen::ResultScreen(LevelId* levelId)
     const glm::vec2 starMid = {0.0f, 0.0f};
     const glm::vec2 starRight = {150.0f, 0.0f};
 
-    m_Renderer.AddChild(CreateImageObject(
+    m_Renderer.AddChild(UI::Element::Image(
         m_ResultData.passed ? "Resources/Images/star_bright.png"
                             : "Resources/Images/star_dark.png",
         {starLeft.x, 80.0f}, {0.50, 0.50}, 1.3f));
-    m_Renderer.AddChild(CreateImageObject(
+    m_Renderer.AddChild(UI::Element::Image(
         withinTimeLimit ? "Resources/Images/star_bright.png"
                         : "Resources/Images/star_dark.png",
         {starMid.x, 80.0f}, {0.50, 0.50}, 1.3f));
-    m_Renderer.AddChild(CreateImageObject(
+    m_Renderer.AddChild(UI::Element::Image(
         withinStrokeLimit ? "Resources/Images/star_bright.png"
                           : "Resources/Images/star_dark.png",
         {starRight.x, 80.0f}, {0.50, 0.50}, 1.3f));
 
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         "\u2713", 40, {colLeft.x, 0.0f}, Util::Color::FromRGB(56, 209, 83), 1.4f));
-    m_Renderer.AddChild(CreateImageObject(
+    m_Renderer.AddChild(UI::Element::Image(
         "Resources/Images/alarm.png", {colMid.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
-    m_Renderer.AddChild(CreateImageObject(
+    m_Renderer.AddChild(UI::Element::Image(
         "Resources/Images/stroke_limit.png", {colRight.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
 
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         "Goal:", 48, {-215.0f, -70.0f}, Util::Color::FromRGB(245, 245, 245), 1.4f));
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         FormatSeconds(m_ResultData.goalTime),
         48,
         {colMid.x, -70.0f},
         Util::Color::FromRGB(245, 245, 245),
         1.4f));
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         std::to_string(m_ResultData.goalStroke),
         48,
         {colRight.x, -70.0f},
         Util::Color::FromRGB(245, 245, 245),
         1.4f));
 
-    auto solvedStrip = CreateImageObject(
+    auto solvedStrip = UI::Element::Image(
         "Resources/Images/BasicShapes/white_square.png",
         {0.0f, -152.0f},
         {1.72f, 0.16f},
         1.1f);
     m_Renderer.AddChild(solvedStrip);
 
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         "Solved",
         48,
         {-215.0f, -152.0f},
         Util::Color::FromRGB(11, 49, 80),
         1.6f));
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         FormatSeconds(m_ResultData.solvedTime),
         48,
         {colMid.x, -152.0f},
         solvedTimeColor,
         1.6f));
-    m_Renderer.AddChild(CreateTextObject(
+    m_Renderer.AddChild(UI::Element::Text(
         std::to_string(m_ResultData.usedStroke),
         48,
         {colRight.x, -152.0f},
