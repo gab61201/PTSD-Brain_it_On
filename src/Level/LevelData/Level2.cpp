@@ -3,8 +3,8 @@
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
-LevelData LevelData_2() {
-    LevelData data;
+LevelConfig LevelConfig_2() {
+    LevelConfig data;
     data.timeout = 10.0F;
     data.strokeLimit = 1;
     data.targetText = "Make the ball hit the left wall";
@@ -33,7 +33,7 @@ LevelData LevelData_2() {
 namespace {
 struct Register {
     Register() {
-        RegisterLevel(LevelId::LEVEL_2, LevelData_2);
+        RegisterLevel(LevelId::LEVEL_2, LevelConfig_2);
     }
 };
 

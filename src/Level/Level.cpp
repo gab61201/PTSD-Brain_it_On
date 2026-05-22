@@ -7,7 +7,7 @@
 #include "Util/Time.hpp"
 
 Level::Level(LevelId levelId) : m_LevelId(levelId) {
-    LevelData data = GetLevelData(levelId);
+    LevelConfig data = GetLevelConfig(levelId);
     m_World = data.world;
     m_PassCondition = data.passCondition;
     m_Timeout = data.timeout;
@@ -61,7 +61,7 @@ void Level::Playing() {
 
 void Level::Reset() {
     m_state = State::WAITING;
-    LevelData data = GetLevelData(m_LevelId);
+    LevelConfig data = GetLevelConfig(m_LevelId);
     m_World = data.world;
     m_PassCondition = data.passCondition;
     m_Time = 0.0F;
@@ -101,7 +101,7 @@ void Level::Update() {
 }
 
 void Level::Save() {
-    LevelResultData result = {
+    LevelResult result = {
         m_LevelId,
         (m_state == State::FINISHED),
         m_Timeout,

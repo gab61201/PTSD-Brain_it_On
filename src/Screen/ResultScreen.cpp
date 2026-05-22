@@ -23,7 +23,7 @@ std::string FormatSeconds(float seconds) {
 namespace UI {
 
 ResultScreen::ResultScreen(LevelId* levelId)
-    : m_ResultData(Util::ProgressStore::s_LastPlayedLevelData) {
+    : m_ResultData(Util::ProgressStore::s_LastPlayedLevelConfig) {
     (void)levelId;
     const bool withinTimeLimit = (m_ResultData.solvedTime <= m_ResultData.goalTime);
     const bool withinStrokeLimit = (m_ResultData.usedStroke <= m_ResultData.goalStroke);

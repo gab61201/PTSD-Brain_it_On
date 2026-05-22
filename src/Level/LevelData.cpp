@@ -11,7 +11,7 @@ void RegisterLevel(LevelId id, LevelFunction func) {
     GetLevelRegistry()[id] = func;
 }
 
-LevelData GetLevelData(LevelId id) {
+LevelConfig GetLevelConfig(LevelId id) {
     auto& registry = GetLevelRegistry();
     auto it = registry.find(id);
 

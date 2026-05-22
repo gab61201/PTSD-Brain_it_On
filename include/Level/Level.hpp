@@ -6,16 +6,6 @@
 #include "Level/LevelData.hpp"
 #include "Level/LevelHUD.hpp"
 
-struct LevelResultData {
-    LevelId levelId = LevelId::LEVEL_1;
-    bool passed = false;
-    float goalTime = 0.0f;
-    float solvedTime = 0.0f;
-    int goalStroke = 0;
-    int usedStroke = 0;
-    std::string screenshotFilename;
-};
-
 class Level {
    public:
     Level(LevelId levelId);

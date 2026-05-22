@@ -3,8 +3,8 @@
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
-LevelData LevelData_3() {
-    LevelData data;
+LevelConfig LevelConfig_3() {
+    LevelConfig data;
     data.timeout = 10.0F;
     data.strokeLimit = 1;
     data.targetText = "Tilt the shape to the right";
@@ -47,7 +47,7 @@ LevelData LevelData_3() {
 namespace {
 struct Register {
     Register() {
-        RegisterLevel(LevelId::LEVEL_3, LevelData_3);
+        RegisterLevel(LevelId::LEVEL_3, LevelConfig_3);
     }
 };
 

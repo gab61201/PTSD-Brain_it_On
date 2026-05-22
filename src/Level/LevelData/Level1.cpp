@@ -5,8 +5,8 @@
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
-LevelData LevelData_1() {
-    LevelData data;
+LevelConfig LevelConfig_1() {
+    LevelConfig data;
     data.timeout = 60.0F;  // 設定通關時間為 60 秒
     data.strokeLimit = 3;
 
@@ -67,7 +67,7 @@ LevelData LevelData_1() {
 namespace {
 struct Register {
     Register() {
-        RegisterLevel(LevelId::LEVEL_1, LevelData_1);
+        RegisterLevel(LevelId::LEVEL_1, LevelConfig_1);
     }
 };
 

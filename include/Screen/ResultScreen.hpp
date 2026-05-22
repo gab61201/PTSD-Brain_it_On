@@ -15,7 +15,7 @@ class ResultScreen : public UIScreen {
     ScreenType GetScreenType() const override;
 
    private:
-    LevelResultData m_ResultData;
+    LevelResult m_ResultData;
 };
 
 }  // namespace UI
