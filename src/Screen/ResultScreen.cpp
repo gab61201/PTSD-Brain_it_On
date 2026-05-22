@@ -62,13 +62,14 @@ ResultScreen::ResultScreen(LevelResult resultData)
         Util::Color::FromRGB(74, 74, 74),
         1.5f));
 
-    const glm::vec2 colLeft = {-180.0f, 0.0f};
-    const glm::vec2 colMid = {0.0f, 0.0f};
-    const glm::vec2 colRight = {180.0f, 0.0f};
+    const float statsCenterX = -180.0f;
+    const glm::vec2 colLeft = {statsCenterX - 140.0f, 0.0f};
+    const glm::vec2 colMid = {statsCenterX, 0.0f};
+    const glm::vec2 colRight = {statsCenterX + 140.0f, 0.0f};
 
-    const glm::vec2 starLeft = {-150.0f, 0.0f};
-    const glm::vec2 starMid = {0.0f, 0.0f};
-    const glm::vec2 starRight = {150.0f, 0.0f};
+    const glm::vec2 starLeft = {colLeft.x, 0.0f};
+    const glm::vec2 starMid = {colMid.x, 0.0f};
+    const glm::vec2 starRight = {colRight.x, 0.0f};
 
     m_Renderer.AddChild(UI::Element::Image(
         m_ResultData.passed ? Path::StarBright
@@ -91,7 +92,7 @@ ResultScreen::ResultScreen(LevelResult resultData)
         Path::StrokeLimit, {colRight.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
 
     m_Renderer.AddChild(UI::Element::Text(
-        "Goal:", 48, {-215.0f, -70.0f}, Util::Color::FromRGB(245, 245, 245), 1.4f));
+        "Goal:", 48, {colLeft.x - 40.0f, -70.0f}, Util::Color::FromRGB(245, 245, 245), 1.4f));
     m_Renderer.AddChild(UI::Element::Text(
         FormatSeconds(m_ResultData.goalTime),
         48,
@@ -107,15 +108,15 @@ ResultScreen::ResultScreen(LevelResult resultData)
 
     auto solvedStrip = UI::Element::Image(
         Path::WhiteSquare,
-        {0.0f, -152.0f},
-        {1.72f, 0.16f},
+        {statsCenterX, -152.0f},
+        {0.95f, 0.16f},
         1.1f);
     m_Renderer.AddChild(solvedStrip);
 
     m_Renderer.AddChild(UI::Element::Text(
         "Solved",
         48,
-        {-215.0f, -152.0f},
+        {colLeft.x - 40.0f, -152.0f},
         Util::Color::FromRGB(11, 49, 80),
         1.6f));
     m_Renderer.AddChild(UI::Element::Text(
@@ -130,6 +131,22 @@ ResultScreen::ResultScreen(LevelResult resultData)
         {colRight.x, -152.0f},
         solvedStrokeColor,
         1.6f));
+
+    auto levelFrame = UI::Element::Image(
+        Path::LevelFrame,
+        {230.0f, -30.0f},
+        {0.38f, 0.38f},
+        1.1f);
+    m_Renderer.AddChild(levelFrame);
+
+    if (!m_ResultData.screenshotFilename.empty()) {
+        auto screenshot = UI::Element::Image(
+            "Resources/Save/Screenshots/" + m_ResultData.screenshotFilename,
+            {230.0f, 4.0f},
+            {0.32f, 0.32f},
+            1.2f);
+        m_Renderer.AddChild(screenshot);
+    }
 
     auto selectButton = UI::Element::Button(Path::BtnBack, [this]() {
         m_NextScreenType = ScreenType::MENU;
