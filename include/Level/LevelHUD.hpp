@@ -7,7 +7,6 @@
 #include "Level/LevelData.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Renderer.hpp"
-#include "Util/Text.hpp"
 
 class LevelHUD {
    public:
@@ -34,12 +33,9 @@ class LevelHUD {
 
    private:
     Util::Renderer m_Renderer;
-    std::shared_ptr<Util::Text> m_TimerText;
     std::shared_ptr<Util::GameObject> m_TimerObject;
     std::shared_ptr<Util::GameObject> m_TargetTextObject;
-    std::shared_ptr<Util::Text> m_StrokeLimitText;
     std::shared_ptr<Util::GameObject> m_StrokeLimitObject;
-    std::shared_ptr<Util::Text> m_ContactTimerText;
     std::shared_ptr<Util::GameObject> m_ContactTimerObject;
 };
 
