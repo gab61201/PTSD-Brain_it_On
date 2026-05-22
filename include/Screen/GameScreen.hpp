@@ -14,6 +14,8 @@ class GameScreen : public UIScreen {
 
     ScreenType GetScreenType() const override;
 
+    const LevelResult& GetLastResult() const { return m_Level.GetLastResult(); }
+
    private:
     Level m_Level;
 };

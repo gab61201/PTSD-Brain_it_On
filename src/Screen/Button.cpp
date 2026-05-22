@@ -29,10 +29,4 @@ bool Button::IsCursorPointing() {
             cursorPosition.y >= position.y - imageSize.y / 2.0f && cursorPosition.y <= position.y + imageSize.y / 2.0f);
 }
 
-void Button::OnPressing() {
-    if (IsCursorPointing() || Util::Input::IsKeyPressed(Util::Keycode::MOUSE_LB)) {
-        // scale to 1.1
-    }
-}
-
 }  // namespace UI

@@ -31,8 +31,6 @@ class ProgressStore {
     // 清理未使用的截圖
     static void CleanUpUnusedScreenshots();
 
-    static LevelResult s_LastPlayedLevelConfig;
-
    private:
     static std::map<LevelId, ProgressRecord> s_Records;
 };

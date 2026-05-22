@@ -12,7 +12,6 @@
 
 namespace {
 
-constexpr int MENU_CARD_COUNT = 10;
 constexpr int MENU_COLUMNS = 5;
 
 constexpr float PANEL_WIDTH = 1.88f;
@@ -67,7 +66,10 @@ MenuScreen::MenuScreen() {
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
-    for (int index = 0; index < MENU_CARD_COUNT; ++index) {
+    // 只顯示已註冊的關卡，避免點到未註冊的 LevelId 在 GetLevelConfig 中拋例外。
+    // 假設關卡 ID 從 LEVEL_1(0) 連續向上註冊。
+    const int menuCardCount = static_cast<int>(GetLevelRegistry().size());
+    for (int index = 0; index < menuCardCount; ++index) {
         LevelId levelId = static_cast<LevelId>(index);
         std::string levelNumberStr = std::to_string(index + 1);
         const glm::vec2 cardPosition = GetCardPosition(index);

@@ -8,7 +8,7 @@ namespace UI {
 
 class ResultScreen : public UIScreen {
    public:
-    ResultScreen();
+    explicit ResultScreen(LevelResult resultData);
 
     ScreenType Update() override;
 

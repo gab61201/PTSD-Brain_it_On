@@ -24,11 +24,8 @@ std::shared_ptr<UI::Button> SquareButton(std::function<void()> OnClickHandler, c
 }
 
 std::shared_ptr<UI::Button> CircleButton(std::function<void()> OnClickHandler, const std::string& path) {
-    auto ButtonImage = std::make_shared<Util::Image>(path);
-    auto Button = std::make_shared<UI::Button>(ButtonImage, 0);
-    Button->m_Transform.scale = {0.5f, 0.5f};
-    Button->OnClick(OnClickHandler);
-    return Button;
+    // TODO: 將 hit-test 改為圓形以符合名稱語義；目前與 SquareButton 行為相同。
+    return SquareButton(std::move(OnClickHandler), path);
 }
 
 std::shared_ptr<Util::GameObject> Text(

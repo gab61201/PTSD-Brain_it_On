@@ -32,11 +32,16 @@ void App::Update() {
                 m_Screen = std::make_unique<UI::MenuScreen>();
                 break;
             case UI::ScreenType::GAME:
-                m_SelectedLevelId = static_cast<UI::MenuScreen*>(m_Screen.get())->GetSelectedLevelId();
+                if (auto* menu = dynamic_cast<UI::MenuScreen*>(m_Screen.get())) {
+                    m_SelectedLevelId = menu->GetSelectedLevelId();
+                }
                 m_Screen = std::make_unique<UI::GameScreen>(m_SelectedLevelId);
                 break;
             case UI::ScreenType::RESULT:
-                m_Screen = std::make_unique<UI::ResultScreen>();
+                if (auto* game = dynamic_cast<UI::GameScreen*>(m_Screen.get())) {
+                    m_LastResult = game->GetLastResult();
+                }
+                m_Screen = std::make_unique<UI::ResultScreen>(m_LastResult);
                 break;
         }
     }

@@ -23,7 +23,6 @@ class Button : public Util::GameObject {
    private:
     std::function<void()> m_OnClickCallback;
     bool IsCursorPointing();
-    void OnPressing();
 };
 
 }  // namespace UI

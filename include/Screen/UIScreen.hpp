@@ -27,7 +27,7 @@ class UIScreen {
 
    protected:
     Util::Renderer m_Renderer;
-    ScreenType m_NextScreenType;
+    ScreenType m_NextScreenType = ScreenType::LOBBY;
     std::vector<std::shared_ptr<UI::Button>> m_Buttons;
 };
 

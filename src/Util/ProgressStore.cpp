@@ -49,7 +49,6 @@ bool WriteCSV(std::map<LevelId, Util::ProgressRecord>& record) {
 }  // namespace
 namespace Util {
 
-LevelResult ProgressStore::s_LastPlayedLevelConfig;
 std::map<LevelId, ProgressRecord> ProgressStore::s_Records;
 
 void ProgressStore::LoadOrCreateDefault() {
@@ -121,8 +120,6 @@ int ProgressStore::GetTotalStarCount() {
 }
 
 void ProgressStore::ApplyResultAndSave(const LevelResult& data) {
-    s_LastPlayedLevelConfig = data;
-
     std::array<bool, 3> newStars = {
         data.passed,
         (data.solvedTime <= data.goalTime),

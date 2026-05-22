@@ -18,7 +18,7 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
 
 void Level::Waiting() {
     // 檢查使用者是否開始繪圖
-    if (m_World && Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
         m_HUD->HideTarget();
         m_state = State::DRAWING;
         m_World->Start();
@@ -69,9 +69,7 @@ void Level::Update() {
     }
 
     // 繪製物體
-    if (m_World) {
-        m_World->Update();
-    }
+    m_World->Update();
 
     // 更新 HUD（計時器、提示文字）
     m_HUD->UpdateTimer(GetRemainingTime());
@@ -93,14 +91,14 @@ void Level::Update() {
 }
 
 void Level::Save() {
-    LevelResult result = {
+    m_LastResult = LevelResult{
         m_LevelId,
         (m_state == State::FINISHED),
         m_Timeout,
         m_Time,
         m_StrokeLimit,
-        m_World ? m_World->GetDrawnObjectCount() : 0,
+        m_World->GetDrawnObjectCount(),
         Util::Screenshot::Capture()
     };
-    Util::ProgressStore::ApplyResultAndSave(result);
+    Util::ProgressStore::ApplyResultAndSave(m_LastResult);
 }

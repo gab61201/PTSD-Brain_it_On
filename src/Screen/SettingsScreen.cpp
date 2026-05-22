@@ -7,6 +7,8 @@
 namespace UI {
 
 SettingsScreen::SettingsScreen() {
+    m_NextScreenType = ScreenType::SETTINGS;
+
     auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
