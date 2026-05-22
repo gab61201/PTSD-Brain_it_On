@@ -128,11 +128,10 @@ MenuScreen::MenuScreen() {
 }
 
 ScreenType MenuScreen::Update() {
+    m_Renderer.Update();
     for (const auto& button : m_Buttons) {
         button->Update();
     }
-
-    m_Renderer.Update();
     return m_NextScreenType;
 }
 

@@ -15,10 +15,10 @@ SettingsScreen::SettingsScreen() {
 }
 
 ScreenType SettingsScreen::Update() {
+    m_Renderer.Update();
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         m_NextScreenType = ScreenType::MENU;
     }
-    m_Renderer.Update();
     return m_NextScreenType;
 }
 

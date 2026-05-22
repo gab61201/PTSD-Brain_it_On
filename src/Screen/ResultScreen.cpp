@@ -187,15 +187,13 @@ ResultScreen::ResultScreen(LevelId* levelId, LevelResultData& resultData)
 }
 
 ScreenType ResultScreen::Update() {
+    m_Renderer.Update();
     for (const auto& button : m_Buttons) {
         button->Update();
     }
-
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
         m_NextScreenType = ScreenType::MENU;
     }
-
-    m_Renderer.Update();
     return m_NextScreenType;
 }
 

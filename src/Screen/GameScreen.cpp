@@ -34,11 +34,11 @@ GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
 }
 
 ScreenType GameScreen::Update() {
+    m_Renderer.Update();
     for (auto button : m_Buttons) {
         button->Update();
     }
 
-    m_Renderer.Update();
     m_Level.Update();
 
     if (m_Level.GetState() == Level::State::FINISHED) {

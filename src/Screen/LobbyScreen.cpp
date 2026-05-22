@@ -37,10 +37,10 @@ LobbyScreen::LobbyScreen() {
 }
 
 ScreenType LobbyScreen::Update() {
+    m_Renderer.Update();
     for (auto button : m_Buttons) {
         button->Update();
     }
-    m_Renderer.Update();
     return m_NextScreenType;
 }
 
