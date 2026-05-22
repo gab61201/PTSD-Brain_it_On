@@ -7,6 +7,7 @@
 #include "Screen/UIElement.hpp"
 #include "Util/Color.hpp"
 #include "Util/Image.hpp"
+#include "Util/ProgressStore.hpp"
 
 namespace {
 
@@ -45,8 +46,8 @@ std::string FormatSeconds(float seconds) {
 
 namespace UI {
 
-ResultScreen::ResultScreen(LevelId* levelId, LevelResultData& resultData)
-    : m_ResultData(resultData) {
+ResultScreen::ResultScreen(LevelId* levelId)
+    : m_ResultData(Util::ProgressStore::s_LastPlayedLevelData) {
     (void)levelId;
     const bool withinTimeLimit = (m_ResultData.solvedTime <= m_ResultData.goalTime);
     const bool withinStrokeLimit = (m_ResultData.usedStroke <= m_ResultData.goalStroke);
