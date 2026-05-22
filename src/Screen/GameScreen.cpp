@@ -3,6 +3,7 @@
 #include "Level/LevelData.hpp"
 #include "Screen/UIElement.hpp"
 #include "Util/Keycode.hpp"
+#include "Util/ProgressStore.hpp"
 
 namespace UI {
 
@@ -14,6 +15,7 @@ GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
 
     // 返回按鈕
     auto backButton = UI::Element::CircleButton([this] {
+        Util::ProgressStore::ApplyResultAndSave(m_Level.GetResultData());
         m_NextScreenType = ScreenType::MENU;
     },
                                                 "Resources/Images/Btn_Back.png");
@@ -44,6 +46,7 @@ ScreenType GameScreen::Update() {
     }
 
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
+        Util::ProgressStore::ApplyResultAndSave(m_Level.GetResultData());
         m_NextScreenType = ScreenType::MENU;
     }
     return m_NextScreenType;

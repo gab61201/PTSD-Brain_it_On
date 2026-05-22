@@ -97,16 +97,12 @@ MenuScreen::MenuScreen() {
             -0.1f);
         m_Renderer.AddChild(cardBackground);
 
-        std::string thumbnailPath = Util::ProgressStore::HasProgress(levelId)
-                                        ? "Resources/Save/LevelScreenshots/level_" + levelNumberStr + ".bmp"
-                                        : "Resources/Images/level_frame.png";
-
         auto cardButton = UI::Element::SquareButton(
             [this, index]() {
                 m_LevelId = static_cast<LevelId>(index);
                 m_NextScreenType = ScreenType::GAME;
             },
-            thumbnailPath);
+            Util::ProgressStore::GetScreenshotPath(levelId));
         cardButton->m_Transform.translation = cardPosition;
         cardButton->m_Transform.scale = {THUMB_SCALE, THUMB_SCALE};
         m_Buttons.push_back(cardButton);

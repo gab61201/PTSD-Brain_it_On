@@ -10,6 +10,7 @@
 namespace Util {
 
 struct ProgressRecord {
+    std::string screenshotFilename;
     std::array<bool, 3> stars{false, false, false};
     float remainingTime = 0.0f;
     int usedStrokes = 0;
@@ -25,8 +26,10 @@ class ProgressStore {
     static int GetTotalStarCount();
     // 將 LevelResultData 轉為 ProgressRecord，呼叫 UpdateBestRecord 更新最佳記錄，再存檔
     static void ApplyResultAndSave(const LevelResultData& resultData);
-    // 回傳該關卡是否曾有過遊戲記錄
-    static bool HasProgress(LevelId levelId) { return s_Records.find(levelId) != s_Records.end(); }
+    // 取得截圖檔路徑
+    static std::string GetScreenshotPath(LevelId levelId);
+    // 清理未使用的截圖
+    static void CleanUpUnusedScreenshots();
 
     static LevelResultData s_LastPlayedLevelData;
 

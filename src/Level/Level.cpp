@@ -1,7 +1,9 @@
 #include "Level/Level.hpp"
+
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/ProgressStore.hpp"
+#include "Util/Screenshot.hpp"
 #include "Util/Time.hpp"
 
 Level::Level(LevelId levelId) : m_LevelId(levelId) {
@@ -51,7 +53,16 @@ void Level::Playing() {
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
-        Util::ProgressStore::ApplyResultAndSave(this->GetResultData());
+        LevelResultData result = {
+            m_LevelId,
+            true,
+            m_Timeout,
+            m_Time,
+            m_StrokeLimit,
+            m_World ? m_World->GetDrawnObjectCount() : 0,
+            Util::Screenshot::Capture()
+        };
+        Util::ProgressStore::ApplyResultAndSave(result);
         m_state = State::FINISHED;
         m_World->Stop();
     }
@@ -66,17 +77,6 @@ void Level::Reset() {
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;
     m_HUD->Reset(data.targetText, m_StrokeLimit);
-}
-
-LevelResultData Level::GetResultData() const {
-    LevelResultData result;
-    result.levelId = m_LevelId;
-    result.passed = (m_state == State::FINISHED);
-    result.goalTime = m_Timeout;
-    result.solvedTime = m_Time;
-    result.goalStroke = m_StrokeLimit;
-    result.usedStroke = m_World ? m_World->GetDrawnObjectCount() : 0;
-    return result;
 }
 
 void Level::Update() {
@@ -107,4 +107,16 @@ void Level::Update() {
             Playing();
             break;
     }
+}
+
+LevelResultData Level::GetResultData() const {
+    return {
+        m_LevelId,
+        (m_state == State::FINISHED),
+        m_Timeout,
+        m_Time,
+        m_StrokeLimit,
+        m_World ? m_World->GetDrawnObjectCount() : 0,
+        Util::Screenshot::Capture()
+    };
 }
