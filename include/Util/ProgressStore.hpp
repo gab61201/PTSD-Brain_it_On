@@ -25,11 +25,10 @@ class ProgressStore {
     // 統計所有關卡的總星數
     static int GetTotalStarCount();
     // 將 LevelResult 轉為 ProgressRecord，呼叫 UpdateBestRecord 更新最佳記錄，再存檔
-    static void ApplyResultAndSave(const LevelResult& resultData);
+    // 回傳是否為新紀錄
+    static bool ApplyResultAndSave(const LevelResult& resultData);
     // 取得截圖檔路徑
     static std::string GetScreenshotPath(LevelId levelId);
-    // 清理未使用的截圖
-    static void CleanUpUnusedScreenshots();
 
    private:
     static std::map<LevelId, ProgressRecord> s_Records;

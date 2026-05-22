@@ -1,7 +1,7 @@
 #ifndef RESULT_SCREEN_HPP
 #define RESULT_SCREEN_HPP
 
-#include "Level/LevelData.hpp"  
+#include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 
 namespace UI {
@@ -14,8 +14,11 @@ class ResultScreen : public UIScreen {
 
     ScreenType GetScreenType() const override;
 
+    LevelId GetNextLevelId() const { return m_NextLevelId; }
+
    private:
     LevelResult m_ResultData;
+    LevelId m_NextLevelId;
 };
 
 }  // namespace UI

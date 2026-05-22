@@ -23,6 +23,10 @@ namespace UI {
 
 ResultScreen::ResultScreen(LevelResult resultData)
     : m_ResultData(std::move(resultData)) {
+    int nextLevel = static_cast<int>(m_ResultData.levelId) + 1;
+    m_NextLevelId = (nextLevel <= static_cast<int>(LevelId::LEVEL_5))
+                        ? static_cast<LevelId>(nextLevel)
+                        : m_ResultData.levelId;
     const bool withinTimeLimit = (m_ResultData.solvedTime <= m_ResultData.goalTime);
     const bool withinStrokeLimit = (m_ResultData.usedStroke <= m_ResultData.goalStroke);
     const Util::Color solvedTimeColor = withinTimeLimit
@@ -163,7 +167,9 @@ ResultScreen::ResultScreen(LevelResult resultData)
     m_Renderer.AddChild(retryButton);
 
     auto nextButton = UI::Element::Button(Path::BtnNext, [this]() {
-        m_NextScreenType = ScreenType::MENU;
+        m_NextScreenType = (m_NextLevelId != m_ResultData.levelId)
+                               ? ScreenType::GAME
+                               : ScreenType::MENU;
     });
     nextButton->m_Transform.translation = {220.0f, -322.0f};
 

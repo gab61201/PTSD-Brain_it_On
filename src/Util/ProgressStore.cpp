@@ -119,7 +119,7 @@ int ProgressStore::GetTotalStarCount() {
     return total;
 }
 
-void ProgressStore::ApplyResultAndSave(const LevelResult& data) {
+bool ProgressStore::ApplyResultAndSave(const LevelResult& data) {
     std::array<bool, 3> newStars = {
         data.passed,
         (data.solvedTime <= data.goalTime),
@@ -155,35 +155,8 @@ void ProgressStore::ApplyResultAndSave(const LevelResult& data) {
             data.usedStroke};
         WriteCSV(s_Records);
     }
-}
 
-void ProgressStore::CleanUpUnusedScreenshots() {
-    std::vector<std::string> usedScreenshots;
-    for (const auto& [_, record] : s_Records) {
-        if (!record.screenshotFilename.empty()) {
-            usedScreenshots.push_back(record.screenshotFilename);
-        }
-    }
-
-    std::filesystem::path screenshotDir("Resources/Save/Screenshots");
-    if (!std::filesystem::exists(screenshotDir)) {
-        return;
-    }
-
-    for (const auto& entry : std::filesystem::directory_iterator(screenshotDir)) {
-        if (!entry.is_regular_file()) continue;
-
-        std::string filename = entry.path().filename().string();
-        if (std::find(usedScreenshots.begin(), usedScreenshots.end(), filename) == usedScreenshots.end()) {
-            std::error_code ec;
-            std::filesystem::remove(entry.path(), ec);
-            if (ec) {
-                LOG_WARN("Failed to delete unused screenshot: {}", entry.path().string());
-            } else {
-                LOG_INFO("Deleted unused screenshot: {}", entry.path().string());
-            }
-        }
-    }
+    return isNewRecord;
 }
 
 }  // namespace Util

@@ -1,6 +1,8 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include <filesystem>
+
 #include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 #include "pch.hpp"  // IWYU pragma: export
@@ -27,6 +29,8 @@ class App {
     std::unique_ptr<UI::UIScreen> m_Screen;
     LevelId m_SelectedLevelId;
     LevelResult m_LastResult;
+    bool m_IsNewRecord = false;
+    std::string m_LastScreenshotFilename;
 };
 
 #endif

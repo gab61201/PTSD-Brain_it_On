@@ -1,5 +1,7 @@
 #include "App.hpp"
 
+#include <filesystem>
+
 #include "Screen/GameScreen.hpp"
 #include "Screen/LobbyScreen.hpp"
 #include "Screen/MenuScreen.hpp"
@@ -21,6 +23,10 @@ void App::Start() {
 void App::Update() {
     UI::ScreenType nextScreenType = m_Screen->Update();
     if (nextScreenType != m_Screen->GetScreenType()) {
+        if (m_Screen->GetScreenType() == UI::ScreenType::RESULT && !m_IsNewRecord) {
+            std::error_code ec;
+            std::filesystem::remove("Resources/Save/Screenshots/" + m_LastScreenshotFilename, ec);
+        }
         switch (nextScreenType) {
             case UI::ScreenType::LOBBY:
                 m_Screen = std::make_unique<UI::LobbyScreen>();
@@ -34,12 +40,16 @@ void App::Update() {
             case UI::ScreenType::GAME:
                 if (auto* menu = dynamic_cast<UI::MenuScreen*>(m_Screen.get())) {
                     m_SelectedLevelId = menu->GetSelectedLevelId();
+                } else if (auto* result = dynamic_cast<UI::ResultScreen*>(m_Screen.get())) {
+                    m_SelectedLevelId = result->GetNextLevelId();
                 }
                 m_Screen = std::make_unique<UI::GameScreen>(m_SelectedLevelId);
                 break;
             case UI::ScreenType::RESULT:
                 if (auto* game = dynamic_cast<UI::GameScreen*>(m_Screen.get())) {
                     m_LastResult = game->GetLastResult();
+                    m_IsNewRecord = game->IsNewRecord();
+                    m_LastScreenshotFilename = m_LastResult.screenshotFilename;
                 }
                 m_Screen = std::make_unique<UI::ResultScreen>(m_LastResult);
                 break;
@@ -53,5 +63,4 @@ void App::Update() {
 
 void App::End() {  // NOLINT(this method will mutate members in the future)
     LOG_TRACE("End");
-    Util::ProgressStore::CleanUpUnusedScreenshots();
 }

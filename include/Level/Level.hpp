@@ -28,6 +28,7 @@ class Level {
     LevelId GetLevelId() const { return m_LevelId; }
     State GetState() const { return m_state; }
     const LevelResult& GetLastResult() const { return m_LastResult; }
+    bool IsNewRecord() const { return m_isNewRecord; }
     void Save();
 
    private:
@@ -44,6 +45,7 @@ class Level {
     std::shared_ptr<PassCondition> m_PassCondition;
     std::unique_ptr<LevelHUD> m_HUD;
     LevelResult m_LastResult;
+    bool m_isNewRecord = false;
 };
 
 #endif
