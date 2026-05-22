@@ -1,13 +1,7 @@
 #include "GameWorld/Shape/Rectangle.hpp"
 
+#include "Constants.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
-
-namespace {
-
-float IMAGE_SIZE = 417.0F;
-std::string RECTANGLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_square.png";
-
-}  // namespace
 
 namespace GameWorld {
 
@@ -33,8 +27,8 @@ void Rectangle::AttachToBody(b2BodyId body) {
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreatePolygonShape(body, &shapeDef, &rectangleShape);
 
-    m_Visual->SetDrawable(s_ImageCache.Get(RECTANGLE_IMAGE_PATH));
-    m_Visual->m_Transform.scale = size / IMAGE_SIZE;
+    m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteSquare));
+    m_Visual->m_Transform.scale = size / BASIC_SHAPE_IMAGE_SIZE;
 }
 
 }  // namespace GameWorld

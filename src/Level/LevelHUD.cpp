@@ -5,6 +5,7 @@
 
 #include "Util/Color.hpp"
 #include "Util/Image.hpp"
+#include "Constants.hpp"
 
 namespace {
 
@@ -38,7 +39,7 @@ std::shared_ptr<Util::GameObject> CreateLevelNumberText(LevelId id,
 LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLimit) {
     // 1. 關卡編號外框
     auto levelFrameImage =
-        std::make_shared<Util::Image>("Resources/Images/level_frame.png");
+        std::make_shared<Util::Image>(Path::LevelFrame);
     auto levelFrame =
         std::make_shared<Util::GameObject>(levelFrameImage, 0.1f);
     levelFrame->m_Transform.translation = {LEFT_UI_X, 280.0f};
@@ -51,7 +52,7 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
 
     // 3. 計時器鬧鐘圖示
     auto alarmImage =
-        std::make_shared<Util::Image>("Resources/Images/alarm.png");
+        std::make_shared<Util::Image>(Path::Alarm);
     auto alarmIcon =
         std::make_shared<Util::GameObject>(alarmImage, 0.1f);
     alarmIcon->m_Transform.translation = {LEFT_UI_X, 160.0f};
@@ -73,7 +74,7 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
 
     // 6. 限制筆劃次數圖示
     auto strokeLimitImage =
-        std::make_shared<Util::Image>("Resources/Images/stroke_limit.png");
+        std::make_shared<Util::Image>(Path::StrokeLimit);
     auto strokeLimitIcon =
         std::make_shared<Util::GameObject>(strokeLimitImage, 0.1f);
     strokeLimitIcon->m_Transform.translation = {LEFT_UI_X - 5, 50.0f};

@@ -1,14 +1,7 @@
 #include "GameWorld/Shape/Capsule.hpp"
 
+#include "Constants.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
-
-namespace {
-
-float IMAGE_SIZE = 417.0F;
-std::string CIRCLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_circle.png";
-std::string RECTANGLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_square.png";
-
-}  // namespace
 
 namespace GameWorld {
 
@@ -40,25 +33,26 @@ void Capsule::AttachToBody(b2BodyId body) {
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreateCapsuleShape(body, &shapeDef, &capsuleShape);
 
+    const glm::vec2 circleScale{diameter / BASIC_SHAPE_IMAGE_SIZE, diameter / BASIC_SHAPE_IMAGE_SIZE};
     // 處理長度小於等於寬度的情況（顯示為圓形）
     if (glm::distance(m_PointA, m_PointB) <= 1.0f) {
         // 顯示為圓形
-        m_Visual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
-        m_Visual->m_Transform.scale = glm::vec2(diameter, diameter) / IMAGE_SIZE;
+        m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
+        m_Visual->m_Transform.scale = circleScale;
     } else {
         // 中間矩形
         m_Visual = std::make_shared<Util::GameObject>();
-        m_Visual->SetDrawable(s_ImageCache.Get(RECTANGLE_IMAGE_PATH));
-        m_Visual->m_Transform.scale = glm::vec2(glm::distance(m_PointA, m_PointB), diameter) / IMAGE_SIZE;
+        m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteSquare));
+        m_Visual->m_Transform.scale = glm::vec2(glm::distance(m_PointA, m_PointB), diameter) / BASIC_SHAPE_IMAGE_SIZE;
         // 左圓
         m_CircleAVisual = std::make_shared<Util::GameObject>();
-        m_CircleAVisual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
-        m_CircleAVisual->m_Transform.scale = glm::vec2(diameter, diameter) / IMAGE_SIZE;
+        m_CircleAVisual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
+        m_CircleAVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleAVisual);
         // 右圓
         m_CircleBVisual = std::make_shared<Util::GameObject>();
-        m_CircleBVisual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
-        m_CircleBVisual->m_Transform.scale = glm::vec2(diameter, diameter) / IMAGE_SIZE;
+        m_CircleBVisual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
+        m_CircleBVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleBVisual);
     }
 }

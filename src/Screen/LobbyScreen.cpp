@@ -1,13 +1,14 @@
 #include "Screen/LobbyScreen.hpp"
 
 #include "Screen/UIElement.hpp"
+#include "Constants.hpp"
 
 namespace UI {
 
 LobbyScreen::LobbyScreen() {
     m_NextScreenType = ScreenType::LOBBY;
 
-    auto background = UI::Element::Background("Resources/Images/background.png");
+    auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
     auto title = UI::Element::Text(

@@ -1,13 +1,7 @@
 #include "GameWorld/Shape/Circle.hpp"
 
+#include "Constants.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
-
-namespace {
-
-float IMAGE_SIZE = 417.0F;
-std::string CIRCLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_circle.png";
-
-}  // namespace
 
 namespace GameWorld {
 
@@ -29,8 +23,8 @@ void Circle::AttachToBody(b2BodyId body) {
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreateCircleShape(body, &shapeDef, &circleShape);
 
-    m_Visual->SetDrawable(s_ImageCache.Get(CIRCLE_IMAGE_PATH));
-    m_Visual->m_Transform.scale = glm::vec2(std::get<float>(m_Size), std::get<float>(m_Size)) / IMAGE_SIZE;
+    m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
+    m_Visual->m_Transform.scale = glm::vec2(std::get<float>(m_Size), std::get<float>(m_Size)) / BASIC_SHAPE_IMAGE_SIZE;
 }
 
 }  // namespace GameWorld

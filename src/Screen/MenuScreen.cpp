@@ -8,6 +8,7 @@
 #include "Util/Color.hpp"
 #include "Util/Image.hpp"
 #include "Util/ProgressStore.hpp"
+#include "Constants.hpp"
 
 namespace {
 
@@ -41,10 +42,10 @@ namespace UI {
 MenuScreen::MenuScreen() {
     m_NextScreenType = ScreenType::MENU;
 
-    auto background = UI::Element::Background("Resources/Images/background.png");
+    auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
-    auto panelDrawable = std::make_shared<Util::Image>("Resources/Images/BasicShapes/blue_square.png");
+    auto panelDrawable = std::make_shared<Util::Image>(Path::BlueSquare);
     auto panel = std::make_shared<Util::GameObject>(panelDrawable, -0.5f);
     panel->m_Transform.translation = {0.0f, 0.0f};
     panel->m_Transform.scale = {PANEL_WIDTH, PANEL_HEIGHT};
@@ -61,7 +62,7 @@ MenuScreen::MenuScreen() {
     auto backButton = UI::Element::CircleButton([this]() {
         m_NextScreenType = ScreenType::LOBBY;
     },
-                                                "Resources/Images/Btn_Back.png");
+                                                Path::BtnBack);
     backButton->m_Transform.translation = {-560.0f, -300.0f};
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
@@ -71,7 +72,7 @@ MenuScreen::MenuScreen() {
         std::string levelNumberStr = std::to_string(index + 1);
         const glm::vec2 cardPosition = GetCardPosition(index);
         auto cardBackground = UI::Element::Image(
-            "Resources/Images/BasicShapes/light_blue_square.png",
+            Path::LightBlueSquare,
             {cardPosition.x, cardPosition.y - 12.0f},
             {CARD_SCALE * 0.80f, CARD_SCALE * 0.80f},
             -0.1f);
@@ -96,8 +97,8 @@ MenuScreen::MenuScreen() {
         const float starXOffsets[3] = {-38.0f, 0.0f, 38.0f};
         std::array<bool, 3> stars = Util::ProgressStore::GetStars(levelId);
         for (int starIndex = 0; starIndex < 3; ++starIndex) {
-            std::string starPath = stars.at(starIndex) ? "Resources/Images/star_bright.png"
-                                                       : "Resources/Images/star_dark.png";
+            std::string starPath = stars.at(starIndex) ? Path::StarBright
+                                                       : Path::StarDark;
             auto starImg = UI::Element::Image(starPath,
                                              {cardPosition.x + starXOffsets[starIndex], cardPosition.y - 58.0f},
                                              {STAR_SCALE, STAR_SCALE},

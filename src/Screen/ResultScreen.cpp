@@ -8,6 +8,7 @@
 #include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include "Util/ProgressStore.hpp"
+#include "Constants.hpp"
 
 namespace {
 
@@ -35,18 +36,18 @@ ResultScreen::ResultScreen(LevelId* levelId)
 
     m_NextScreenType = ScreenType::RESULT;
 
-    auto background = UI::Element::Background("Resources/Images/background.png");
+    auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
     auto panel = UI::Element::Image(
-        "Resources/Images/BasicShapes/blue_square.png",
+        Path::BlueSquare,
         {0.0f, -48.0f},
         {1.72f, 0.98f},
         0.1f);
     m_Renderer.AddChild(panel);
 
     auto header = UI::Element::Image(
-        "Resources/Images/BasicShapes/orange_square.png",
+        Path::OrangeSquare,
         {0.0f, 156.0f},
         {1.72f, 0.13f},
         0.2f);
@@ -72,24 +73,24 @@ ResultScreen::ResultScreen(LevelId* levelId)
     const glm::vec2 starRight = {150.0f, 0.0f};
 
     m_Renderer.AddChild(UI::Element::Image(
-        m_ResultData.passed ? "Resources/Images/star_bright.png"
-                            : "Resources/Images/star_dark.png",
+        m_ResultData.passed ? Path::StarBright
+                            : Path::StarDark,
         {starLeft.x, 80.0f}, {0.50, 0.50}, 1.3f));
     m_Renderer.AddChild(UI::Element::Image(
-        withinTimeLimit ? "Resources/Images/star_bright.png"
-                        : "Resources/Images/star_dark.png",
+        withinTimeLimit ? Path::StarBright
+                        : Path::StarDark,
         {starMid.x, 80.0f}, {0.50, 0.50}, 1.3f));
     m_Renderer.AddChild(UI::Element::Image(
-        withinStrokeLimit ? "Resources/Images/star_bright.png"
-                          : "Resources/Images/star_dark.png",
+        withinStrokeLimit ? Path::StarBright
+                          : Path::StarDark,
         {starRight.x, 80.0f}, {0.50, 0.50}, 1.3f));
 
     m_Renderer.AddChild(UI::Element::Text(
         "\u2713", 40, {colLeft.x, 0.0f}, Util::Color::FromRGB(56, 209, 83), 1.4f));
     m_Renderer.AddChild(UI::Element::Image(
-        "Resources/Images/alarm.png", {colMid.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
+        Path::Alarm, {colMid.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
     m_Renderer.AddChild(UI::Element::Image(
-        "Resources/Images/stroke_limit.png", {colRight.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
+        Path::StrokeLimit, {colRight.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
 
     m_Renderer.AddChild(UI::Element::Text(
         "Goal:", 48, {-215.0f, -70.0f}, Util::Color::FromRGB(245, 245, 245), 1.4f));
@@ -107,7 +108,7 @@ ResultScreen::ResultScreen(LevelId* levelId)
         1.4f));
 
     auto solvedStrip = UI::Element::Image(
-        "Resources/Images/BasicShapes/white_square.png",
+        Path::WhiteSquare,
         {0.0f, -152.0f},
         {1.72f, 0.16f},
         1.1f);
@@ -135,7 +136,7 @@ ResultScreen::ResultScreen(LevelId* levelId)
     auto selectButton = UI::Element::CircleButton([this]() {
         m_NextScreenType = ScreenType::MENU;
     },
-                                                  "Resources/Images/Btn_Back.png");
+                                                  Path::BtnBack);
     selectButton->m_Transform.translation = {-220.0f, -322.0f};
     m_Buttons.push_back(selectButton);
     m_Renderer.AddChild(selectButton);
@@ -143,7 +144,7 @@ ResultScreen::ResultScreen(LevelId* levelId)
     auto retryButton = UI::Element::CircleButton([this]() {
         m_NextScreenType = ScreenType::GAME;
     },
-                                                 "Resources/Images/Btn_Retry.png");
+                                                 Path::BtnRetry);
     retryButton->m_Transform.translation = {0.0f, -322.0f};
     m_Buttons.push_back(retryButton);
     m_Renderer.AddChild(retryButton);
@@ -151,7 +152,7 @@ ResultScreen::ResultScreen(LevelId* levelId)
     auto nextButton = UI::Element::CircleButton([this]() {
         m_NextScreenType = ScreenType::MENU;
     },
-                                                "Resources/Images/Btn_Next.png");
+                                                Path::BtnNext);
     nextButton->m_Transform.translation = {220.0f, -322.0f};
 
     m_Buttons.push_back(nextButton);

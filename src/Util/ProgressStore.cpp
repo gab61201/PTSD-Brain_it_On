@@ -7,14 +7,10 @@
 #include <string>
 #include <vector>
 
+#include "Constants.hpp"
 #include "Util/Logger.hpp"
 
-namespace Util {
-
 namespace {
-
-constexpr const char* kCsvHeader = "level,timestamp,passed,within_time,within_stroke,remaining_time,used_strokes";
-constexpr const char* kBestRecordSavePath = "Resources/Save/BestRecord.csv";
 
 std::vector<std::string> SplitCsvLine(const std::string& line) {
     std::vector<std::string> tokens;
@@ -26,7 +22,7 @@ std::vector<std::string> SplitCsvLine(const std::string& line) {
     return tokens;
 }
 
-bool WriteCSV(std::map<LevelId, ProgressRecord>& record) {
+bool WriteCSV(std::map<LevelId, Util::ProgressRecord>& record) {
     std::error_code ec;
     std::filesystem::path savePath(kBestRecordSavePath);
     std::filesystem::create_directories(savePath.parent_path(), ec);
@@ -51,6 +47,7 @@ bool WriteCSV(std::map<LevelId, ProgressRecord>& record) {
 }
 
 }  // namespace
+namespace Util {
 
 LevelResultData ProgressStore::s_LastPlayedLevelData;
 std::map<LevelId, ProgressRecord> ProgressStore::s_Records;
@@ -112,7 +109,7 @@ std::string ProgressStore::GetScreenshotPath(LevelId levelId) {
     if (auto it = s_Records.find(levelId); it != s_Records.end() && !it->second.screenshotFilename.empty()) {
         return "Resources/Save/Screenshots/" + it->second.screenshotFilename;
     }
-    return "Resources/Images/level_frame.png";
+    return Path::LevelFrame;
 }
 
 int ProgressStore::GetTotalStarCount() {
@@ -129,8 +126,7 @@ void ProgressStore::ApplyResultAndSave(const LevelResultData& data) {
     std::array<bool, 3> newStars = {
         data.passed,
         (data.solvedTime <= data.goalTime),
-        (data.usedStroke <= data.goalStroke)
-    };
+        (data.usedStroke <= data.goalStroke)};
     int newStarCount = newStars[0] + newStars[1] + newStars[2];
     float newRemainingTime = std::max(0.0f, data.goalTime - data.solvedTime);
 
@@ -159,8 +155,7 @@ void ProgressStore::ApplyResultAndSave(const LevelResultData& data) {
             data.screenshotFilename,
             newStars,
             newRemainingTime,
-            data.usedStroke
-        };
+            data.usedStroke};
         WriteCSV(s_Records);
     }
 }

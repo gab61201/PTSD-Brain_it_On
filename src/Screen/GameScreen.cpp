@@ -2,21 +2,21 @@
 
 #include "Level/LevelData.hpp"
 #include "Screen/UIElement.hpp"
+#include "Constants.hpp"
 
 namespace UI {
 
 GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
     m_NextScreenType = ScreenType::GAME;
 
-    auto background = UI::Element::Background("Resources/Images/background.png");
+    auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
-    // 返回按鈕
     auto backButton = UI::Element::CircleButton([this] {
         m_Level.Save();
         m_NextScreenType = ScreenType::MENU;
     },
-                                                "Resources/Images/Btn_Back.png");
+                                                Path::BtnBack);
     backButton->m_Transform.translation = {-560.0f, -300.0f};
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
@@ -25,7 +25,7 @@ GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
     auto resetButton = UI::Element::CircleButton([this] {
         m_Level.Reset();
     },
-                                                 "Resources/Images/Btn_Retry.png");
+                                                 Path::BtnRetry);
     resetButton->m_Transform.translation = {560.0f, -300.0f};
     m_Buttons.push_back(resetButton);
     m_Renderer.AddChild(resetButton);

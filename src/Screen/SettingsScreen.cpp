@@ -2,11 +2,12 @@
 
 #include "Screen/UIElement.hpp"
 #include "Util/Input.hpp"
+#include "Constants.hpp"
 
 namespace UI {
 
 SettingsScreen::SettingsScreen() {
-    auto background = UI::Element::Background("Resources/Images/background.png");
+    auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
     auto title = UI::Element::Text("SettingsScreen", 48, {0.0f, 200.0f}, Util::Color::FromRGB(255, 255, 255), 1);
