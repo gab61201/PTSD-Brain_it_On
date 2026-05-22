@@ -1,14 +1,14 @@
 #ifndef RESULT_SCREEN_HPP
 #define RESULT_SCREEN_HPP
 
-#include "Level/Level.hpp"
+#include "Level/LevelData.hpp"  
 #include "Screen/UIScreen.hpp"
 
 namespace UI {
 
 class ResultScreen : public UIScreen {
    public:
-    ResultScreen(LevelId* levelId);
+    ResultScreen();
 
     ScreenType Update() override;
 

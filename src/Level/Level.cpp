@@ -27,10 +27,6 @@ void Level::Waiting() {
 }
 
 void Level::Drawing() {
-    if (!m_World) {
-        return;
-    }
-
     if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         m_state = State::PLAYING;
         m_World->EndDrawing();
@@ -40,10 +36,6 @@ void Level::Drawing() {
 }
 
 void Level::Playing() {
-    if (!m_World) {
-        return;
-    }
-
     if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
         m_state = State::DRAWING;
         m_World->DrawObject(Util::Input::GetCursorPosition());
@@ -52,7 +44,7 @@ void Level::Playing() {
     int contactCountDown = m_PassCondition->GetContactCountDown();
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
-    if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
+    if (m_PassCondition->Check(m_World->GetContactEvents())) {
         m_state = State::FINISHED;
         Save();
         m_World->Stop();
