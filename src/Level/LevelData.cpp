@@ -7,8 +7,8 @@
 // 確保 registry 一定在第一次 Register 之前就構造完成。
 // 注意：其他 static 物件不可在自己的建構子中依賴此 registry 的內容，因為
 // Register 呼叫的時機仍取決於各 TU 的載入順序。
-std::unordered_map<LevelId, LevelFunction>& GetLevelRegistry() {
-    static std::unordered_map<LevelId, LevelFunction> registry;
+std::map<LevelId, LevelFunction>& GetLevelRegistry() {
+    static std::map<LevelId, LevelFunction> registry;
     return registry;
 }
 

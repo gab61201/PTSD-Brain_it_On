@@ -8,7 +8,7 @@
 
 class Level {
    public:
-    Level(LevelId levelId);
+    explicit Level(LevelId levelId);
 
     ~Level() = default;
 

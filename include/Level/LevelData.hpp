@@ -2,6 +2,7 @@
 #define LEVEL_DATA_HPP
 
 #include <functional>
+#include <map>
 #include <string>
 
 #include "GameWorld/PhysicalWorld.hpp"
@@ -37,7 +38,7 @@ struct LevelResult {
 using LevelFunction = std::function<LevelConfig()>;
 
 // 取得全域 map（用 function 包一層避免 static 初始化順序問題）
-std::unordered_map<LevelId, LevelFunction>& GetLevelRegistry();
+std::map<LevelId, LevelFunction>& GetLevelRegistry();
 
 // 對外 API
 LevelConfig GetLevelConfig(LevelId id);

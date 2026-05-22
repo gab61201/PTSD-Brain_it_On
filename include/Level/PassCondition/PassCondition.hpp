@@ -32,6 +32,7 @@ class PassCondition {
     virtual void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) = 0;
     TriggerType m_TriggerType;
     int m_Duration;
+    bool m_IsTriggered = false;
     int m_Timer = 0;
 };
 

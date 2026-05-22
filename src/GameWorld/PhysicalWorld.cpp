@@ -111,7 +111,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
         m_LastDrawingObject->AttachToWorld(m_b2WorldId);
     } else {
         // 檢查射線有沒有碰到其他東西
-        auto p1 = m_LastDrawingObject->m_Points.back();
+        auto p1 = m_LastDrawingObject->GetPoints().back();
         auto p2 = position;
         if (glm::distance(p1, p2) < 2.0f) {
             return;

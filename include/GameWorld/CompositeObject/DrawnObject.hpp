@@ -14,8 +14,9 @@ class DrawnObject : public GameWorld::CompositeObject {
 
     void EndDrawing();
 
-    b2BodyId Getb2BodyId() { return m_b2BodyId; }
+    const std::vector<glm::vec2>& GetPoints() const { return m_Points; }
 
+   private:
     std::vector<glm::vec2> m_Points;
 };
 
