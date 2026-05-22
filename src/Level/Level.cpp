@@ -53,17 +53,8 @@ void Level::Playing() {
     m_HUD->UpdateContactTimer(contactCountDown);
     // 檢查通關條件
     if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
-        LevelResultData result = {
-            m_LevelId,
-            true,
-            m_Timeout,
-            m_Time,
-            m_StrokeLimit,
-            m_World ? m_World->GetDrawnObjectCount() : 0,
-            Util::Screenshot::Capture()
-        };
-        Util::ProgressStore::ApplyResultAndSave(result);
         m_state = State::FINISHED;
+        Save();
         m_World->Stop();
     }
 }
@@ -109,8 +100,8 @@ void Level::Update() {
     }
 }
 
-LevelResultData Level::GetResultData() const {
-    return {
+void Level::Save() {
+    LevelResultData result = {
         m_LevelId,
         (m_state == State::FINISHED),
         m_Timeout,
@@ -119,4 +110,5 @@ LevelResultData Level::GetResultData() const {
         m_World ? m_World->GetDrawnObjectCount() : 0,
         Util::Screenshot::Capture()
     };
+    Util::ProgressStore::ApplyResultAndSave(result);
 }

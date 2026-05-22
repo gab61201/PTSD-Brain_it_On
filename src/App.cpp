@@ -1,9 +1,10 @@
 #include "App.hpp"
+
 #include "Screen/GameScreen.hpp"
 #include "Screen/LobbyScreen.hpp"
 #include "Screen/MenuScreen.hpp"
-#include "Screen/SettingsScreen.hpp"
 #include "Screen/ResultScreen.hpp"
+#include "Screen/SettingsScreen.hpp"
 #include "Util/BGM.hpp"
 #include "Util/Input.hpp"
 #include "Util/Logger.hpp"

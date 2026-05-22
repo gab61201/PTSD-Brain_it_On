@@ -16,14 +16,6 @@ struct LevelResultData {
     std::string screenshotFilename;
 };
 
-inline bool IsWithinTimeLimit(const LevelResultData& resultData) {
-    return resultData.solvedTime <= resultData.goalTime;
-}
-
-inline bool IsWithinStrokeLimit(const LevelResultData& resultData) {
-    return resultData.usedStroke <= resultData.goalStroke;
-}
-
 class Level {
    public:
     Level(LevelId levelId);
@@ -45,7 +37,7 @@ class Level {
 
     LevelId GetLevelId() const { return m_LevelId; }
     State GetState() const { return m_state; }
-    LevelResultData GetResultData() const;
+    void Save();
 
    private:
     void Waiting();

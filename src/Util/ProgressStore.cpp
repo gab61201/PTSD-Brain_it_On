@@ -128,8 +128,8 @@ void ProgressStore::ApplyResultAndSave(const LevelResultData& data) {
 
     std::array<bool, 3> newStars = {
         data.passed,
-        IsWithinTimeLimit(data),
-        IsWithinStrokeLimit(data)
+        (data.solvedTime <= data.goalTime),
+        (data.usedStroke <= data.goalStroke)
     };
     int newStarCount = newStars[0] + newStars[1] + newStars[2];
     float newRemainingTime = std::max(0.0f, data.goalTime - data.solvedTime);

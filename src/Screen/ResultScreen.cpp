@@ -41,10 +41,6 @@ std::string FormatSeconds(float seconds) {
     return ss.str();
 }
 
-int ToLevelNumber(LevelId id) {
-    return static_cast<int>(id) + 1;
-}
-
 }  // namespace
 
 namespace UI {
@@ -52,8 +48,8 @@ namespace UI {
 ResultScreen::ResultScreen(LevelId* levelId, LevelResultData& resultData)
     : m_ResultData(resultData) {
     (void)levelId;
-    const bool withinTimeLimit = IsWithinTimeLimit(m_ResultData);
-    const bool withinStrokeLimit = IsWithinStrokeLimit(m_ResultData);
+    const bool withinTimeLimit = (m_ResultData.solvedTime <= m_ResultData.goalTime);
+    const bool withinStrokeLimit = (m_ResultData.usedStroke <= m_ResultData.goalStroke);
     const Util::Color solvedTimeColor = withinTimeLimit
                                             ? Util::Color::FromRGB(56, 209, 83)
                                             : Util::Color::FromRGB(255, 77, 77);
@@ -85,7 +81,7 @@ ResultScreen::ResultScreen(LevelId* levelId, LevelResultData& resultData)
         title, 64, {0.0f, 262.0f}, Util::Color::FromRGB(255, 255, 255), 1.5f));
 
     m_Renderer.AddChild(CreateTextObject(
-        "Level #" + std::to_string(ToLevelNumber(m_ResultData.levelId)),
+        "Level #" + std::to_string(static_cast<int>(m_ResultData.levelId) + 1),
         48,
         {0.0f, 156.0f},
         Util::Color::FromRGB(74, 74, 74),

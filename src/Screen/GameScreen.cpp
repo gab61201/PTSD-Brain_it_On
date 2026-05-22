@@ -2,8 +2,6 @@
 
 #include "Level/LevelData.hpp"
 #include "Screen/UIElement.hpp"
-#include "Util/Keycode.hpp"
-#include "Util/ProgressStore.hpp"
 
 namespace UI {
 
@@ -15,7 +13,7 @@ GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
 
     // 返回按鈕
     auto backButton = UI::Element::CircleButton([this] {
-        Util::ProgressStore::ApplyResultAndSave(m_Level.GetResultData());
+        m_Level.Save();
         m_NextScreenType = ScreenType::MENU;
     },
                                                 "Resources/Images/Btn_Back.png");
@@ -35,19 +33,12 @@ GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
 
 ScreenType GameScreen::Update() {
     m_Renderer.Update();
-    for (auto button : m_Buttons) {
-        button->Update();
-    }
-
     m_Level.Update();
-
     if (m_Level.GetState() == Level::State::FINISHED) {
         m_NextScreenType = ScreenType::RESULT;
     }
-
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
-        Util::ProgressStore::ApplyResultAndSave(m_Level.GetResultData());
-        m_NextScreenType = ScreenType::MENU;
+    for (auto button : m_Buttons) {
+        button->Update();
     }
     return m_NextScreenType;
 }
