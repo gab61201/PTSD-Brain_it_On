@@ -104,6 +104,9 @@ void PhysicalWorld::DrawNewObject(glm::vec2 position) {
 }
 
 void PhysicalWorld::DrawingObject(glm::vec2 position) {
+    if (m_LastDrawingObject == nullptr) {
+        return;
+    }
     // 檢查射線有沒有碰到其他東西
     auto p1 = m_LastDrawingObject->GetPoints().back();
     auto p2 = position;

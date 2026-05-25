@@ -9,14 +9,15 @@
 
 class LevelHUD {
    public:
-    LevelHUD(LevelId levelId, const std::string& targetText,
+    LevelHUD(LevelId levelId,
+             const std::string& targetText,
              int strokeLimit);
 
     /// 每幀更新計時器顯示
     void UpdateTimer(float remainingTime);
 
     /// 隱藏提示文字（玩家開始繪圖時呼叫）
-    void HideTarget();
+    void HideTargetText() { m_TargetTextObject->SetVisible(false); }
 
     /// 重置 HUD（重新開始關卡時呼叫）
     void Reset(const std::string& targetText, int strokeLimit);

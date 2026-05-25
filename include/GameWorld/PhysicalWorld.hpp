@@ -32,7 +32,7 @@ class PhysicalWorld {
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
     std::shared_ptr<Boundary> m_Boundary;
     // 玩家畫的物件
-    int m_DrawnObjectCount;
+    int m_DrawnObjectCount = 0;
     std::shared_ptr<DrawnObject> m_LastDrawingObject;
     DrawingIndicator m_DrawingIndicator;
     bool m_IsActive = false;

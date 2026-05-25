@@ -74,12 +74,6 @@ void LevelHUD::UpdateTimer(float remainingTime) {
     SetText(m_TimerObject, ss.str(), 26);
 }
 
-void LevelHUD::HideTarget() {
-    if (m_TargetTextObject) {
-        m_TargetTextObject->SetVisible(false);
-    }
-}
-
 void LevelHUD::Reset(const std::string& targetText, int strokeLimit) {
     // 重建提示文字
     if (m_TargetTextObject) {

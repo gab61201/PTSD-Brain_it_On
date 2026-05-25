@@ -18,7 +18,7 @@ Level::Level(LevelId levelId) : m_LevelId(levelId) {
 
 void Level::Waiting() {
     if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
-        m_HUD->HideTarget();
+        m_HUD->HideTargetText();
         m_State = State::PLAYING;
         m_World->Start();
         m_World->DrawNewObject(Util::Input::GetCursorPosition());
