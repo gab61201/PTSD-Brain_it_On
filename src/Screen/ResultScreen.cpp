@@ -22,7 +22,7 @@ std::string FormatSeconds(float seconds) {
 namespace UI {
 
 ResultScreen::ResultScreen(LevelResult resultData)
-    : m_ResultData(std::move(resultData)) {
+    : UIScreen(ScreenType::RESULT), m_ResultData(std::move(resultData)) {
     int nextLevel = static_cast<int>(m_ResultData.levelId) + 1;
     m_NextLevelId = (nextLevel <= static_cast<int>(LevelId::LEVEL_5))
                         ? static_cast<LevelId>(nextLevel)
@@ -35,8 +35,6 @@ ResultScreen::ResultScreen(LevelResult resultData)
     const Util::Color solvedStrokeColor = withinStrokeLimit
                                               ? Util::Color::FromRGB(56, 209, 83)
                                               : Util::Color::FromRGB(255, 77, 77);
-
-    m_NextScreenType = ScreenType::RESULT;
 
     auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
@@ -186,10 +184,6 @@ ScreenType ResultScreen::Update() {
         m_NextScreenType = ScreenType::MENU;
     }
     return m_NextScreenType;
-}
-
-ScreenType ResultScreen::GetScreenType() const {
-    return ScreenType::RESULT;
 }
 
 }  // namespace UI

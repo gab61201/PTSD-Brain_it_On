@@ -10,7 +10,7 @@ class LobbyScreen : public UIScreen {
 
     ScreenType Update() override;
 
-    ScreenType GetScreenType() const override;
+    ScreenType GetScreenType() const override { return ScreenType::LOBBY; }
 
    private:
     // 放需要設定偵測的物件

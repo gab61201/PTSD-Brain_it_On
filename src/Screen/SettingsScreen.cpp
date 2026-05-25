@@ -6,8 +6,7 @@
 
 namespace UI {
 
-SettingsScreen::SettingsScreen() {
-    m_NextScreenType = ScreenType::SETTINGS;
+SettingsScreen::SettingsScreen() : UIScreen(ScreenType::SETTINGS) {
 
     auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
@@ -22,10 +21,6 @@ ScreenType SettingsScreen::Update() {
         m_NextScreenType = ScreenType::MENU;
     }
     return m_NextScreenType;
-}
-
-ScreenType SettingsScreen::GetScreenType() const {
-    return ScreenType::SETTINGS;
 }
 
 }  // namespace UI

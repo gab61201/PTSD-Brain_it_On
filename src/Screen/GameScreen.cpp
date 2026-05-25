@@ -6,8 +6,7 @@
 
 namespace UI {
 
-GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
-    m_NextScreenType = ScreenType::GAME;
+GameScreen::GameScreen(LevelId levelId) : UIScreen(ScreenType::GAME), m_Level(levelId) {
 
     auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
@@ -39,10 +38,6 @@ ScreenType GameScreen::Update() {
         button->Update();
     }
     return m_NextScreenType;
-}
-
-ScreenType GameScreen::GetScreenType() const {
-    return ScreenType::GAME;
 }
 
 }  // namespace UI

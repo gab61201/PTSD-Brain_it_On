@@ -5,8 +5,7 @@
 
 namespace UI {
 
-LobbyScreen::LobbyScreen() {
-    m_NextScreenType = ScreenType::LOBBY;
+LobbyScreen::LobbyScreen() : UIScreen(ScreenType::LOBBY) {
 
     auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
@@ -32,10 +31,6 @@ ScreenType LobbyScreen::Update() {
         button->Update();
     }
     return m_NextScreenType;
-}
-
-ScreenType LobbyScreen::GetScreenType() const {
-    return ScreenType::LOBBY;
 }
 
 }  // namespace UI

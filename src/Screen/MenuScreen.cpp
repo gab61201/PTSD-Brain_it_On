@@ -38,8 +38,7 @@ glm::vec2 GetCardPosition(int index) {
 
 namespace UI {
 
-MenuScreen::MenuScreen() {
-    m_NextScreenType = ScreenType::MENU;
+MenuScreen::MenuScreen() : UIScreen(ScreenType::MENU) {
 
     auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
@@ -115,14 +114,6 @@ ScreenType MenuScreen::Update() {
         button->Update();
     }
     return m_NextScreenType;
-}
-
-ScreenType MenuScreen::GetScreenType() const {
-    return ScreenType::MENU;
-}
-
-LevelId MenuScreen::GetSelectedLevelId() const {
-    return m_LevelId;
 }
 
 }  // namespace UI
