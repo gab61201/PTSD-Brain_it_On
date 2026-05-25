@@ -17,10 +17,6 @@ void Button::Update() {
     }
 }
 
-void Button::OnClick(std::function<void()> OnClickHandler) {
-    m_OnClickCallback = OnClickHandler;
-}
-
 bool Button::IsCursorPointing() {
     glm::vec2 position = m_Transform.translation;
     glm::vec2 imageSize = GetScaledSize();

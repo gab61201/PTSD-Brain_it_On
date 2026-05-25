@@ -41,22 +41,4 @@ Boundary::Boundary(float x1, float x2, float y1, float y2)
     m_Renderer.AddChild(boundaryVisual);
 }
 
-bool Boundary::IsPointInside(glm::vec2 position) const {
-    return (position.x > m_X1 && position.x < m_X2 &&
-            position.y > m_Y1 && position.y < m_Y2);
-}
-
-const Shape& Boundary::GetLeftWall() const {
-    return *m_Shapes[0];
-}
-const Shape& Boundary::GetRightWall() const {
-    return *m_Shapes[1];
-}
-const Shape& Boundary::GetTopWall() const {
-    return *m_Shapes[2];
-}
-const Shape& Boundary::GetBottomWall() const {
-    return *m_Shapes[3];
-}
-
 }  // namespace GameWorld
