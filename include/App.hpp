@@ -1,7 +1,5 @@
 #pragma once
 
-#include <filesystem>
-
 #include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 #include "pch.hpp"  // IWYU pragma: export

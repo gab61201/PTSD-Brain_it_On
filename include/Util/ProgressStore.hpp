@@ -3,7 +3,6 @@
 #include <array>
 #include <map>
 
-#include "Level/Level.hpp"
 #include "Level/LevelData.hpp"
 
 namespace Util {
