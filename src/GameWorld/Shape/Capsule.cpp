@@ -9,8 +9,9 @@ Capsule::Capsule(
     float diameter,
     const glm::vec2& pointA,
     const glm::vec2& pointB,
-    bool isSensor)
-    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor),
+    bool isSensor,
+    bool outline)
+    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor, outline),
       m_PointA(pointA),
       m_PointB(pointB) {}
 

@@ -16,7 +16,8 @@ class Shape {
     Shape(std::variant<glm::vec2, float> m_Size,
           const glm::vec2& relativePosition,
           float relativeRotation,
-          bool isSensor = false);
+          bool isSensor = false,
+          bool outline = true);
 
     virtual ~Shape() = default;
 
@@ -35,6 +36,9 @@ class Shape {
    protected:
     // 圖像表示 (Util::GameObject)
     std::shared_ptr<Util::GameObject> m_Visual = std::make_shared<Util::GameObject>();
+
+    // 物體視覺描邊
+    std::shared_ptr<Util::GameObject> m_OutlineVisual = nullptr;
 
     // 形狀實例
     b2ShapeId m_b2ShapeId = b2_nullShapeId;

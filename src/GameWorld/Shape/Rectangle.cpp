@@ -5,8 +5,8 @@
 
 namespace GameWorld {
 
-Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor)
-    : Shape(size, relativePosition, relativeRotation, isSensor) {}
+Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor, bool outline)
+    : Shape(size, relativePosition, relativeRotation, isSensor, outline) {}
 
 void Rectangle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
@@ -29,6 +29,13 @@ void Rectangle::AttachToBody(b2BodyId body) {
 
     m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteSquare));
     m_Visual->m_Transform.scale = size / BASIC_SHAPE_IMAGE_SIZE;
+
+    if (m_OutlineVisual) {
+        m_OutlineVisual->SetDrawable(s_ImageCache.Get(Path::BlackSquare));
+        m_OutlineVisual->m_Transform.scale =
+            glm::vec2(size.x + SHAPE_OUTLINE_WIDTH, size.y + SHAPE_OUTLINE_WIDTH) /
+            BASIC_SHAPE_IMAGE_SIZE;
+    }
 }
 
 }  // namespace GameWorld

@@ -5,8 +5,8 @@
 
 namespace GameWorld {
 
-Circle::Circle(float diameter, const glm::vec2& relativePosition, bool isSensor)
-    : Shape(diameter, relativePosition, 0.0f, isSensor) {}
+Circle::Circle(float diameter, const glm::vec2& relativePosition, bool isSensor, bool outline)
+    : Shape(diameter, relativePosition, 0.0f, isSensor, outline) {}
 
 void Circle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
@@ -25,6 +25,14 @@ void Circle::AttachToBody(b2BodyId body) {
 
     m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
     m_Visual->m_Transform.scale = glm::vec2(std::get<float>(m_Size), std::get<float>(m_Size)) / BASIC_SHAPE_IMAGE_SIZE;
+
+    if (m_OutlineVisual) {
+        m_OutlineVisual->SetDrawable(s_ImageCache.Get(Path::BlackCircle));
+        m_OutlineVisual->m_Transform.scale =
+            glm::vec2(std::get<float>(m_Size) + SHAPE_OUTLINE_WIDTH,
+                      std::get<float>(m_Size) + SHAPE_OUTLINE_WIDTH) /
+            BASIC_SHAPE_IMAGE_SIZE;
+    }
 }
 
 }  // namespace GameWorld

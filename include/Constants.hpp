@@ -7,6 +7,7 @@ inline constexpr float RESOLUTION_Y = 720.0F;
 inline constexpr int FPS = 60;
 inline constexpr float STROKE_WIDTH = 10.0F;
 inline constexpr float MIN_STROKE_LENGTH = 2.0F;
+inline constexpr float SHAPE_OUTLINE_WIDTH = 2.0F;
 
 inline constexpr const char* kCsvHeader = "level,timestamp,passed,within_time,within_stroke,remaining_time,used_strokes";
 inline constexpr const char* kBestRecordSavePath = "Resources/Save/BestRecord.csv";
@@ -34,5 +35,7 @@ inline const std::string BtnBack = "Resources/Images/Btn_Back.png";
 inline const std::string BtnRetry = "Resources/Images/Btn_Retry.png";
 inline const std::string BtnNext = "Resources/Images/Btn_Next.png";
 inline const std::string BtnMainButtonGray = "Resources/Images/Btn_MainButton_Gray.png";
+inline const std::string BlackCircle = "Resources/Images/BasicShapes/black_circle.png";
+inline const std::string BlackSquare = "Resources/Images/BasicShapes/black_square.png";
 
 }  // namespace Path
