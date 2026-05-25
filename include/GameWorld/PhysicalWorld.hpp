@@ -13,7 +13,7 @@ class PhysicalWorld {
    public:
     PhysicalWorld(
         std::vector<std::shared_ptr<CompositeObject>> compositeObjects,
-        std::shared_ptr<Boundary> boundary);
+        std::shared_ptr<Boundary> boundary = nullptr);
     ~PhysicalWorld();
 
     // 更新碰撞並渲染

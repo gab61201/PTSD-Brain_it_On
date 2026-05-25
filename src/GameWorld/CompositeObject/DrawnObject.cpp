@@ -7,7 +7,7 @@
 namespace GameWorld {
 
 DrawnObject::DrawnObject(glm::vec2 position)
-    : CompositeObject(std::vector<std::shared_ptr<Shape>>()) {
+    : CompositeObject(std::vector<std::shared_ptr<Shape>>(), BodyType::STATIC) {
     auto first_point = std::make_shared<Circle>(STROKE_WIDTH, position, false);
     m_Shapes = {first_point};
     m_Points.push_back(position);

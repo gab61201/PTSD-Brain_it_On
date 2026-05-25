@@ -55,7 +55,7 @@ float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float f
 
 PhysicalWorld::PhysicalWorld(
     std::vector<std::shared_ptr<CompositeObject>> compositeObjects,
-    std::shared_ptr<Boundary> boundary = nullptr)
+    std::shared_ptr<Boundary> boundary)
     : m_b2WorldId(b2_nullWorldId),
       m_CompositeObject(std::move(compositeObjects)),
       m_Boundary(boundary) {
