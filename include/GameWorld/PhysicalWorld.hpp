@@ -17,9 +17,10 @@ class PhysicalWorld {
     ~PhysicalWorld();
 
     // 更新碰撞並渲染
-    void Start();
-    void Stop();
-    void DrawObject(glm::vec2 position);
+    void Start() { m_IsActive = true; }
+    void Stop() { m_IsActive = false; }
+    void DrawNewObject(glm::vec2 position);
+    void DrawingObject(glm::vec2 position);
     void EndDrawing();
     void Update();
     int GetDrawnObjectCount() const;

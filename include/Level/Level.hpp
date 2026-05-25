@@ -15,11 +15,10 @@ class Level {
 
     void Update();
 
-    float GetRemainingTime() const { return std::max(0.0f, m_Timeout - m_Time); }
+    float GetRemainingTime() const { return std::max(0.0f, m_Timeout - m_ElapsedTime); }
 
     enum class State {
         WAITING,
-        DRAWING,
         PLAYING,
         FINISHED
     };
@@ -32,12 +31,12 @@ class Level {
 
    private:
     void Waiting();
-    void Drawing();
     void Playing();
+    void Finished();
 
     LevelId m_LevelId;
     State m_State = State::WAITING;
-    float m_Time = 0.0F;
+    float m_ElapsedTime = 0.0F;
     float m_Timeout;
     int m_StrokeLimit;
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
