@@ -23,8 +23,8 @@ class PhysicalWorld {
     void DrawingObject(glm::vec2 position);
     void EndDrawing();
     void Update();
-    int GetDrawnObjectCount() const;
-    b2ContactEvents GetContactEvents();
+    int GetDrawnObjectCount() const { return m_DrawnObjectCount; }
+    b2ContactEvents GetContactEvents() { return b2World_GetContactEvents(m_b2WorldId); }
 
    private:
     b2WorldId m_b2WorldId;
@@ -32,7 +32,7 @@ class PhysicalWorld {
     std::vector<std::shared_ptr<CompositeObject>> m_CompositeObject;
     std::shared_ptr<Boundary> m_Boundary;
     // 玩家畫的物件
-    std::vector<std::shared_ptr<DrawnObject>> m_DrawnObjects;
+    int m_DrawnObjectCount;
     std::shared_ptr<DrawnObject> m_LastDrawingObject;
     DrawingIndicator m_DrawingIndicator;
     bool m_IsActive = false;

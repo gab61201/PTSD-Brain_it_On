@@ -3,8 +3,6 @@
 #include "Constants.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
 
-namespace GameWorld {
-
 namespace {
 
 struct PointQueryContext {
@@ -53,6 +51,8 @@ float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float f
 
 }  // namespace
 
+namespace GameWorld {
+
 PhysicalWorld::PhysicalWorld(
     std::vector<std::shared_ptr<CompositeObject>> compositeObjects,
     std::shared_ptr<Boundary> boundary)
@@ -98,8 +98,9 @@ void PhysicalWorld::DrawNewObject(glm::vec2 position) {
 
     // 建立新的物件
     m_LastDrawingObject = std::make_shared<DrawnObject>(position);
-    m_DrawnObjects.push_back(m_LastDrawingObject);
     m_LastDrawingObject->AttachToWorld(m_b2WorldId);
+    m_CompositeObject.push_back(m_LastDrawingObject);
+    m_DrawnObjectCount++;
 }
 
 void PhysicalWorld::DrawingObject(glm::vec2 position) {
@@ -139,10 +140,6 @@ void PhysicalWorld::EndDrawing() {
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
 }
-
-int PhysicalWorld::GetDrawnObjectCount() const {
-    return static_cast<int>(m_DrawnObjects.size());
-}
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
 // ==========================================
@@ -153,14 +150,7 @@ void PhysicalWorld::Update() {
     for (auto& obj : m_CompositeObject) {
         obj->Update();
     }
-    for (auto& obj : m_DrawnObjects) {
-        obj->Update();
-    }
     m_DrawingIndicator.Update();
-}
-
-b2ContactEvents PhysicalWorld::GetContactEvents() {
-    return b2World_GetContactEvents(m_b2WorldId);
 }
 
 }  // namespace GameWorld
