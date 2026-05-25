@@ -84,13 +84,13 @@ void Capsule::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation)
     float sinGlobal = std::sin(globalRotation);
     glm::vec2 globalDirection(cosGlobal, sinGlobal);
 
-    // 3. 順著方向推算左右圓心的絕對座標
-    // 右圓：中心點 + (方向向量 * 距離)
-    glm::vec2 CircleAGlobalPos = globalPosition - (globalDirection * halfLength);
-    m_CircleAVisual->m_Transform.translation = CircleAGlobalPos;
-    // 左圓：中心點 - (方向向量 * 距離)
-    glm::vec2 CircleBGlobalPos = globalPosition + (globalDirection * halfLength);
-    m_CircleBVisual->m_Transform.translation = CircleBGlobalPos;
+    // 順著方向推算左右圓心的絕對座標
+    if (m_CircleAVisual && m_CircleBVisual) {
+        glm::vec2 CircleAGlobalPos = globalPosition - (globalDirection * halfLength);
+        m_CircleAVisual->m_Transform.translation = CircleAGlobalPos;
+        glm::vec2 CircleBGlobalPos = globalPosition + (globalDirection * halfLength);
+        m_CircleBVisual->m_Transform.translation = CircleBGlobalPos;
+    }
 }
 
 }  // namespace GameWorld

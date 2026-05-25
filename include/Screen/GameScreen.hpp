@@ -1,5 +1,4 @@
-#ifndef SCREEN_GAME_SCREEN_HPP
-#define SCREEN_GAME_SCREEN_HPP
+#pragma once
 
 #include "Level/Level.hpp"
 #include "Screen/UIScreen.hpp"
@@ -22,5 +21,3 @@ class GameScreen : public UIScreen {
 };
 
 }  // namespace UI
-
-#endif  // SCREEN_GAME_SCREEN_HPP

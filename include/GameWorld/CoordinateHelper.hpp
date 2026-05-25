@@ -1,5 +1,4 @@
-#ifndef GAMEWORLD_COORDINATE_HELPER_HPP
-#define GAMEWORLD_COORDINATE_HELPER_HPP
+#pragma once
 
 #include <box2d/box2d.h>
 
@@ -22,5 +21,3 @@ inline glm::vec2 MetersToPixels(b2Vec2 meters) {
 }
 
 }  // namespace GameWorld
-
-#endif  // GAMEWORLD_COORDINATE_HELPER_HPP

@@ -1,5 +1,4 @@
-#ifndef LEVEL_PASS_CONDITION_HPP
-#define LEVEL_PASS_CONDITION_HPP
+#pragma once
 
 #include <box2d/box2d.h>
 
@@ -35,5 +34,3 @@ class PassCondition {
     bool m_IsTriggered = false;
     int m_Timer = 0;
 };
-
-#endif  // LEVEL_PASS_CONDITION_HPP

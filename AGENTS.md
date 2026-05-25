@@ -4,7 +4,7 @@
 
 ```bash
 cmake -DCMAKE_BUILD_TYPE=Debug -B build  # Debug 模式為必要，否則資源無法載入
-cmake --build build
+cmake --build build -j
 ./PTSD-Brain_it_On/PTSD-Brain_it_On
 ```
 

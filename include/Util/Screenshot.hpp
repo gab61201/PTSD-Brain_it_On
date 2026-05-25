@@ -1,5 +1,4 @@
-#ifndef UTIL_SCREENSHOT_HPP
-#define UTIL_SCREENSHOT_HPP
+#pragma once
 
 #include <string>
 
@@ -12,5 +11,3 @@ class Screenshot {
 };
 
 }  // namespace Util
-
-#endif  // UTIL_SCREENSHOT_HPP

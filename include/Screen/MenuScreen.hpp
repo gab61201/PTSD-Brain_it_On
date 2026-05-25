@@ -1,5 +1,4 @@
-#ifndef SCREEN_MENU_SCREEN_HPP
-#define SCREEN_MENU_SCREEN_HPP
+#pragma once
 
 #include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
@@ -21,5 +20,3 @@ class MenuScreen : public UIScreen {
 };
 
 }  // namespace UI
-
-#endif  // SCREEN_MENU_SCREEN_HPP

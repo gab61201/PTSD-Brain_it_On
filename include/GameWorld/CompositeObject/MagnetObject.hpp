@@ -1,5 +1,4 @@
-#ifndef GAMEWORLD_MAGNET_OBJECT_HPP
-#define GAMEWORLD_MAGNET_OBJECT_HPP
+#pragma once
 
 #include "GameWorld/CompositeObject/CompositeObject.hpp"
 
@@ -25,5 +24,3 @@ class MagnetObject : public CompositeObject {
 };
 
 }  // namespace GameWorld
-
-#endif  // GAMEWORLD_MAGNET_OBJECT_HPP

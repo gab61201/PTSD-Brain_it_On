@@ -1,5 +1,4 @@
-#ifndef SCREEN_RESULT_SCREEN_HPP
-#define SCREEN_RESULT_SCREEN_HPP
+#pragma once
 
 #include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
@@ -22,5 +21,3 @@ class ResultScreen : public UIScreen {
 };
 
 }  // namespace UI
-
-#endif  // SCREEN_RESULT_SCREEN_HPP

@@ -1,5 +1,4 @@
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#pragma once
 
 #include <string>
 
@@ -37,5 +36,3 @@ inline const std::string BtnNext = "Resources/Images/Btn_Next.png";
 inline const std::string BtnMainButtonGray = "Resources/Images/Btn_MainButton_Gray.png";
 
 }  // namespace Path
-
-#endif  // CONSTANTS_HPP

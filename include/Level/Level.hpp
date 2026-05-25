@@ -1,5 +1,4 @@
-#ifndef LEVEL_LEVEL_HPP
-#define LEVEL_LEVEL_HPP
+#pragma once
 
 #include <memory>
 
@@ -14,7 +13,7 @@ class Level {
 
     void Reset();
 
-    void Update();  // 更新畫面
+    void Update();
 
     float GetRemainingTime() const { return std::max(0.0f, m_Timeout - m_Time); }
 
@@ -26,9 +25,9 @@ class Level {
     };
 
     LevelId GetLevelId() const { return m_LevelId; }
-    State GetState() const { return m_state; }
+    State GetState() const { return m_State; }
     const LevelResult& GetLastResult() const { return m_LastResult; }
-    bool IsNewRecord() const { return m_isNewRecord; }
+    bool IsNewRecord() const { return m_IsNewRecord; }
     void Save();
 
    private:
@@ -37,15 +36,13 @@ class Level {
     void Playing();
 
     LevelId m_LevelId;
-    State m_state = State::WAITING;
-    float m_Time = 0.0F;  // 遊戲進行時間
-    float m_Timeout;      // 遊戲限制時間
+    State m_State = State::WAITING;
+    float m_Time = 0.0F;
+    float m_Timeout;
     int m_StrokeLimit;
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
     std::shared_ptr<PassCondition> m_PassCondition;
     std::unique_ptr<LevelHUD> m_HUD;
     LevelResult m_LastResult;
-    bool m_isNewRecord = false;
+    bool m_IsNewRecord = false;
 };
-
-#endif  // LEVEL_LEVEL_HPP

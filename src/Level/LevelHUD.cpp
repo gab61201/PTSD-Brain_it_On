@@ -63,7 +63,7 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
 
     // 8. 接觸倒數計時器（初始為隱藏）
     m_ContactTimerObject = UI::Element::Text(
-        " ", 256, {0.0f, 0.0f}, WHITE, 0.5f);
+        "0", 256, {0.0f, 0.0f}, WHITE, 0.5f);
     m_ContactTimerObject->SetVisible(false);
     m_Renderer.AddChild(m_ContactTimerObject);
 }

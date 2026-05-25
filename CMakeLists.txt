@@ -53,20 +53,6 @@ add_executable(${PROJECT_NAME}
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 else()
-    # Release 模式使用相對路徑
-    target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="Resources")
-
-    # 建置完成後，自動將 Resources 資料夾複製到執行檔所在的目錄
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/Resources
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources
-    )
-endif()
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Resources")
-else()
     target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="Resources")
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -74,10 +60,8 @@ else()
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources
     )
 
-    # 強制覆寫 PTSD 引擎的巨集，讓它也使用相對路徑尋找 Shader
     target_compile_definitions(PTSD PRIVATE PTSD_ASSETS_DIR="assets/")
 
-    # 將 PTSD 引擎的 assets 資料夾也複製到執行檔旁邊
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${ptsd_SOURCE_DIR}/assets

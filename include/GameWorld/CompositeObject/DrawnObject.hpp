@@ -1,5 +1,4 @@
-#ifndef GAMEWORLD_DRAWN_OBJECT_HPP
-#define GAMEWORLD_DRAWN_OBJECT_HPP
+#pragma once
 
 #include "GameWorld/CompositeObject/CompositeObject.hpp"
 
@@ -21,5 +20,3 @@ class DrawnObject : public GameWorld::CompositeObject {
 };
 
 }  // namespace GameWorld
-
-#endif  // GAMEWORLD_DRAWN_OBJECT_HPP

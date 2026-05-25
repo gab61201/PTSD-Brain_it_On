@@ -1,5 +1,4 @@
-#ifndef GAMEWORLD_DRAWING_INDICATOR_HPP
-#define GAMEWORLD_DRAWING_INDICATOR_HPP
+#pragma once
 
 #include "Util/AssetStore.hpp"
 #include "Util/GameObject.hpp"
@@ -27,5 +26,3 @@ class DrawingIndicator {
 };
 
 }  // namespace GameWorld
-
-#endif  // GAMEWORLD_DRAWING_INDICATOR_HPP

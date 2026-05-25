@@ -1,5 +1,4 @@
-#ifndef SCREEN_UI_ELEMENT_HPP
-#define SCREEN_UI_ELEMENT_HPP
+#pragma once
 
 #include "Screen/Button.hpp"
 #include "Util/Color.hpp"
@@ -27,5 +26,3 @@ std::shared_ptr<Util::GameObject> Image(
     float z = 1.0f);
 
 }  // namespace UI::Element
-
-#endif  // SCREEN_UI_ELEMENT_HPP

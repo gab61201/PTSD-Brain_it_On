@@ -1,5 +1,4 @@
-#ifndef GAMEWORLD_COMPOSITE_OBJECT_HPP
-#define GAMEWORLD_COMPOSITE_OBJECT_HPP
+#pragma once
 
 #include <box2d/box2d.h>
 
@@ -48,5 +47,3 @@ class CompositeObject {
 };
 
 }  // namespace GameWorld
-
-#endif  // GAMEWORLD_COMPOSITE_OBJECT_HPP

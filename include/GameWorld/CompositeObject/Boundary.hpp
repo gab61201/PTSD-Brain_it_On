@@ -1,5 +1,4 @@
-#ifndef GAMEWORLD_BOUNDARY_HPP
-#define GAMEWORLD_BOUNDARY_HPP
+#pragma once
 
 #include <glm/glm.hpp>
 
@@ -26,5 +25,3 @@ class Boundary : public CompositeObject {
 };
 
 }  // namespace GameWorld
-
-#endif  // GAMEWORLD_BOUNDARY_HPP

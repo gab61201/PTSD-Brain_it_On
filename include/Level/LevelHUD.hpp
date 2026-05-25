@@ -1,5 +1,4 @@
-#ifndef LEVEL_LEVEL_HUD_HPP
-#define LEVEL_LEVEL_HUD_HPP
+#pragma once
 
 #include <memory>
 #include <string>
@@ -38,5 +37,3 @@ class LevelHUD {
     std::shared_ptr<Util::GameObject> m_StrokeLimitObject;
     std::shared_ptr<Util::GameObject> m_ContactTimerObject;
 };
-
-#endif  // LEVEL_LEVEL_HUD_HPP

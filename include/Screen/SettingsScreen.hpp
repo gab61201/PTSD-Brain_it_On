@@ -1,5 +1,4 @@
-#ifndef SCREEN_SETTINGS_SCREEN_HPP
-#define SCREEN_SETTINGS_SCREEN_HPP
+#pragma once
 
 #include "Screen/UIScreen.hpp"
 
@@ -15,5 +14,3 @@ class SettingsScreen : public UIScreen {
 };
 
 }  // namespace UI
-
-#endif  // SCREEN_SETTINGS_SCREEN_HPP

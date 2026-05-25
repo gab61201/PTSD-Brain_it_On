@@ -1,5 +1,4 @@
-#ifndef UTIL_PROGRESS_STORE_HPP
-#define UTIL_PROGRESS_STORE_HPP
+#pragma once
 
 #include <array>
 #include <map>
@@ -35,5 +34,3 @@ class ProgressStore {
 };
 
 }  // namespace Util
-
-#endif  // UTIL_PROGRESS_STORE_HPP

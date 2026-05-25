@@ -1,5 +1,4 @@
-#ifndef APP_HPP
-#define APP_HPP
+#pragma once
 
 #include <filesystem>
 
@@ -32,5 +31,3 @@ class App {
     bool m_IsNewRecord = false;
     std::string m_LastScreenshotFilename;
 };
-
-#endif  // APP_HPP
