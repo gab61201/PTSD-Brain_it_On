@@ -12,11 +12,11 @@ LobbyScreen::LobbyScreen() {
     m_Renderer.AddChild(background);
 
     auto title = UI::Element::Text(
-        "Brain It On!", 72, {0.0f, 200.0f}, Util::Color::FromRGB(255, 255, 255), 1, "Resources/Fonts/KaushanScript-Regular.ttf");
+        "Brain It On!", 72, {0.0f, 200.0f}, Util::Color::FromRGB(255, 255, 255), Layer::UIElement, "Resources/Fonts/KaushanScript-Regular.ttf");
     m_Renderer.AddChild(title);
 
     auto titleShadow = UI::Element::Text(
-        "Brain It On!", 72, {3.0f, 197.0f}, Util::Color::FromRGB(64, 64, 64), 0, "Resources/Fonts/KaushanScript-Regular.ttf");
+        "Brain It On!", 72, {3.0f, 197.0f}, Util::Color::FromRGB(64, 64, 64), Layer::UIOutline, "Resources/Fonts/KaushanScript-Regular.ttf");
     m_Renderer.AddChild(titleShadow);
 
     auto playButton = UI::Element::Button(Path::BtnMainButtonGray, [this]() {

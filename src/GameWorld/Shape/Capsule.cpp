@@ -19,9 +19,6 @@ void Capsule::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
         return;
     }
-    if (m_Visual == nullptr) {
-        m_Visual = std::make_shared<Util::GameObject>();
-    }
 
     float diameter = std::get<float>(m_Size);
     b2Capsule capsuleShape = {
@@ -39,21 +36,25 @@ void Capsule::AttachToBody(b2BodyId body) {
     if (glm::distance(m_PointA, m_PointB) <= 1.0f) {
         // 顯示為圓形
         m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
+        m_Visual->SetZIndex(Layer::Shape);
         m_Visual->m_Transform.scale = circleScale;
     } else {
         // 中間矩形
         m_Visual = std::make_shared<Util::GameObject>();
         m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteSquare));
+        m_Visual->SetZIndex(Layer::Shape);
         m_Visual->m_Transform.scale = glm::vec2(glm::distance(m_PointA, m_PointB), diameter) / BASIC_SHAPE_IMAGE_SIZE;
         // 左圓
         m_CircleAVisual = std::make_shared<Util::GameObject>();
         m_CircleAVisual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
         m_CircleAVisual->m_Transform.scale = circleScale;
+        m_CircleAVisual->SetZIndex(Layer::Shape);
         m_Visual->AddChild(m_CircleAVisual);
         // 右圓
         m_CircleBVisual = std::make_shared<Util::GameObject>();
         m_CircleBVisual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
         m_CircleBVisual->m_Transform.scale = circleScale;
+        m_CircleBVisual->SetZIndex(Layer::Shape);
         m_Visual->AddChild(m_CircleBVisual);
     }
 }

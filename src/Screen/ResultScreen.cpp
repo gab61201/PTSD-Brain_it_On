@@ -45,26 +45,26 @@ ResultScreen::ResultScreen(LevelResult resultData)
         Path::BlueSquare,
         {0.0f, -48.0f},
         {1.72f, 0.98f},
-        0.1f);
+        Layer::UIBackground);
     m_Renderer.AddChild(panel);
 
     auto header = UI::Element::Image(
         Path::OrangeSquare,
         {0.0f, 156.0f},
         {1.72f, 0.13f},
-        0.2f);
+        Layer::UIBackground);
     m_Renderer.AddChild(header);
 
     const std::string title = m_ResultData.passed ? "Nice one!" : "Try again!";
     m_Renderer.AddChild(UI::Element::Text(
-        title, 64, {0.0f, 262.0f}, Util::Color::FromRGB(255, 255, 255), 1.5f));
+        title, 64, {0.0f, 262.0f}, Util::Color::FromRGB(255, 255, 255), Layer::UIElement));
 
     m_Renderer.AddChild(UI::Element::Text(
         "Level #" + std::to_string(static_cast<int>(m_ResultData.levelId) + 1),
         48,
         {0.0f, 156.0f},
         Util::Color::FromRGB(74, 74, 74),
-        1.5f));
+        Layer::UIElement));
 
     const float statsCenterX = -180.0f;
     const glm::vec2 colLeft = {statsCenterX - 140.0f, 0.0f};
@@ -78,43 +78,43 @@ ResultScreen::ResultScreen(LevelResult resultData)
     m_Renderer.AddChild(UI::Element::Image(
         m_ResultData.passed ? Path::StarBright
                             : Path::StarDark,
-        {starLeft.x, 80.0f}, {0.50, 0.50}, 1.3f));
+        {starLeft.x, 80.0f}, {0.50, 0.50}, Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Image(
         withinTimeLimit ? Path::StarBright
                         : Path::StarDark,
-        {starMid.x, 80.0f}, {0.50, 0.50}, 1.3f));
+        {starMid.x, 80.0f}, {0.50, 0.50}, Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Image(
         withinStrokeLimit ? Path::StarBright
                           : Path::StarDark,
-        {starRight.x, 80.0f}, {0.50, 0.50}, 1.3f));
+        {starRight.x, 80.0f}, {0.50, 0.50}, Layer::UIElement));
 
     m_Renderer.AddChild(UI::Element::Text(
-        "\u2713", 40, {colLeft.x, 0.0f}, Util::Color::FromRGB(56, 209, 83), 1.4f));
+        "\u2713", 40, {colLeft.x, 0.0f}, Util::Color::FromRGB(56, 209, 83), Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Image(
-        Path::Alarm, {colMid.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
+        Path::Alarm, {colMid.x, -2.0f}, {0.068f, 0.068f}, Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Image(
-        Path::StrokeLimit, {colRight.x, -2.0f}, {0.068f, 0.068f}, 1.4f));
+        Path::StrokeLimit, {colRight.x, -2.0f}, {0.068f, 0.068f}, Layer::UIElement));
 
     m_Renderer.AddChild(UI::Element::Text(
-        "Goal:", 48, {colLeft.x - 40.0f, -70.0f}, Util::Color::FromRGB(245, 245, 245), 1.4f));
+        "Goal:", 48, {colLeft.x - 40.0f, -70.0f}, Util::Color::FromRGB(245, 245, 245), Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Text(
         FormatSeconds(m_ResultData.goalTime),
         48,
         {colMid.x, -70.0f},
         Util::Color::FromRGB(245, 245, 245),
-        1.4f));
+        Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Text(
         std::to_string(m_ResultData.goalStroke),
         48,
         {colRight.x, -70.0f},
         Util::Color::FromRGB(245, 245, 245),
-        1.4f));
+        Layer::UIElement));
 
     auto solvedStrip = UI::Element::Image(
         Path::WhiteSquare,
         {statsCenterX, -152.0f},
         {0.95f, 0.16f},
-        1.1f);
+        Layer::UIOutline);
     m_Renderer.AddChild(solvedStrip);
 
     m_Renderer.AddChild(UI::Element::Text(
@@ -122,25 +122,25 @@ ResultScreen::ResultScreen(LevelResult resultData)
         48,
         {colLeft.x - 40.0f, -152.0f},
         Util::Color::FromRGB(11, 49, 80),
-        1.6f));
+        Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Text(
         FormatSeconds(m_ResultData.solvedTime),
         48,
         {colMid.x, -152.0f},
         solvedTimeColor,
-        1.6f));
+        Layer::UIElement));
     m_Renderer.AddChild(UI::Element::Text(
         std::to_string(m_ResultData.usedStroke),
         48,
         {colRight.x, -152.0f},
         solvedStrokeColor,
-        1.6f));
+        Layer::UIElement));
 
     auto levelFrame = UI::Element::Image(
         Path::LevelFrame,
         {230.0f, -30.0f},
         {0.38f, 0.38f},
-        1.1f);
+        Layer::UIOutline);
     m_Renderer.AddChild(levelFrame);
 
     if (!m_ResultData.screenshotFilename.empty()) {
@@ -148,7 +148,7 @@ ResultScreen::ResultScreen(LevelResult resultData)
             "Resources/Save/Screenshots/" + m_ResultData.screenshotFilename,
             {230.0f, 4.0f},
             {0.32f, 0.32f},
-            1.2f);
+            Layer::UIElement);
         m_Renderer.AddChild(screenshot);
     }
 

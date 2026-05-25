@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Constants.hpp"
 #include "Screen/Button.hpp"
 #include "Util/Color.hpp"
 
@@ -16,13 +17,13 @@ std::shared_ptr<Util::GameObject> Text(
     int size,
     const glm::vec2& position,
     const Util::Color& color,
-    float z = 1.0f,
+    float z = Layer::UIElement,
     const std::string& fontPath = "Resources/Fonts/Inter.ttf");
 
 std::shared_ptr<Util::GameObject> Image(
     const std::string& path,
     const glm::vec2& position,
     const glm::vec2& scale,
-    float z = 1.0f);
+    float z = Layer::UIElement);
 
 }  // namespace UI::Element

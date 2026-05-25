@@ -45,7 +45,7 @@ MenuScreen::MenuScreen() {
     m_Renderer.AddChild(background);
 
     auto panelDrawable = std::make_shared<Util::Image>(Path::BlueSquare);
-    auto panel = std::make_shared<Util::GameObject>(panelDrawable, -0.5f);
+    auto panel = std::make_shared<Util::GameObject>(panelDrawable, Layer::UIBackground);
     panel->m_Transform.translation = {0.0f, 0.0f};
     panel->m_Transform.scale = {PANEL_WIDTH, PANEL_HEIGHT};
     m_Renderer.AddChild(panel);
@@ -55,7 +55,7 @@ MenuScreen::MenuScreen() {
         40,
         {0.0f, 230.0f},
         Util::Color::FromRGB(255, 255, 255),
-        1.0f);
+        Layer::UIElement);
     m_Renderer.AddChild(totalStarsText);
 
     auto backButton = UI::Element::Button(Path::BtnBack, [this]() {
@@ -76,7 +76,7 @@ MenuScreen::MenuScreen() {
             Path::LightBlueSquare,
             {cardPosition.x, cardPosition.y - 12.0f},
             {CARD_SCALE * 0.80f, CARD_SCALE * 0.80f},
-            -0.1f);
+            Layer::UIBackground);
         m_Renderer.AddChild(cardBackground);
 
         auto cardButton = UI::Element::Button(
@@ -92,7 +92,7 @@ MenuScreen::MenuScreen() {
 
         auto levelText = UI::Element::Text(levelNumberStr, 30,
                                           {cardPosition.x + 8.0f, cardPosition.y + 6.0f},
-                                          Util::Color::FromRGB(245, 245, 245), 0.9f);
+                                          Util::Color::FromRGB(245, 245, 245), Layer::UIElementHUD);
         m_Renderer.AddChild(levelText);
 
         const float starXOffsets[3] = {-38.0f, 0.0f, 38.0f};
@@ -103,7 +103,7 @@ MenuScreen::MenuScreen() {
             auto starImg = UI::Element::Image(starPath,
                                              {cardPosition.x + starXOffsets[starIndex], cardPosition.y - 58.0f},
                                              {STAR_SCALE, STAR_SCALE},
-                                             0.8f);
+                                             Layer::UIElementHUD);
             m_Renderer.AddChild(starImg);
         }
     }

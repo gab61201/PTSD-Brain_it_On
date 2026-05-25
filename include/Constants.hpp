@@ -14,6 +14,18 @@ inline constexpr const char* kBestRecordSavePath = "Resources/Save/BestRecord.cs
 inline constexpr float BASIC_SHAPE_IMAGE_SIZE = 417.0F;
 inline constexpr float LEVEL_BACKGROUND_IMAGE_SIZE = 886.0F;
 
+namespace Layer {
+    enum {
+        Background,
+        ShapeOutLine,
+        Shape,
+        UIBackground,
+        UIOutline,
+        UIElement,
+        UIElementHUD,
+    };
+}
+
 namespace Path {
 
 inline const std::string Background = "Resources/Images/background.png";

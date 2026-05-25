@@ -1,4 +1,5 @@
 #include "GameWorld/Shape/Shape.hpp"
+#include "Constants.hpp"
 
 namespace GameWorld {
 
@@ -9,8 +10,9 @@ Shape::Shape(std::variant<glm::vec2, float> m_Size, const glm::vec2& relativePos
       m_IsSensor(isSensor) {
         if (outline) {
             m_OutlineVisual = std::make_shared<Util::GameObject>();
-            m_OutlineVisual->SetZIndex(-0.1);
+            m_OutlineVisual->SetZIndex(Layer::ShapeOutLine);
             m_Visual->AddChild(m_OutlineVisual);
+            m_Visual->SetZIndex(Layer::Shape);
         }
     }
 

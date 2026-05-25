@@ -18,7 +18,7 @@ enum class LevelId {
 struct LevelConfig {
     float timeout = 30.0F;
     int strokeLimit = 3;
-    std::string targetText = "";
+    std::string targetText = " ";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
     std::shared_ptr<PassCondition> passCondition;
 };
@@ -32,7 +32,6 @@ struct LevelResult {
     int usedStroke = 0;
     std::string screenshotFilename;
 };
-
 
 using LevelFunction = std::function<LevelConfig()>;
 
