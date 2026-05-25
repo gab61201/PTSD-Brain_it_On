@@ -27,5 +27,4 @@ class App {
     LevelId m_SelectedLevelId;
     LevelResult m_LastResult;
     bool m_IsNewRecord = false;
-    std::string m_LastScreenshotFilename;
 };

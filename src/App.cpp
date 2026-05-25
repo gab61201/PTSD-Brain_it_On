@@ -25,7 +25,7 @@ void App::Update() {
     if (nextScreenType != m_Screen->GetScreenType()) {
         if (m_Screen->GetScreenType() == UI::ScreenType::RESULT && !m_IsNewRecord) {
             std::error_code ec;
-            std::filesystem::remove("Resources/Save/Screenshots/" + m_LastScreenshotFilename, ec);
+            std::filesystem::remove("Resources/Save/Screenshots/" + m_LastResult.screenshotFilename, ec);
         }
         switch (nextScreenType) {
             case UI::ScreenType::LOBBY:
@@ -49,7 +49,6 @@ void App::Update() {
                 if (auto* game = dynamic_cast<UI::GameScreen*>(m_Screen.get())) {
                     m_LastResult = game->GetLastResult();
                     m_IsNewRecord = game->IsNewRecord();
-                    m_LastScreenshotFilename = m_LastResult.screenshotFilename;
                 }
                 m_Screen = std::make_unique<UI::ResultScreen>(m_LastResult);
                 break;
