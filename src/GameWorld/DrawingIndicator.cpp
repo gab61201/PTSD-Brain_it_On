@@ -10,18 +10,18 @@ Util::AssetStore<std::shared_ptr<Util::Image>> DrawingIndicator::s_ImageCache{
     }};
 
 DrawingIndicator::DrawingIndicator() {
-    const float scale = STROKE_WIDTH / BASIC_SHAPE_IMAGE_SIZE;
+    const float circleScale = STROKE_WIDTH / BASIC_SHAPE_IMAGE_SIZE;
 
     m_P1 = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::RedCircleTrans), 10.0f, glm::vec2(0.0f, 0.0f), false);
-    m_P1->m_Transform.scale = {scale, scale};
+    m_P1->m_Transform.scale = {circleScale, circleScale};
     m_Renderer.AddChild(m_P1);
 
     m_P2 = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::RedCircleTrans), 10.0f, glm::vec2(0.0f, 0.0f), false);
-    m_P2->m_Transform.scale = {scale, scale};
+    m_P2->m_Transform.scale = {circleScale, circleScale};
     m_Renderer.AddChild(m_P2);
 
-    m_Line = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::RedSquareTrans), 10.0f, glm::vec2(0.0f, 0.0f), false);
-    m_Line->m_Transform.scale = {1.0f, scale};
+    m_Line = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::RedLine), 10.0f, glm::vec2(0.0f, 0.0f), false);
+    m_Line->m_Transform.scale = {1.0f, STROKE_WIDTH};
     m_Renderer.AddChild(m_Line);
 }
 

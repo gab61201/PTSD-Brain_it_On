@@ -27,6 +27,7 @@ inline const std::string WhiteSquare = "Resources/Images/BasicShapes/white_squar
 inline const std::string WhiteCircle = "Resources/Images/BasicShapes/white_circle.png";
 inline const std::string RedSquareTrans = "Resources/Images/BasicShapes/red_square_trans.png";
 inline const std::string RedCircleTrans = "Resources/Images/BasicShapes/red_circle_trans.png";
+inline const std::string RedLine = "Resources/Images/BasicShapes/red_line.png";
 inline const std::string StarBright = "Resources/Images/star_bright.png";
 inline const std::string StarDark = "Resources/Images/star_dark.png";
 inline const std::string LevelBackground = "Resources/Images/level_background.png";
