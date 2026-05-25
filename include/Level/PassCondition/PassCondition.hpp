@@ -1,5 +1,5 @@
-#ifndef PASS_CONDITION_HPP
-#define PASS_CONDITION_HPP
+#ifndef LEVEL_PASS_CONDITION_HPP
+#define LEVEL_PASS_CONDITION_HPP
 
 #include <box2d/box2d.h>
 
@@ -36,4 +36,4 @@ class PassCondition {
     int m_Timer = 0;
 };
 
-#endif
+#endif  // LEVEL_PASS_CONDITION_HPP

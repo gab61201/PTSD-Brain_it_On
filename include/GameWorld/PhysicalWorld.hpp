@@ -1,5 +1,5 @@
-#ifndef PHYSICAL_WORLD_HPP
-#define PHYSICAL_WORLD_HPP
+#ifndef GAMEWORLD_PHYSICAL_WORLD_HPP
+#define GAMEWORLD_PHYSICAL_WORLD_HPP
 
 #include <box2d/box2d.h>
 
@@ -40,4 +40,4 @@ class PhysicalWorld {
 
 }  // namespace GameWorld
 
-#endif  // PHYSICAL_WORLD_HPP
+#endif  // GAMEWORLD_PHYSICAL_WORLD_HPP

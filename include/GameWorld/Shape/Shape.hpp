@@ -1,5 +1,5 @@
-#ifndef SHAPE_HPP
-#define SHAPE_HPP
+#ifndef GAMEWORLD_SHAPE_HPP
+#define GAMEWORLD_SHAPE_HPP
 
 #include <box2d/box2d.h>
 
@@ -58,4 +58,4 @@ class Shape {
 
 }  // namespace GameWorld
 
-#endif  // SHAPE_HPP
+#endif  // GAMEWORLD_SHAPE_HPP

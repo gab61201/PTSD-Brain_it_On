@@ -113,7 +113,7 @@ void PhysicalWorld::DrawObject(glm::vec2 position) {
         // 檢查射線有沒有碰到其他東西
         auto p1 = m_LastDrawingObject->GetPoints().back();
         auto p2 = position;
-        if (glm::distance(p1, p2) < 2.0f) {
+        if (glm::distance(p1, p2) < MIN_STROKE_LENGTH) {
             return;
         }
         ShapeCastContext callback;

@@ -1,5 +1,5 @@
-#ifndef CIRCLE_HPP
-#define CIRCLE_HPP
+#ifndef GAMEWORLD_CIRCLE_HPP
+#define GAMEWORLD_CIRCLE_HPP
 
 #include "GameWorld/Shape/Shape.hpp"
 
@@ -14,4 +14,4 @@ class Circle : public Shape {
 
 }  // namespace GameWorld
 
-#endif  // CIRCLE_HPP
+#endif  // GAMEWORLD_CIRCLE_HPP

@@ -46,4 +46,17 @@ bool Boundary::IsPointInside(glm::vec2 position) const {
             position.y > m_Y1 && position.y < m_Y2);
 }
 
+const Shape& Boundary::GetLeftWall() const {
+    return *m_Shapes[0];
+}
+const Shape& Boundary::GetRightWall() const {
+    return *m_Shapes[1];
+}
+const Shape& Boundary::GetTopWall() const {
+    return *m_Shapes[2];
+}
+const Shape& Boundary::GetBottomWall() const {
+    return *m_Shapes[3];
+}
+
 }  // namespace GameWorld

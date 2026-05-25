@@ -1,5 +1,5 @@
-#ifndef LEVEL_DATA_HPP
-#define LEVEL_DATA_HPP
+#ifndef LEVEL_LEVEL_DATA_HPP
+#define LEVEL_LEVEL_DATA_HPP
 
 #include <functional>
 #include <map>
@@ -46,4 +46,4 @@ LevelConfig GetLevelConfig(LevelId id);
 // 註冊用 helper
 void RegisterLevel(LevelId id, LevelFunction function);
 
-#endif
+#endif  // LEVEL_LEVEL_DATA_HPP

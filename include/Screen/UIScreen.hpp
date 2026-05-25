@@ -1,5 +1,5 @@
-#ifndef UI_SCREEN_HPP
-#define UI_SCREEN_HPP
+#ifndef SCREEN_UI_SCREEN_HPP
+#define SCREEN_UI_SCREEN_HPP
 
 #include "Screen/Button.hpp"
 #include "Util/Renderer.hpp"
@@ -33,4 +33,4 @@ class UIScreen {
 
 }  // namespace UI
 
-#endif
+#endif  // SCREEN_UI_SCREEN_HPP

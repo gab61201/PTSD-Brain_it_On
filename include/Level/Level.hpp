@@ -1,5 +1,5 @@
-#ifndef LEVEL_HPP
-#define LEVEL_HPP
+#ifndef LEVEL_LEVEL_HPP
+#define LEVEL_LEVEL_HPP
 
 #include <memory>
 
@@ -48,4 +48,4 @@ class Level {
     bool m_isNewRecord = false;
 };
 
-#endif
+#endif  // LEVEL_LEVEL_HPP

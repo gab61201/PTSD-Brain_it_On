@@ -1,5 +1,5 @@
-#ifndef RECTANGLE_HPP
-#define RECTANGLE_HPP
+#ifndef GAMEWORLD_RECTANGLE_HPP
+#define GAMEWORLD_RECTANGLE_HPP
 
 #include "GameWorld/Shape/Shape.hpp"
 
@@ -14,4 +14,4 @@ class Rectangle : public Shape {
 
 }  // namespace GameWorld
 
-#endif  // RECTANGLE_HPP
+#endif  // GAMEWORLD_RECTANGLE_HPP

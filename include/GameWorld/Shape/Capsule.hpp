@@ -1,5 +1,5 @@
-#ifndef CAPSULE_HPP
-#define CAPSULE_HPP
+#ifndef GAMEWORLD_CAPSULE_HPP
+#define GAMEWORLD_CAPSULE_HPP
 
 #include "GameWorld/Shape/Shape.hpp"
 
@@ -35,4 +35,4 @@ class Capsule : public Shape {
 
 }  // namespace GameWorld
 
-#endif  // CAPSULE_HPP
+#endif  // GAMEWORLD_CAPSULE_HPP

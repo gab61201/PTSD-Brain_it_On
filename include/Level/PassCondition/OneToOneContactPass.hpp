@@ -1,5 +1,5 @@
-#ifndef ONE_TO_ONE_CONTACT_PASS_HPP
-#define ONE_TO_ONE_CONTACT_PASS_HPP
+#ifndef LEVEL_ONE_TO_ONE_CONTACT_PASS_HPP
+#define LEVEL_ONE_TO_ONE_CONTACT_PASS_HPP
 
 #include "Level/PassCondition/PassCondition.hpp"
 
@@ -22,4 +22,4 @@ class OneToOneContactPass : public PassCondition {
     b2ShapeId m_ShapeB = b2_nullShapeId;
 };
 
-#endif  // ONE_TO_ONE_CONTACT_PASS_HPP
+#endif  // LEVEL_ONE_TO_ONE_CONTACT_PASS_HPP

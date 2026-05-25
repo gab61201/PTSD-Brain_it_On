@@ -49,13 +49,9 @@ void CompositeObject::AttachToWorld(b2WorldId world) {
     // 3. 向下交辦：呼叫所有子零件，讓它們把碰撞形狀掛載到這個骨架上
     for (auto& shape : m_Shapes) {
         if (shape) {
-            // 這裡呼叫我們上一篇寫好的 Shape::AttachToBody
             shape->AttachToBody(m_b2BodyId);
+            m_Renderer.AddChild(shape->GetVisual());
         }
-    }
-
-    for (auto& shape : m_Shapes) {
-        m_Renderer.AddChild(shape->GetVisual());
     }
 }
 

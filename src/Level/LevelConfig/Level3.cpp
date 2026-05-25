@@ -39,7 +39,7 @@ LevelConfig LevelConfig_3() {
 
     // Pass condition: rightTip touches the floor (boundary index 3 is bottom wall)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<OneToOneContactPass>(rightTip->Getb2ShapeId(), boundary->GetShapes()[3]->Getb2ShapeId(), TriggerType::TOUCHING, 0);
+    data.passCondition = std::make_shared<OneToOneContactPass>(rightTip->Getb2ShapeId(), boundary->GetBottomWall().Getb2ShapeId(), TriggerType::TOUCHING, 0);
 
     return data;
 }

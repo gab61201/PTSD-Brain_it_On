@@ -1,5 +1,5 @@
-#ifndef LOBBY_SCREEN_HPP
-#define LOBBY_SCREEN_HPP
+#ifndef SCREEN_LOBBY_SCREEN_HPP
+#define SCREEN_LOBBY_SCREEN_HPP
 
 #include "Screen/UIScreen.hpp"
 
@@ -19,4 +19,4 @@ class LobbyScreen : public UIScreen {
 
 }  // namespace UI
 
-#endif
+#endif  // SCREEN_LOBBY_SCREEN_HPP

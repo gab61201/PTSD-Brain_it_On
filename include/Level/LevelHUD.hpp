@@ -1,5 +1,5 @@
-#ifndef LEVEL_HUD_HPP
-#define LEVEL_HUD_HPP
+#ifndef LEVEL_LEVEL_HUD_HPP
+#define LEVEL_LEVEL_HUD_HPP
 
 #include <memory>
 #include <string>
@@ -39,4 +39,4 @@ class LevelHUD {
     std::shared_ptr<Util::GameObject> m_ContactTimerObject;
 };
 
-#endif
+#endif  // LEVEL_LEVEL_HUD_HPP

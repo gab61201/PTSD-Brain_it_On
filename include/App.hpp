@@ -33,4 +33,4 @@ class App {
     std::string m_LastScreenshotFilename;
 };
 
-#endif
+#endif  // APP_HPP

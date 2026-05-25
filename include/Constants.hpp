@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include <string>
+
 inline constexpr float RESOLUTION_X = 1280.0F;
 inline constexpr float RESOLUTION_Y = 720.0F;
 inline constexpr int FPS = 60;
@@ -11,8 +13,6 @@ inline constexpr const char* kCsvHeader = "level,timestamp,passed,within_time,wi
 inline constexpr const char* kBestRecordSavePath = "Resources/Save/BestRecord.csv";
 inline constexpr float BASIC_SHAPE_IMAGE_SIZE = 417.0F;
 inline constexpr float LEVEL_BACKGROUND_IMAGE_SIZE = 886.0F;
-
-#include <string>
 
 namespace Path {
 

@@ -1,5 +1,5 @@
-#ifndef UI_BUTTON_HPP
-#define UI_BUTTON_HPP
+#ifndef SCREEN_BUTTON_HPP
+#define SCREEN_BUTTON_HPP
 
 #include <functional>
 
@@ -27,4 +27,4 @@ class Button : public Util::GameObject {
 
 }  // namespace UI
 
-#endif
+#endif  // SCREEN_BUTTON_HPP

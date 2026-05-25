@@ -48,7 +48,6 @@ LevelHUD::LevelHUD(LevelId levelId, const std::string& targetText, int strokeLim
 
     // 5. 提示文字
     m_TargetTextObject = UI::Element::Text(targetText, 30, {0.0f, 250.0f}, WHITE, 0.5f);
-    ;
     m_Renderer.AddChild(m_TargetTextObject);
 
     // 6. 限制筆劃次數圖示
@@ -87,7 +86,6 @@ void LevelHUD::Reset(const std::string& targetText, int strokeLimit) {
         m_Renderer.RemoveChild(m_TargetTextObject);
     }
     m_TargetTextObject = UI::Element::Text(targetText, 30, {0.0f, 250.0f}, WHITE, 0.5f);
-    ;
     m_Renderer.AddChild(m_TargetTextObject);
 
     // 重置計時器
