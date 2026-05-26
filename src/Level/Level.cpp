@@ -58,7 +58,7 @@ void Level::Update() {
     m_World->Update();
 
     m_HUD->UpdateTimer(GetRemainingTime());
-    m_HUD->UpdateStrokeLimit(m_StrokeLimit - m_World->GetDrawnObjectCount(), m_StrokeLimit);
+    m_HUD->UpdateStrokeLimit(m_World->GetDrawnObjectCount(), m_StrokeLimit);
     m_HUD->Update();
 
     switch (m_State) {

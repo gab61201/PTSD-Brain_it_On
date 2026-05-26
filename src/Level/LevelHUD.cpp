@@ -92,6 +92,9 @@ void LevelHUD::UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit) {
     SetText(m_StrokeLimitObject,
             std::to_string(remainingStroke) + "/" + std::to_string(totalStrokeLimit),
             24);
+    // if (remainingStroke > totalStrokeLimit) {
+    // 圖示變成半透明
+    // }
 }
 
 void LevelHUD::UpdateContactTimer(int contactCountDown) {

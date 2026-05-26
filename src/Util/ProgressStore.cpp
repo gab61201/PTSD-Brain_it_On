@@ -155,19 +155,7 @@ bool ProgressStore::ApplyResultAndSave(const LevelResult& data) {
             newRemainingTime,
             data.usedStroke};
         WriteCSV(s_Records);
-    } else if (!data.screenshotFilename.empty()) {
-        if (auto it = s_Records.find(data.levelId); it != s_Records.end()) {
-            it->second.screenshotFilename = data.screenshotFilename;
-        } else {
-            s_Records[data.levelId] = ProgressRecord{
-                data.screenshotFilename,
-                newStars,
-                newRemainingTime,
-                data.usedStroke};
-        }
-        WriteCSV(s_Records);
     }
-
     return isNewRecord;
 }
 
