@@ -31,6 +31,9 @@ class Capsule : public Shape {
 
     std::shared_ptr<Util::GameObject> m_CircleAVisual;
     std::shared_ptr<Util::GameObject> m_CircleBVisual;
+
+    std::shared_ptr<Util::GameObject> m_CircleAOutlineVisual;
+    std::shared_ptr<Util::GameObject> m_CircleBOutlineVisual;
 };
 
 }  // namespace GameWorld
