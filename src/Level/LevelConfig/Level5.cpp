@@ -28,8 +28,7 @@ LevelConfig LevelConfig_5() {
         glm::vec2(150.0F, 0.0F)
     );
 
-    auto boundary = std::make_shared<GameWorld::Boundary>(
-        -300.0F, 300.0F, -300.0F, 300.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>();
 
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         boxComp, circleComp, boundary};

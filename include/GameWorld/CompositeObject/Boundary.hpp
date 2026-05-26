@@ -8,7 +8,7 @@ namespace GameWorld {
 
 class Boundary : public CompositeObject {
    public:
-    Boundary(float x1, float x2, float y1, float y2);
+    Boundary(float x1 = -300.0F, float x2 = 300.0F, float y1 = -300.0F, float y2 = 300.0F);
     ~Boundary() = default;
 
     bool IsPointInside(glm::vec2 position) const {
@@ -22,10 +22,10 @@ class Boundary : public CompositeObject {
     const Shape& GetBottomWall() const { return *m_Shapes[3]; }
 
    private:
-    float m_X1 = 0.0F;
-    float m_X2 = 0.0F;
-    float m_Y1 = 0.0F;
-    float m_Y2 = 0.0F;
+    float m_X1;
+    float m_X2;
+    float m_Y1;
+    float m_Y2;
 };
 
 }  // namespace GameWorld

@@ -47,7 +47,7 @@ LevelConfig LevelConfig_1() {
     // ==========================================
     // 3. 建立 600x600 px 邊界（置中）
     // ==========================================
-    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>();
 
     // ==========================================
     // 4. 將所有組合件打包，並初始化物理世界

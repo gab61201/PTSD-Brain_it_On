@@ -32,7 +32,7 @@ LevelConfig LevelConfig_3() {
         glm::vec2(0.0F, -180.0F),
         0.33F);
 
-    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>();
 
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         seesawComp, boundary};

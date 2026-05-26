@@ -18,7 +18,7 @@ LevelConfig LevelConfig_2() {
         GameWorld::BodyType::DYNAMIC,
         glm::vec2(0.0F, 200.0F));
 
-    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>();
 
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         ballComp, boundary};
