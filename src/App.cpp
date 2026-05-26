@@ -1,7 +1,5 @@
 #include "App.hpp"
 
-#include <filesystem>
-
 #include "Screen/GameScreen.hpp"
 #include "Screen/LobbyScreen.hpp"
 #include "Screen/MenuScreen.hpp"
@@ -23,10 +21,6 @@ void App::Start() {
 void App::Update() {
     UI::ScreenType nextScreenType = m_Screen->Update();
     if (nextScreenType != m_Screen->GetScreenType()) {
-        if (m_Screen->GetScreenType() == UI::ScreenType::RESULT && !m_IsNewRecord) {
-            std::error_code ec;
-            std::filesystem::remove("Resources/Save/Screenshots/" + m_LastResult.screenshotFilename, ec);
-        }
         switch (nextScreenType) {
             case UI::ScreenType::LOBBY:
                 m_Screen = std::make_unique<UI::LobbyScreen>();
@@ -47,10 +41,8 @@ void App::Update() {
                 break;
             case UI::ScreenType::RESULT:
                 if (auto* game = dynamic_cast<UI::GameScreen*>(m_Screen.get())) {
-                    m_LastResult = game->GetLastResult();
-                    m_IsNewRecord = game->IsNewRecord();
+                    m_Screen = std::make_unique<UI::ResultScreen>(game->GetLastResult());
                 }
-                m_Screen = std::make_unique<UI::ResultScreen>(m_LastResult);
                 break;
         }
     }

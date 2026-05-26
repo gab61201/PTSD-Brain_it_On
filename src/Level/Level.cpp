@@ -82,5 +82,5 @@ void Level::Save() {
         m_StrokeLimit,
         m_World->GetDrawnObjectCount(),
         Util::Screenshot::Capture()};
-    m_IsNewRecord = Util::ProgressStore::ApplyResultAndSave(m_LastResult);
+    m_LastResult.isNewRecord = Util::ProgressStore::ApplyResultAndSave(m_LastResult);
 }

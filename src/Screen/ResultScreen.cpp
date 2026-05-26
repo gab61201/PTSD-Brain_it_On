@@ -1,5 +1,6 @@
 #include "Screen/ResultScreen.hpp"
 
+#include <filesystem>
 #include <iomanip>
 #include <sstream>
 
@@ -173,6 +174,13 @@ ResultScreen::ResultScreen(LevelResult resultData)
 
     m_Buttons.push_back(nextButton);
     m_Renderer.AddChild(nextButton);
+}
+
+ResultScreen::~ResultScreen() {
+    if (!m_ResultData.isNewRecord && !m_ResultData.screenshotFilename.empty()) {
+        std::error_code ec;
+        std::filesystem::remove("Resources/Save/Screenshots/" + m_ResultData.screenshotFilename, ec);
+    }
 }
 
 ScreenType ResultScreen::Update() {

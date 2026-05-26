@@ -122,11 +122,12 @@ int ProgressStore::GetTotalStarCount() {
 bool ProgressStore::ApplyResultAndSave(const LevelResult& data) {
     std::array<bool, 3> newStars = {
         data.passed,
-        (data.solvedTime <= data.goalTime),
-        (data.usedStroke <= data.goalStroke)};
+        data.passed && (data.solvedTime <= data.goalTime),
+        data.passed && (data.usedStroke <= data.goalStroke)};
     int newStarCount = newStars[0] + newStars[1] + newStars[2];
     float newRemainingTime = std::max(0.0f, data.goalTime - data.solvedTime);
 
+    // 檢查是否為最佳紀錄
     bool isNewRecord = false;
     if (auto it = s_Records.find(data.levelId); it != s_Records.end()) {
         const auto& oldRecord = it->second;
@@ -146,13 +147,24 @@ bool ProgressStore::ApplyResultAndSave(const LevelResult& data) {
     } else {
         isNewRecord = true;
     }
-
+    // 更新最佳紀錄
     if (isNewRecord) {
         s_Records[data.levelId] = ProgressRecord{
             data.screenshotFilename,
             newStars,
             newRemainingTime,
             data.usedStroke};
+        WriteCSV(s_Records);
+    } else if (!data.screenshotFilename.empty()) {
+        if (auto it = s_Records.find(data.levelId); it != s_Records.end()) {
+            it->second.screenshotFilename = data.screenshotFilename;
+        } else {
+            s_Records[data.levelId] = ProgressRecord{
+                data.screenshotFilename,
+                newStars,
+                newRemainingTime,
+                data.usedStroke};
+        }
         WriteCSV(s_Records);
     }
 

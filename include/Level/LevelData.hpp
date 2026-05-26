@@ -31,6 +31,7 @@ struct LevelResult {
     int goalStroke = 0;
     int usedStroke = 0;
     std::string screenshotFilename;
+    bool isNewRecord = false;
 };
 
 using LevelFunction = std::function<LevelConfig()>;

@@ -11,5 +11,6 @@ struct LevelResult {
     int goalStroke = 0;            // 目標筆畫數
     int usedStroke = 0;            // 實際筆畫數
     std::string screenshotFilename; // 截圖檔名
+    bool isNewRecord = false;      // 是否為新紀錄
 };
 ```

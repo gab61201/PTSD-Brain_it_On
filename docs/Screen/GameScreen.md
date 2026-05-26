@@ -9,5 +9,4 @@ explicit GameScreen(LevelId levelId);
 ScreenType Update() override;
 ScreenType GetScreenType() const override;     // 回傳 ScreenType::GAME
 const LevelResult& GetLastResult() const;      // 取得關卡結果
-bool IsNewRecord() const;                      // 是否為新紀錄
 ```

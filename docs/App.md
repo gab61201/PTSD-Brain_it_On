@@ -32,6 +32,3 @@ enum class State {
 | `m_CurrentState` | `State` | 當前應用程式狀態 |
 | `m_Screen` | `std::unique_ptr<UI::UIScreen>` | 當前活躍的 UI 畫面 |
 | `m_SelectedLevelId` | `LevelId` | 玩家選擇的關卡 ID |
-| `m_LastResult` | `LevelResult` | 最近一次的關卡結果 |
-| `m_IsNewRecord` | `bool` | 是否為新紀錄 |
-| `m_LastScreenshotFilename` | `std::string` | 最後截圖的檔名 |

@@ -29,5 +29,4 @@ enum class State {
 | `GetLevelId` | `LevelId GetLevelId() const` | 取得關卡 ID |
 | `GetState` | `State GetState() const` | 取得當前狀態 |
 | `GetLastResult` | `const LevelResult& GetLastResult() const` | 取得最近結果 |
-| `IsNewRecord` | `bool IsNewRecord() const` | 是否為新紀錄 |
 | `Save` | `void Save()` | 儲存關卡結果 |

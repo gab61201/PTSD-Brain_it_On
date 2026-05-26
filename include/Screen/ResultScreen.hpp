@@ -9,6 +9,8 @@ class ResultScreen : public UIScreen {
    public:
     explicit ResultScreen(LevelResult resultData);
 
+    ~ResultScreen();
+
     ScreenType Update() override;
 
     ScreenType GetScreenType() const override { return ScreenType::RESULT; }

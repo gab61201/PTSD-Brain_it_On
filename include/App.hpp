@@ -25,6 +25,4 @@ class App {
     // UI
     std::unique_ptr<UI::UIScreen> m_Screen;
     LevelId m_SelectedLevelId;
-    LevelResult m_LastResult;
-    bool m_IsNewRecord = false;
 };
