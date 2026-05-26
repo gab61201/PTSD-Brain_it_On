@@ -45,3 +45,4 @@
   - [ProgressRecord](Util/ProgressRecord.md)
   - [ProgressStore](Util/ProgressStore.md)
   - [Screenshot](Util/Screenshot.md)
+  - [ImageCache](Util/ImageCache.md)

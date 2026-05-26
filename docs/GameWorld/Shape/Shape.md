@@ -44,4 +44,4 @@ Shape(
 | `m_RelativePosition` | `glm::vec2` | 相對位置 |
 | `m_RelativeRotation` | `float` | 相對旋轉（弧度） |
 | `m_IsSensor` | `bool` | 是否為感測器 |
-| `s_ImageCache` | `Util::AssetStore<...>` (static) | 圖片快取 |
+
