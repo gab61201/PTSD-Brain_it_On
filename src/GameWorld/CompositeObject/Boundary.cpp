@@ -35,7 +35,7 @@ Boundary::Boundary(float x1, float x2, float y1, float y2)
     m_BodyType = BodyType::STATIC;
 
     auto levelImage = std::make_shared<Util::Image>(Path::LevelBackground);
-    auto boundaryVisual = std::make_shared<Util::GameObject>(levelImage, -0.1F);
+    auto boundaryVisual = std::make_shared<Util::GameObject>(levelImage, Layer::LevelBackGround);
     boundaryVisual->m_Transform.translation = {centerX, centerY};
     boundaryVisual->m_Transform.scale = {width / LEVEL_BACKGROUND_IMAGE_SIZE, height / LEVEL_BACKGROUND_IMAGE_SIZE};
     m_Renderer.AddChild(boundaryVisual);

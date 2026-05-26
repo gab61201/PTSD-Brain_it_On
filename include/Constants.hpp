@@ -17,6 +17,7 @@ inline constexpr float LEVEL_BACKGROUND_IMAGE_SIZE = 886.0F;
 namespace Layer {
     enum {
         Background,
+        LevelBackGround,
         ShapeOutLine,
         Shape,
         UIBackground,

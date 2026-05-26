@@ -144,7 +144,7 @@ LobbyScreen → MenuScreen → GameScreen → ResultScreen
 
 ```bash
 # 設定建置（必須使用 Debug 模式）
-cmake -B build -DCMAKE_BUILD_TYPE=Debug
+cmake -B build -DCMAKE_BUILD_TYPE=Debug # -G Ninga
 
 # 編譯
 cmake --build build -j
