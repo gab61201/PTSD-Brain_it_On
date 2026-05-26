@@ -1,6 +1,7 @@
 #include "GameWorld/Shape/Capsule.hpp"
 
 #include "Constants.hpp"
+#include "Util/ImageCache.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
 
 namespace GameWorld {
@@ -36,33 +37,33 @@ void Capsule::AttachToBody(b2BodyId body) {
 
     if (distance <= 1.0f) {
         // --- 情況 A：長度極短，顯示為純圓形 ---
-        m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
+        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
         m_Visual->m_Transform.scale = circleScale;
 
         if (m_OutlineVisual) {
-            m_OutlineVisual->SetDrawable(s_ImageCache.Get(Path::BlackCircle));
+            m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackCircle));
             m_OutlineVisual->m_Transform.scale = 
                 glm::vec2(diameter + SHAPE_OUTLINE_WIDTH, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
         }
     } else {
         // --- 情況 B：正常膠囊形 ---
         // 1. 中間矩形主體（直接利用已存在的 m_Visual）
-        m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteSquare));
+        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
         m_Visual->m_Transform.scale = glm::vec2(distance, diameter) / BASIC_SHAPE_IMAGE_SIZE;
 
         // 2. 中間矩形描邊（直接利用已存在的 m_OutlineVisual）
         if (m_OutlineVisual) {
-            m_OutlineVisual->SetDrawable(s_ImageCache.Get(Path::BlackSquare));
+            m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackSquare));
             m_OutlineVisual->m_Transform.scale = 
                 glm::vec2(distance, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
         }
 
         // 3. 初始化兩端圓形主體 (白色)
-        m_CircleAVisual = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::WhiteCircle), Layer::Shape);
+        m_CircleAVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::WhiteCircle), Layer::Shape);
         m_CircleAVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleAVisual);
 
-        m_CircleBVisual = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::WhiteCircle), Layer::Shape);
+        m_CircleBVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::WhiteCircle), Layer::Shape);
         m_CircleBVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleBVisual);
 
@@ -71,11 +72,11 @@ void Capsule::AttachToBody(b2BodyId body) {
             const glm::vec2 outlineCircleScale = 
                 glm::vec2(diameter + SHAPE_OUTLINE_WIDTH, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
 
-            m_CircleAOutlineVisual = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::BlackCircle), Layer::ShapeOutLine);
+            m_CircleAOutlineVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::BlackCircle), Layer::ShapeOutLine);
             m_CircleAOutlineVisual->m_Transform.scale = outlineCircleScale;
             m_OutlineVisual->AddChild(m_CircleAOutlineVisual);
 
-            m_CircleBOutlineVisual = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::BlackCircle), Layer::ShapeOutLine);
+            m_CircleBOutlineVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::BlackCircle), Layer::ShapeOutLine);
             m_CircleBOutlineVisual->m_Transform.scale = outlineCircleScale;
             m_OutlineVisual->AddChild(m_CircleBOutlineVisual);
         }

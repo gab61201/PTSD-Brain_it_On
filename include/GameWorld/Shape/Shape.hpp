@@ -5,7 +5,6 @@
 #include <variant>
 
 #include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
 
 namespace GameWorld {
 
@@ -55,8 +54,6 @@ class Shape {
     // 是否為感測器（即不會產生物理碰撞，但仍能觸發碰撞事件）
     bool m_IsSensor;
 
-    // 圖片快取 (Image Cache)
-    static Util::AssetStore<std::shared_ptr<Util::Image>> s_ImageCache;
 };
 
 }  // namespace GameWorld

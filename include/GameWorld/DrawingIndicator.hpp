@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Util/AssetStore.hpp"
 #include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
 #include "Util/Renderer.hpp"
 
 namespace GameWorld {
@@ -18,7 +16,6 @@ class DrawingIndicator {
     void Update();
 
    private:
-    static Util::AssetStore<std::shared_ptr<Util::Image>> s_ImageCache;
     Util::Renderer m_Renderer;
     std::shared_ptr<Util::GameObject> m_P1;
     std::shared_ptr<Util::GameObject> m_P2;

@@ -45,9 +45,5 @@ void Shape::Update(glm::vec2 ParentObjectPosition, float ParentObjectRotation) {
     }
 }
 
-Util::AssetStore<std::shared_ptr<Util::Image>> Shape::s_ImageCache{
-    [](const std::string& filepath) {
-        return std::make_shared<Util::Image>(filepath);
-    }};
 
 }  // namespace GameWorld

@@ -2,25 +2,23 @@
 
 #include "Constants.hpp"
 
+#include "Util/ImageCache.hpp"
+
 namespace GameWorld {
 
-Util::AssetStore<std::shared_ptr<Util::Image>> DrawingIndicator::s_ImageCache{
-    [](const std::string& filepath) {
-        return std::make_shared<Util::Image>(filepath);
-    }};
-
 DrawingIndicator::DrawingIndicator() {
+
     const float circleScale = STROKE_WIDTH / BASIC_SHAPE_IMAGE_SIZE;
 
-    m_P1 = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::RedCircleTrans), Layer::UIOutline, glm::vec2(0.0f, 0.0f), false);
+    m_P1 = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::RedCircleTrans), Layer::UIOutline, glm::vec2(0.0f, 0.0f), false);
     m_P1->m_Transform.scale = {circleScale, circleScale};
     m_Renderer.AddChild(m_P1);
 
-    m_P2 = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::RedCircleTrans), Layer::UIOutline, glm::vec2(0.0f, 0.0f), false);
+    m_P2 = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::RedCircleTrans), Layer::UIOutline, glm::vec2(0.0f, 0.0f), false);
     m_P2->m_Transform.scale = {circleScale, circleScale};
     m_Renderer.AddChild(m_P2);
 
-    m_Line = std::make_shared<Util::GameObject>(s_ImageCache.Get(Path::RedLine), Layer::UIOutline, glm::vec2(0.0f, 0.0f), false);
+    m_Line = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::RedLine), Layer::UIOutline, glm::vec2(0.0f, 0.0f), false);
     m_Line->m_Transform.scale = {1.0f, STROKE_WIDTH};
     m_Renderer.AddChild(m_Line);
 }

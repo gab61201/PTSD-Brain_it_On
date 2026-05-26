@@ -4,6 +4,7 @@
 
 #include "Constants.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
+#include "Util/Image.hpp"
 
 namespace GameWorld {
 

@@ -1,6 +1,7 @@
 #include "GameWorld/Shape/Circle.hpp"
 
 #include "Constants.hpp"
+#include "Util/ImageCache.hpp"
 #include "GameWorld/CoordinateHelper.hpp"
 
 namespace GameWorld {
@@ -21,11 +22,11 @@ void Circle::AttachToBody(b2BodyId body) {
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreateCircleShape(body, &shapeDef, &circleShape);
 
-    m_Visual->SetDrawable(s_ImageCache.Get(Path::WhiteCircle));
+    m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
     m_Visual->m_Transform.scale = glm::vec2(std::get<float>(m_Size), std::get<float>(m_Size)) / BASIC_SHAPE_IMAGE_SIZE;
 
     if (m_OutlineVisual) {
-        m_OutlineVisual->SetDrawable(s_ImageCache.Get(Path::BlackCircle));
+        m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackCircle));
         m_OutlineVisual->m_Transform.scale =
             glm::vec2(std::get<float>(m_Size) + SHAPE_OUTLINE_WIDTH,
                       std::get<float>(m_Size) + SHAPE_OUTLINE_WIDTH) /
