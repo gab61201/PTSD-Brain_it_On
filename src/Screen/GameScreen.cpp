@@ -1,60 +1,43 @@
 #include "Screen/GameScreen.hpp"
 
-#include "Core/Context.hpp"
-#include "Util/Image.hpp"
 #include "Level/LevelData.hpp"
-#include "Util/Keycode.hpp"
+#include "Screen/UIElement.hpp"
+#include "Constants.hpp"
 
 namespace UI {
 
-GameScreen::GameScreen(LevelId levelId) : m_Level(levelId) {
-    m_NextScreenType = ScreenType::GAME;
+GameScreen::GameScreen(LevelId levelId) : UIScreen(ScreenType::GAME), m_Level(levelId) {
 
-    auto background = UI::Element::Background("Resources/Images/background.png");
+    auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
-    // 返回按鈕
-    auto backButton = UI::Element::CircleButton([this]{
+    auto backButton = UI::Element::Button(Path::BtnBack, [this] {
+        m_Level.Save();
         m_NextScreenType = ScreenType::MENU;
-    }, "Resources/Images/Btn_Back.png");
-    backButton->m_Transform.translation ={-560.0f, -300.0f};
+    });
+    backButton->m_Transform.translation = {-560.0f, -300.0f};
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
     // 重試按鈕
-    auto resetButton = UI::Element::CircleButton([this]{
+    auto resetButton = UI::Element::Button(Path::BtnRetry, [this] {
         m_Level.Reset();
-    }, "Resources/Images/Btn_Retry.png");
-    resetButton->m_Transform.translation ={560.0f, -300.0f};
+    });
+    resetButton->m_Transform.translation = {560.0f, -300.0f};
     m_Buttons.push_back(resetButton);
     m_Renderer.AddChild(resetButton);
 }
 
 ScreenType GameScreen::Update() {
+    m_Renderer.Update();
+    m_Level.Update();
+    if (m_Level.GetState() == Level::State::FINISHED) {
+        m_NextScreenType = ScreenType::RESULT;
+    }
     for (auto button : m_Buttons) {
         button->Update();
     }
-
-    m_Renderer.Update();
-    m_Level.Update();
-
-    if (m_Level.GetState() == Level::State::FINISHED) {
-        Core::Context::TakeScreenshot(static_cast<int>(m_Level.GetLevelId()));
-        m_NextScreenType = ScreenType::RESULT;
-    }
-
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE)) {
-        m_NextScreenType = ScreenType::MENU;
-    }
     return m_NextScreenType;
-}
-
-ScreenType GameScreen::GetScreenType() const {
-    return ScreenType::GAME;
-}
-
-LevelResultData GameScreen::GetResultData() const {
-    return m_Level.GetResultData();
 }
 
 }  // namespace UI

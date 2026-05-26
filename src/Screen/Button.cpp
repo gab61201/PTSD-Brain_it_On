@@ -1,5 +1,7 @@
 #include "Screen/Button.hpp"
 
+#include "Util/Input.hpp"
+
 namespace UI {
 
 Button::Button(
@@ -9,14 +11,10 @@ Button::Button(
     const bool visible)
     : GameObject(drawable, zIndex, pivot, visible, {}) {}
 
-void Button::Update(){
+void Button::Update() {
     if (m_OnClickCallback && IsCursorPointing() && Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
         m_OnClickCallback();
     }
-}
-
-void Button::OnClick(std::function<void()> OnClickHandler){
-    m_OnClickCallback = OnClickHandler;
 }
 
 bool Button::IsCursorPointing() {
@@ -25,12 +23,6 @@ bool Button::IsCursorPointing() {
     glm::vec2 cursorPosition = Util::Input::GetCursorPosition();
     return (cursorPosition.x >= position.x - imageSize.x / 2.0f && cursorPosition.x <= position.x + imageSize.x / 2.0f &&
             cursorPosition.y >= position.y - imageSize.y / 2.0f && cursorPosition.y <= position.y + imageSize.y / 2.0f);
-}
-
-void Button::OnPressing() {
-    if (IsCursorPointing() || Util::Input::IsKeyPressed(Util::Keycode::MOUSE_LB)) {
-        // scale to 1.1
-    }
 }
 
 }  // namespace UI

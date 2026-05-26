@@ -31,31 +31,27 @@ void CompositeObject::AttachToWorld(b2WorldId world) {
     if (B2_IS_NON_NULL(m_b2BodyId)) {
         return;
     }
-    
+
     // 1. 準備剛體設計圖 (BodyDef)
     b2BodyDef bodyDef = b2DefaultBodyDef();
-    
+
     // 將自訂的 BodyType 列舉轉換為 Box2D 原生型別
     bodyDef.type = static_cast<b2BodyType>(m_BodyType);
-    
+
     // 設定初始位置與角度
     // 注意：Box2D 必須使用公尺，角度使用弧度 (Radians)
     bodyDef.position = GameWorld::PixelsToMeters(m_Position);
     bodyDef.rotation = b2MakeRot(m_Rotation);
-    
+
     // 2. 在物理世界中創建真實的剛體 (骨架)
     m_b2BodyId = b2CreateBody(world, &bodyDef);
-    
+
     // 3. 向下交辦：呼叫所有子零件，讓它們把碰撞形狀掛載到這個骨架上
     for (auto& shape : m_Shapes) {
         if (shape) {
-            // 這裡呼叫我們上一篇寫好的 Shape::AttachToBody
             shape->AttachToBody(m_b2BodyId);
+            m_Renderer.AddChild(shape->GetVisual());
         }
-    }
-
-    for (auto& shape : m_Shapes) {
-        m_Renderer.AddChild(shape->GetVisual());
     }
 }
 

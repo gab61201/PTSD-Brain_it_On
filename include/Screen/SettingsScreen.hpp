@@ -1,5 +1,4 @@
-#ifndef SETTINGS_SCREEN_HPP
-#define SETTINGS_SCREEN_HPP
+#pragma once
 
 #include "Screen/UIScreen.hpp"
 
@@ -11,9 +10,7 @@ class SettingsScreen : public UIScreen {
 
     ScreenType Update() override;
 
-    ScreenType GetScreenType() const override;
+    ScreenType GetScreenType() const override { return ScreenType::SETTINGS; }
 };
 
 }  // namespace UI
-
-#endif

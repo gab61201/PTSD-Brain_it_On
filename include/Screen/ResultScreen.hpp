@@ -1,23 +1,25 @@
-#ifndef RESULT_SCREEN_HPP
-#define RESULT_SCREEN_HPP
+#pragma once
 
-#include "Level/Level.hpp"
+#include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 
 namespace UI {
 
 class ResultScreen : public UIScreen {
    public:
-    ResultScreen(LevelId* levelId, const LevelResultData& resultData);
+    explicit ResultScreen(LevelResult resultData);
+
+    ~ResultScreen();
 
     ScreenType Update() override;
 
-    ScreenType GetScreenType() const override;
+    ScreenType GetScreenType() const override { return ScreenType::RESULT; }
+
+    LevelId GetNextLevelId() const { return m_NextLevelId; }
 
    private:
-    LevelResultData m_ResultData;
+    LevelResult m_ResultData;
+    LevelId m_NextLevelId;
 };
 
 }  // namespace UI
-
-#endif

@@ -1,7 +1,6 @@
-#ifndef MENU_SCREEN_HPP
-#define MENU_SCREEN_HPP
+#pragma once
 
-#include "Level/Level.hpp"
+#include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 
 namespace UI {
@@ -12,13 +11,12 @@ class MenuScreen : public UIScreen {
 
     ScreenType Update() override;
 
-    ScreenType GetScreenType() const override;
+    ScreenType GetScreenType() const override { return ScreenType::MENU; }
 
-    LevelId GetSelectedLevelId() const;
+    LevelId GetSelectedLevelId() const { return m_LevelId; }
+
    private:
     LevelId m_LevelId;
 };
 
 }  // namespace UI
-
-#endif

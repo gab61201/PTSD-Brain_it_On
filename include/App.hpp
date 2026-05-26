@@ -1,10 +1,6 @@
-#ifndef APP_HPP
-#define APP_HPP
+#pragma once
 
-#include "Screen/GameScreen.hpp"
-#include "Screen/LobbyScreen.hpp"
-#include "Screen/MenuScreen.hpp"
-#include "Screen/SettingsScreen.hpp"
+#include "Level/LevelData.hpp"
 #include "Screen/UIScreen.hpp"
 #include "pch.hpp"  // IWYU pragma: export
 
@@ -23,7 +19,6 @@ class App {
     void Update();
 
     void End();  // NOLINT(readability-convert-member-functions-to-static)
-
    private:
     State m_CurrentState = State::START;
 
@@ -31,5 +26,3 @@ class App {
     std::unique_ptr<UI::UIScreen> m_Screen;
     LevelId m_SelectedLevelId;
 };
-
-#endif

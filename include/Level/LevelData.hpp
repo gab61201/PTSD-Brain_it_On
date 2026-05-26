@@ -1,7 +1,7 @@
-#ifndef LEVEL_DATA_HPP
-#define LEVEL_DATA_HPP
+#pragma once
 
 #include <functional>
+#include <map>
 #include <string>
 
 #include "GameWorld/PhysicalWorld.hpp"
@@ -15,23 +15,32 @@ enum class LevelId {
     LEVEL_5
 };
 
-struct LevelData {
+struct LevelConfig {
     float timeout = 30.0F;
     int strokeLimit = 3;
-    std::string targetText = "";
+    std::string targetText = " ";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
     std::shared_ptr<PassCondition> passCondition;
 };
 
-using LevelFunction = std::function<LevelData()>;
+struct LevelResult {
+    LevelId levelId = LevelId::LEVEL_1;
+    bool passed = false;
+    float goalTime = 0.0f;
+    float solvedTime = 0.0f;
+    int goalStroke = 0;
+    int usedStroke = 0;
+    std::string screenshotFilename;
+    bool isNewRecord = false;
+};
+
+using LevelFunction = std::function<LevelConfig()>;
 
 // 取得全域 map（用 function 包一層避免 static 初始化順序問題）
-std::unordered_map<LevelId, LevelFunction>& GetLevelRegistry();
+std::map<LevelId, LevelFunction>& GetLevelRegistry();
 
 // 對外 API
-LevelData GetLevelData(LevelId id);
+LevelConfig GetLevelConfig(LevelId id);
 
 // 註冊用 helper
 void RegisterLevel(LevelId id, LevelFunction function);
-
-#endif

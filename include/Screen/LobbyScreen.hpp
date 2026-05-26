@@ -1,5 +1,4 @@
-#ifndef LOBBY_SCREEN_HPP
-#define LOBBY_SCREEN_HPP
+#pragma once
 
 #include "Screen/UIScreen.hpp"
 
@@ -11,12 +10,10 @@ class LobbyScreen : public UIScreen {
 
     ScreenType Update() override;
 
-    ScreenType GetScreenType() const override;
+    ScreenType GetScreenType() const override { return ScreenType::LOBBY; }
 
    private:
     // 放需要設定偵測的物件
 };
 
 }  // namespace UI
-
-#endif

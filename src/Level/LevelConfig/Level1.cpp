@@ -1,12 +1,12 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
+#include "GameWorld/Shape/Capsule.hpp"
 #include "GameWorld/Shape/Circle.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
-#include "GameWorld/Shape/Capsule.hpp"
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
-LevelData LevelData_1() {
-    LevelData data;
+LevelConfig LevelConfig_1() {
+    LevelConfig data;
     data.timeout = 60.0F;  // 設定通關時間為 60 秒
     data.strokeLimit = 3;
 
@@ -31,23 +31,23 @@ LevelData LevelData_1() {
     auto circleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{circlePart},
         GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)
-        glm::vec2(100.0F, 200.0F)       // 絕對位置：放在方塊正上方再稍微偏右，製造不平衡的撞擊！
+        glm::vec2(100.0F, 200.0F)      // 絕對位置：放在方塊正上方再稍微偏右，製造不平衡的撞擊！
     );
 
     auto capsulePart = std::make_shared<GameWorld::Capsule>(
-        30.0f,  // 直徑 30 像素
+        30.0f,                    // 直徑 30 像素
         glm::vec2(-15.0f, 0.0f),  // 膠囊體左端圓心相對位置
         glm::vec2(15.0f, 0.0f)    // 膠囊體右端圓心相對位置
     );
     auto capsuleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{capsulePart},
         GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)
-        glm::vec2(-100.0F, 200.0F)       // 絕對位置：放在方塊正上方再稍微偏左，製造不平衡的撞擊！
+        glm::vec2(-100.0F, 200.0F)     // 絕對位置：放在方塊正上方再稍微偏左，製造不平衡的撞擊！
     );
     // ==========================================
     // 3. 建立 600x600 px 邊界（置中）
     // ==========================================
-    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>();
 
     // ==========================================
     // 4. 將所有組合件打包，並初始化物理世界
@@ -67,7 +67,7 @@ LevelData LevelData_1() {
 namespace {
 struct Register {
     Register() {
-        RegisterLevel(LevelId::LEVEL_1, LevelData_1);
+        RegisterLevel(LevelId::LEVEL_1, LevelConfig_1);
     }
 };
 

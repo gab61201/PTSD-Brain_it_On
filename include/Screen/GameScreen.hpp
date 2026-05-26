@@ -1,5 +1,4 @@
-#ifndef GAME_SCREEN_HPP
-#define GAME_SCREEN_HPP
+#pragma once
 
 #include "Level/Level.hpp"
 #include "Screen/UIScreen.hpp"
@@ -12,14 +11,12 @@ class GameScreen : public UIScreen {
 
     ScreenType Update() override;
 
-    ScreenType GetScreenType() const override;
+    ScreenType GetScreenType() const override { return ScreenType::GAME; }
 
-    LevelResultData GetResultData() const;
+    const LevelResult& GetLastResult() const { return m_Level.GetLastResult(); }
 
    private:
     Level m_Level;
 };
 
 }  // namespace UI
-
-#endif

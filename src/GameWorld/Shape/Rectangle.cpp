@@ -1,24 +1,19 @@
 #include "GameWorld/Shape/Rectangle.hpp"
 
-namespace {
-
-float IMAGE_SIZE = 417.0F;
-std::string RECTANGLE_IMAGE_PATH = "Resources/Images/BasicShapes/white_square.png";
-
-}  // namespace
+#include "Constants.hpp"
+#include "Util/ImageCache.hpp"
+#include "GameWorld/CoordinateHelper.hpp"
 
 namespace GameWorld {
 
-Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor)
-: Shape(size, relativePosition, relativeRotation, isSensor) {}
+Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor, bool outline)
+    : Shape(size, relativePosition, relativeRotation, isSensor, outline) {}
 
 void Rectangle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
         return;
     }
-    if (m_Visual == nullptr) {
-        m_Visual = std::make_shared<Util::GameObject>();
-    }
+
 
     glm::vec2 size = std::get<glm::vec2>(m_Size);
     float halfWidth = PixelsToMeters(size.x / 2.0f);
@@ -31,8 +26,15 @@ void Rectangle::AttachToBody(b2BodyId body) {
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreatePolygonShape(body, &shapeDef, &rectangleShape);
 
-    m_Visual->SetDrawable(s_ImageCache.Get(RECTANGLE_IMAGE_PATH));
-    m_Visual->m_Transform.scale = size / IMAGE_SIZE;
+    m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+    m_Visual->m_Transform.scale = glm::vec2(size.x, size.y) / BASIC_SHAPE_IMAGE_SIZE;
+
+    if (m_OutlineVisual) {
+        m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackSquare));
+        m_OutlineVisual->m_Transform.scale =
+            glm::vec2(size.x + SHAPE_OUTLINE_WIDTH, size.y + SHAPE_OUTLINE_WIDTH) /
+            BASIC_SHAPE_IMAGE_SIZE;
+    }
 }
 
 }  // namespace GameWorld

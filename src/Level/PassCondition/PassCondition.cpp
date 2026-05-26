@@ -1,7 +1,8 @@
 #include "Level/PassCondition/PassCondition.hpp"
-#include "Constants.hpp"
 
 #include <box2d/box2d.h>
+
+#include "Constants.hpp"
 
 PassCondition::PassCondition(
     TriggerType triggerType,
@@ -10,13 +11,6 @@ PassCondition::PassCondition(
       m_Duration(duration) {}
 
 bool PassCondition::Check(b2ContactEvents events) {
-    // 通關
-    if (m_Timer > m_Duration * FPS) {
-        return true;
-    // 未通關，但正在計時中
-    } else if (m_Timer > 0) {
-        m_Timer++;
-    }
     for (int i = 0; i < events.beginCount; i++) {
         const b2ContactBeginTouchEvent& event = events.beginEvents[i];
         OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::TOUCHING);
@@ -25,13 +19,19 @@ bool PassCondition::Check(b2ContactEvents events) {
         const b2ContactEndTouchEvent& event = events.endEvents[i];
         OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::SEPARATED);
     }
-    return m_Timer > m_Duration * FPS;
+
+    if (m_IsTriggered) {
+        m_Timer++;
+    } else {
+        m_Timer = 0;
+    }
+
+    return m_IsTriggered && m_Timer >= m_Duration * FPS;
 }
 
-
 int PassCondition::GetContactCountDown() const {
-    if (m_Timer > 0) {
-        return m_Duration - m_Timer / FPS;
+    if (m_IsTriggered) {
+        return std::max(0, m_Duration - m_Timer / FPS);
     }
     return 0;
 }

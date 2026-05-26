@@ -1,14 +1,7 @@
-#ifndef UI_SCREEN_HPP
-#define UI_SCREEN_HPP
+#pragma once
 
 #include "Screen/Button.hpp"
-#include "Screen/UIElement.hpp"
-#include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
-#include "Util/Input.hpp"
-#include "Util/Keycode.hpp"
 #include "Util/Renderer.hpp"
-#include "Util/Text.hpp"
 
 namespace UI {
 
@@ -22,8 +15,6 @@ enum class ScreenType {
 
 class UIScreen {
    public:
-    UIScreen() = default;
-
     virtual ~UIScreen() = default;
 
     // 渲染並取得下一個畫面的類型(放事件偵測)
@@ -32,11 +23,11 @@ class UIScreen {
     virtual ScreenType GetScreenType() const = 0;
 
    protected:
+    explicit UIScreen(ScreenType type) : m_NextScreenType(type) {}
+
     Util::Renderer m_Renderer;
     ScreenType m_NextScreenType;
     std::vector<std::shared_ptr<UI::Button>> m_Buttons;
 };
 
 }  // namespace UI
-
-#endif

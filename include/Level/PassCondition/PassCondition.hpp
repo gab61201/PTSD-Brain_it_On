@@ -1,9 +1,6 @@
-#ifndef PASS_CONDITION_HPP
-#define PASS_CONDITION_HPP
+#pragma once
 
 #include <box2d/box2d.h>
-
-#include "GameWorld/Shape/Shape.hpp"
 
 // 放一個物體到盒子內
 // 將球放到盒子內
@@ -34,7 +31,6 @@ class PassCondition {
     virtual void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) = 0;
     TriggerType m_TriggerType;
     int m_Duration;
+    bool m_IsTriggered = false;
     int m_Timer = 0;
 };
-
-#endif

@@ -3,8 +3,8 @@
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
-LevelData LevelData_3() {
-    LevelData data;
+LevelConfig LevelConfig_3() {
+    LevelConfig data;
     data.timeout = 10.0F;
     data.strokeLimit = 1;
     data.targetText = "Tilt the shape to the right";
@@ -32,14 +32,14 @@ LevelData LevelData_3() {
         glm::vec2(0.0F, -180.0F),
         0.33F);
 
-    auto boundary = std::make_shared<GameWorld::Boundary>(-300.0F, 300.0F, -300.0F, 300.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>();
 
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         seesawComp, boundary};
 
     // Pass condition: rightTip touches the floor (boundary index 3 is bottom wall)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<OneToOneContactPass>(rightTip->Getb2ShapeId(), boundary->GetShapes()[3]->Getb2ShapeId(), TriggerType::TOUCHING, 0);
+    data.passCondition = std::make_shared<OneToOneContactPass>(rightTip->Getb2ShapeId(), boundary->GetBottomWall().Getb2ShapeId(), TriggerType::TOUCHING, 0);
 
     return data;
 }
@@ -47,7 +47,7 @@ LevelData LevelData_3() {
 namespace {
 struct Register {
     Register() {
-        RegisterLevel(LevelId::LEVEL_3, LevelData_3);
+        RegisterLevel(LevelId::LEVEL_3, LevelConfig_3);
     }
 };
 

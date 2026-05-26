@@ -1,27 +1,26 @@
 #include "Screen/SettingsScreen.hpp"
 
+#include "Screen/UIElement.hpp"
+#include "Util/Input.hpp"
+#include "Constants.hpp"
+
 namespace UI {
 
-SettingsScreen::SettingsScreen() {
-    auto background = UI::Element::Background("Resources/Images/background.png");
+SettingsScreen::SettingsScreen() : UIScreen(ScreenType::SETTINGS) {
+
+    auto background = UI::Element::Background(Path::Background);
     m_Renderer.AddChild(background);
 
-    auto title = std::make_shared<Util::GameObject>();
-    title->SetDrawable(
-        std::make_shared<Util::Text>("Resources/Fonts/Inter.ttf", 48, "SettingsScreen"));
+    auto title = UI::Element::Text("SettingsScreen", 48, {0.0f, 200.0f}, Util::Color::FromRGB(255, 255, 255), 1);
     m_Renderer.AddChild(title);
 }
 
 ScreenType SettingsScreen::Update() {
+    m_Renderer.Update();
     if (Util::Input::IsKeyUp(Util::Keycode::SPACE)) {
         m_NextScreenType = ScreenType::MENU;
     }
-    m_Renderer.Update();
     return m_NextScreenType;
-}
-
-ScreenType SettingsScreen::GetScreenType() const {
-    return ScreenType::SETTINGS;
 }
 
 }  // namespace UI

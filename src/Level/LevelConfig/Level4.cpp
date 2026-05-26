@@ -4,8 +4,8 @@
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/OneToOneContactPass.hpp"
 
-LevelData LevelData_4() {
-    LevelData data;
+LevelConfig LevelConfig_4() {
+    LevelConfig data;
     data.timeout = 60.0F;
     data.strokeLimit = 3;
     data.targetText = "Separate the magnets";
@@ -28,8 +28,7 @@ LevelData LevelData_4() {
         0.0F,
         5.0F);
 
-    auto boundary = std::make_shared<GameWorld::Boundary>(
-        -300.0F, 300.0F, -300.0F, 300.0F);
+    auto boundary = std::make_shared<GameWorld::Boundary>();
 
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
         magnetComp1, magnetComp2, boundary};
@@ -46,7 +45,7 @@ LevelData LevelData_4() {
 namespace {
 struct Register {
     Register() {
-        RegisterLevel(LevelId::LEVEL_4, LevelData_4);
+        RegisterLevel(LevelId::LEVEL_4, LevelConfig_4);
     }
 };
 static Register reg;

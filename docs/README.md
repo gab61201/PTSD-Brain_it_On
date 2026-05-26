@@ -1,96 +1,48 @@
-# PTSD Brain It On! 文檔索引
+# Brain it On! — API 文檔
 
-本文件索引了整個專案的文檔，依照檔案位置組織。
+> 本文件詳細描述專案中所有公開類別、結構體、列舉與函式的 API 介面。
+> 原始碼位於 `include/` 目錄，以 C++17 編寫。
 
-## 目錄結構
+---
 
-### GameWorld - 物理世界與物件系統
+## 目錄
 
-| 文檔                                              | 說明                             |
-| ------------------------------------------------- | -------------------------------- |
-| [Shape](GameWorld/Shape.md)                       | 形狀抽象基類 (Circle, Rectangle, Capsule) |
-| [Circle](GameWorld/Circle.md)                     | 圓形碰撞體                       |
-| [Rectangle](GameWorld/Rectangle.md)               | 矩形碰撞體                       |
-| [Capsule](GameWorld/Capsule.md)                   | 膠囊形碰撞體                     |
-| [CompositeObject](GameWorld/CompositeObject.md)   | 複合物件，由多個 Shape 組成      |
-| [DrawnObject](GameWorld/DrawnObject.md)           | 玩家繪製的物件                   |
-| [Boundary](GameWorld/Boundary.md)                 | 地圖邊界物件                     |
-| [DrawingIndicator](GameWorld/DrawingIndicator.md) | 繪製指示器 (視覺回饋)            |
-| [CoordinateHelper](GameWorld/CoordinateHelper.md) | 座標轉換工具 (像素 ↔ 公尺)       |
-| [PhysicalWorld](GameWorld/PhysicalWorld.md)       | 物理世界管理員                   |
-
-### Level - 關卡系統
-
-| 文檔                            | 說明                     |
-| ------------------------------- | ------------------------ |
-| [Level](Level/Level.md)         | 關卡控制器，管理遊戲流程 |
-| [LevelData](Level/LevelData.md) | 關卡配置資料結構         |
-| [LevelHUD](Level/LevelHUD.md)   | 畫面上方顯示的 HUD 介面  |
-
-#### PassCondition - 過關條件檢測
-
-| 文檔                                                              | 說明               |
-| ----------------------------------------------------------------- | ------------------ |
-| [PassCondition](Level/PassCondition/PassCondition.md)             | 過關條件基類       |
-| [OneToOneContactPass](Level/PassCondition/OneToOneContactPass.md) | 雙物件接觸檢測條件 |
-
-### Screen - UI 畫面系統
-
-| 文檔                             | 說明                             |
-| -------------------------------- | -------------------------------- |
-| [UIScreen](Screen/UIScreen.md)   | 抽象基類，定義所有畫面的共同介面 |
-| [Button](Screen/Button.md)       | 可點擊的 UI 按鈕元件             |
-| [UIElement](Screen/UIElement.md) | UI 元件工具集合                  |
-
-#### 具體畫面
-
-| 文檔                                       | 說明                     |
-| ------------------------------------------ | ------------------------ |
-| [MenuScreen](Screen/MenuScreen.md)         | 主選單畫面               |
-| [LobbyScreen](Screen/LobbyScreen.md)       | 大廳畫面，供玩家選擇關卡 |
-| [SettingsScreen](Screen/SettingsScreen.md) | 設定畫面                 |
-| [GameScreen](Screen/GameScreen.md)         | 遊戲進行畫面             |
-| [ResultScreen](Screen/ResultScreen.md)     | 結果畫面 (關卡完成後顯示) |
-
-### App - 應用程式核心
-
-| 文檔          | 說明                               |
-| ------------- | ---------------------------------- |
-| [App](App.md) | 應用程式核心，管理狀態機與生命週期 |
-
-### Progress - 進度追蹤
-
-| 文檔                                      | 說明                     |
-| ----------------------------------------- | ------------------------ |
-| [ProgressStore](Progress/ProgressStore.md) | 進度存檔 (JSON 持久化)   |
-
-## 系統架構概述
-
-### 更新流程鏈
-
-```
-App::Update()
-    ↓ (根據 GetNextScreenType != GetScreenType 切換畫面)
-UIScreen::Update()
-    ↓
-Level::Update()
-    ↓ (並行執行)
-├── PhysicalWorld::Update()      // Box2D 物理模擬
-├── PassCondition::Check(...)    // 過關條件檢測
-└── LevelHUD::UpdateTimer()      // HUD 更新
-```
-
-### 畫面切換流程
-
-```
-LobbyScreen → MenuScreen → GameScreen → ResultScreen → MenuScreen
-    ↓            ↓
-Settings   Level Select (自動)
-```
-
-## 相關資源
-
-- [AGENTS.md](../AGENTS.md) - 開發者指南
-- [README.md](../README.md) - 專案說明
-- [CMakeLists.txt](../CMakeLists.txt) - 建置配置
-- [Box2D-v2-to-v3-mapping.md](Box2D-v2-to-v3-mapping.md) - Box2D 升級映射與注意事項
+- [App](App.md)
+- [Constants](Constants.md)
+- GameWorld 模組
+  - [CoordinateHelper](GameWorld/CoordinateHelper.md)
+  - [Shape（基底類別）](GameWorld/Shape/Shape.md)
+  - [Rectangle](GameWorld/Shape/Rectangle.md)
+  - [Circle](GameWorld/Shape/Circle.md)
+  - [Capsule](GameWorld/Shape/Capsule.md)
+  - [CompositeObject](GameWorld/CompositeObject/CompositeObject.md)
+  - [Boundary](GameWorld/CompositeObject/Boundary.md)
+  - [DrawnObject](GameWorld/CompositeObject/DrawnObject.md)
+  - [MagnetObject](GameWorld/CompositeObject/MagnetObject.md)
+  - [DrawingIndicator](GameWorld/DrawingIndicator.md)
+  - [PhysicalWorld](GameWorld/PhysicalWorld.md)
+- Level 模組
+  - [LevelId](Level/LevelId.md)
+  - [LevelConfig](Level/LevelConfig.md)
+  - [LevelResult](Level/LevelResult.md)
+  - [LevelData 全域函式](Level/LevelData.md)
+  - [Level](Level/Level.md)
+  - [LevelHUD](Level/LevelHUD.md)
+  - [PassCondition（基底類別）](Level/PassCondition/PassCondition.md)
+  - [OneToOneContactPass](Level/PassCondition/OneToOneContactPass.md)
+  - [新增關卡範例](Level/Tutorial.md)
+- Screen 模組（UI）
+  - [ScreenType](Screen/ScreenType.md)
+  - [UIScreen（基底類別）](Screen/UIScreen.md)
+  - [Button](Screen/Button.md)
+  - [UIElement 工廠函式](Screen/UIElement.md)
+  - [LobbyScreen](Screen/LobbyScreen.md)
+  - [MenuScreen](Screen/MenuScreen.md)
+  - [GameScreen](Screen/GameScreen.md)
+  - [ResultScreen](Screen/ResultScreen.md)
+  - [SettingsScreen](Screen/SettingsScreen.md)
+- Util 模組
+  - [ProgressRecord](Util/ProgressRecord.md)
+  - [ProgressStore](Util/ProgressStore.md)
+  - [Screenshot](Util/Screenshot.md)
+  - [ImageCache](Util/ImageCache.md)

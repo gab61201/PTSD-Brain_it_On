@@ -1,121 +1,86 @@
 #include "Level/Level.hpp"
 
-#include <iomanip>
-#include <sstream>
-
-#include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
-#include "Util/Text.hpp"
+#include "Util/ProgressStore.hpp"
+#include "Util/Screenshot.hpp"
 #include "Util/Time.hpp"
 
 Level::Level(LevelId levelId) : m_LevelId(levelId) {
-    LevelData data = GetLevelData(levelId);
+    LevelConfig data = GetLevelConfig(levelId);
     m_World = data.world;
     m_PassCondition = data.passCondition;
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;
     m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText,
-                                        m_StrokeLimit);
+                                       m_StrokeLimit);
 }
 
 void Level::Waiting() {
-    // 檢查使用者是否開始繪圖
-    if (m_World && Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
-        m_HUD->HideTarget();
-        m_state = State::DRAWING;
+    if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
+        m_HUD->HideTargetText();
+        m_State = State::PLAYING;
         m_World->Start();
-        m_World->DrawObject(Util::Input::GetCursorPosition());
-    }
-}
-
-void Level::Drawing() {
-    if (!m_World) {
-        return;
-    }
-
-    if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
-        m_state = State::PLAYING;
-        m_World->EndDrawing();
-    } else {
-        m_World->DrawObject(Util::Input::GetCursorPosition());
+        m_World->DrawNewObject(Util::Input::GetCursorPosition());
     }
 }
 
 void Level::Playing() {
-    if (!m_World) {
-        return;
-    }
-
     if (Util::Input::IsKeyDown(Util::Keycode::MOUSE_LB)) {
-        m_state = State::DRAWING;
-        m_World->DrawObject(Util::Input::GetCursorPosition());
+        m_World->DrawNewObject(Util::Input::GetCursorPosition());
+    } else if (Util::Input::IsKeyPressed(Util::Keycode::MOUSE_LB)) {
+        m_World->DrawingObject(Util::Input::GetCursorPosition());
+    } else if (Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)) {
+        m_World->EndDrawing();
     }
-    // 更新接觸倒數計時器
+    m_ElapsedTime += static_cast<float>(Util::Time::GetDeltaTimeMs()) / 1000.0f;
     int contactCountDown = m_PassCondition->GetContactCountDown();
     m_HUD->UpdateContactTimer(contactCountDown);
-    // 檢查通關條件
-    if (m_PassCondition && m_PassCondition->Check(m_World->GetContactEvents())) {
-        m_state = State::FINISHED;
+    if (m_PassCondition->Check(m_World->GetContactEvents())) {
+        m_State = State::FINISHED;
         m_World->Stop();
+        Save();
     }
-}
-
-void Level::Finished() {
-    // 預留：未來可在此觸發結算畫面
 }
 
 void Level::Reset() {
-    m_state = State::WAITING;
-    LevelData data = GetLevelData(m_LevelId);
+    m_State = State::WAITING;
+    LevelConfig data = GetLevelConfig(m_LevelId);
     m_World = data.world;
     m_PassCondition = data.passCondition;
-    m_Time = 0.0F;
+    m_ElapsedTime = 0.0F;
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;
     m_HUD->Reset(data.targetText, m_StrokeLimit);
 }
 
-LevelResultData Level::GetResultData() const {
-    LevelResultData result;
-    result.levelId = m_LevelId;
-    result.passed = (m_state == State::FINISHED);
-    result.goalTime = m_Timeout;
-    result.solvedTime = m_Time;
-    result.goalStroke = m_StrokeLimit;
-    result.usedStroke = m_World ? m_World->GetDrawnObjectCount() : 0;
-    return result;
-}
-
 void Level::Update() {
-    // 只有在繪圖或播放物理模擬時才計時 (使用 GetDeltaTimeMs() 並除以 1000)
-    if (m_state == State::DRAWING || m_state == State::PLAYING) {
-        m_Time += static_cast<float>(Util::Time::GetDeltaTimeMs()) / 1000.0f;
-    }
+    m_World->Update();
 
-    switch (m_state) {
+    m_HUD->UpdateTimer(GetRemainingTime());
+    m_HUD->UpdateStrokeLimit(m_World->GetDrawnObjectCount(), m_StrokeLimit);
+    m_HUD->Update();
+
+    switch (m_State) {
         case State::WAITING:
             Waiting();
-            break;
-        case State::DRAWING:
-            Drawing();
-            Playing();
             break;
         case State::PLAYING:
             Playing();
             break;
         case State::FINISHED:
-            Finished();
             break;
     }
+}
 
-    // 繪製物體
-    if (m_World) {
-        m_World->Update();
-    }
-
-    // 更新 HUD（計時器、提示文字）
-    m_HUD->UpdateTimer(GetRemainingTime());
-    m_HUD->UpdateStrokeLimit(m_StrokeLimit - m_World->GetDrawnObjectCount(), m_StrokeLimit);
-    m_HUD->Update();
+void Level::Save() {
+    m_LastResult = LevelResult{
+        m_LevelId,
+        (m_State == State::FINISHED),
+        m_Timeout,
+        m_ElapsedTime,
+        m_StrokeLimit,
+        m_World->GetDrawnObjectCount(),
+        Util::Screenshot::Capture()};
+    m_LastResult.isNewRecord = Util::ProgressStore::ApplyResultAndSave(m_LastResult);
 }

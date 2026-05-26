@@ -1,13 +1,10 @@
-#ifndef SHAPE_HPP
-#define SHAPE_HPP
+#pragma once
 
 #include <box2d/box2d.h>
 
 #include <variant>
 
-#include "GameWorld/CoordinateHelper.hpp"
 #include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
 
 namespace GameWorld {
 
@@ -16,10 +13,10 @@ class Shape {
     Shape() = default;
 
     Shape(std::variant<glm::vec2, float> m_Size,
-        const glm::vec2& relativePosition,
-        float relativeRotation,
-        bool isSensor = false
-    );
+          const glm::vec2& relativePosition,
+          float relativeRotation,
+          bool isSensor = false,
+          bool outline = true);
 
     virtual ~Shape() = default;
 
@@ -39,6 +36,9 @@ class Shape {
     // 圖像表示 (Util::GameObject)
     std::shared_ptr<Util::GameObject> m_Visual = std::make_shared<Util::GameObject>();
 
+    // 物體視覺描邊
+    std::shared_ptr<Util::GameObject> m_OutlineVisual = nullptr;
+
     // 形狀實例
     b2ShapeId m_b2ShapeId = b2_nullShapeId;
 
@@ -54,10 +54,6 @@ class Shape {
     // 是否為感測器（即不會產生物理碰撞，但仍能觸發碰撞事件）
     bool m_IsSensor;
 
-    // 圖片快取 (Image Cache)
-    static Util::AssetStore<std::shared_ptr<Util::Image>> s_ImageCache;
 };
 
 }  // namespace GameWorld
-
-#endif  // SHAPE_HPP

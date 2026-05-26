@@ -1,5 +1,4 @@
-#ifndef DRAWN_OBJECT_HPP
-#define DRAWN_OBJECT_HPP
+#pragma once
 
 #include "GameWorld/CompositeObject/CompositeObject.hpp"
 
@@ -14,11 +13,10 @@ class DrawnObject : public GameWorld::CompositeObject {
 
     void EndDrawing();
 
-    b2BodyId Getb2BodyId() { return m_b2BodyId; }
+    const std::vector<glm::vec2>& GetPoints() const { return m_Points; }
 
+   private:
     std::vector<glm::vec2> m_Points;
 };
 
 }  // namespace GameWorld
-
-#endif  // DRAWN_OBJECT_HPP

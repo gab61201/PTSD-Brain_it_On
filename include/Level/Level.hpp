@@ -1,67 +1,45 @@
-#ifndef LEVEL_HPP
-#define LEVEL_HPP
+#pragma once
 
 #include <memory>
 
 #include "Level/LevelData.hpp"
 #include "Level/LevelHUD.hpp"
-#include "Util/GameObject.hpp"
-#include "Util/Text.hpp"
-
-struct LevelResultData {
-    LevelId levelId = LevelId::LEVEL_1;
-    bool passed = false;
-    float goalTime = 0.0f;
-    float solvedTime = 0.0f;
-    int goalStroke = 0;
-    int usedStroke = 0;
-};
-
-inline bool IsWithinTimeLimit(const LevelResultData& resultData) {
-    return resultData.solvedTime <= resultData.goalTime;
-}
-
-inline bool IsWithinStrokeLimit(const LevelResultData& resultData) {
-    return resultData.usedStroke <= resultData.goalStroke;
-}
 
 class Level {
    public:
-    Level(LevelId levelId);
+    explicit Level(LevelId levelId);
 
     ~Level() = default;
 
     void Reset();
 
-    void Update();  // 更新畫面
+    void Update();
 
-    float GetRemainingTime() const { return std::max(0.0f, m_Timeout - m_Time); }
+    float GetRemainingTime() const { return std::max(0.0f, m_Timeout - m_ElapsedTime); }
 
     enum class State {
         WAITING,
-        DRAWING,
         PLAYING,
         FINISHED
     };
 
     LevelId GetLevelId() const { return m_LevelId; }
-    State GetState() const { return m_state; }
-    LevelResultData GetResultData() const;
+    State GetState() const { return m_State; }
+    const LevelResult& GetLastResult() const { return m_LastResult; }
+    void Save();
 
    private:
     void Waiting();
-    void Drawing();
     void Playing();
     void Finished();
 
     LevelId m_LevelId;
-    State m_state = State::WAITING;
-    float m_Time = 0.0F;  // 遊戲進行時間
-    float m_Timeout;      // 遊戲限制時間
+    State m_State = State::WAITING;
+    float m_ElapsedTime = 0.0F;
+    float m_Timeout;
     int m_StrokeLimit;
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
     std::shared_ptr<PassCondition> m_PassCondition;
     std::unique_ptr<LevelHUD> m_HUD;
+    LevelResult m_LastResult;
 };
-
-#endif
