@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <vector>
 
+#include "Constants.hpp"
 #include "Util/Logger.hpp"
 #include "config.hpp"
 #include "pch.hpp"
@@ -44,7 +45,7 @@ std::string Screenshot::Capture() {
     auto now = std::chrono::system_clock::now().time_since_epoch();
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
     std::string filename = std::to_string(ms) + ".bmp";
-    std::filesystem::path filepath("Resources/Save/Screenshots/" + filename);
+    std::filesystem::path filepath(kScreenshotDir + filename);
     if (filepath.has_parent_path()) {
         std::filesystem::create_directories(filepath.parent_path());
     }
@@ -57,6 +58,14 @@ std::string Screenshot::Capture() {
 
     SDL_FreeSurface(surface);
     return filename;
+}
+
+void Screenshot::Remove(const std::string& filename) {
+    if (filename.empty()) {
+        return;
+    }
+    std::error_code ec;
+    std::filesystem::remove(kScreenshotDir + filename, ec);
 }
 
 }  // namespace Util

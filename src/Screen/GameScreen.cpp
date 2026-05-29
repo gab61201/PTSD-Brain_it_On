@@ -2,6 +2,7 @@
 
 #include "Level/LevelData.hpp"
 #include "Screen/UIElement.hpp"
+#include "Util/Screenshot.hpp"
 #include "Constants.hpp"
 
 namespace UI {
@@ -13,6 +14,11 @@ GameScreen::GameScreen(LevelId levelId) : UIScreen(ScreenType::GAME), m_Level(le
 
     auto backButton = UI::Element::Button(Path::BtnBack, [this] {
         m_Level.Save();
+        // 返回不經 ResultScreen，未成為最佳紀錄的截圖在此清掉，避免孤兒檔案
+        const auto& result = m_Level.GetLastResult();
+        if (!result.isNewRecord) {
+            Util::Screenshot::Remove(result.screenshotFilename);
+        }
         m_NextScreenType = ScreenType::MENU;
     });
     backButton->m_Transform.translation = {-560.0f, -300.0f};

@@ -11,6 +11,7 @@ inline constexpr float SHAPE_OUTLINE_WIDTH = 2.0F;
 
 inline constexpr const char* kCsvHeader = "level,timestamp,passed,within_time,within_stroke,remaining_time,used_strokes";
 inline constexpr const char* kBestRecordSavePath = "Resources/Save/BestRecord.csv";
+inline constexpr const char* kScreenshotDir = "Resources/Save/Screenshots/";
 inline constexpr float BASIC_SHAPE_IMAGE_SIZE = 417.0F;
 inline constexpr float LEVEL_BACKGROUND_IMAGE_SIZE = 886.0F;
 

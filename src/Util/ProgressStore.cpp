@@ -9,6 +9,7 @@
 
 #include "Constants.hpp"
 #include "Util/Logger.hpp"
+#include "Util/Screenshot.hpp"
 
 namespace {
 
@@ -149,6 +150,11 @@ bool ProgressStore::ApplyResultAndSave(const LevelResult& data) {
     }
     // 更新最佳紀錄
     if (isNewRecord) {
+        // 取代舊紀錄時，舊截圖已無紀錄引用，刪除以免殘留
+        if (auto it = s_Records.find(data.levelId);
+            it != s_Records.end() && it->second.screenshotFilename != data.screenshotFilename) {
+            Screenshot::Remove(it->second.screenshotFilename);
+        }
         s_Records[data.levelId] = ProgressRecord{
             data.screenshotFilename,
             newStars,

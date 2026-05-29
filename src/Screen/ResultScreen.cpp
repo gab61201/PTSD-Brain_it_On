@@ -1,6 +1,5 @@
 #include "Screen/ResultScreen.hpp"
 
-#include <filesystem>
 #include <iomanip>
 #include <sstream>
 
@@ -8,6 +7,7 @@
 #include "Screen/UIElement.hpp"
 #include "Util/Color.hpp"
 #include "Util/Input.hpp"
+#include "Util/Screenshot.hpp"
 #include "Constants.hpp"
 
 namespace {
@@ -177,9 +177,9 @@ ResultScreen::ResultScreen(LevelResult resultData)
 }
 
 ResultScreen::~ResultScreen() {
-    if (!m_ResultData.isNewRecord && !m_ResultData.screenshotFilename.empty()) {
-        std::error_code ec;
-        std::filesystem::remove("Resources/Save/Screenshots/" + m_ResultData.screenshotFilename, ec);
+    // 非最佳紀錄的截圖不需保留
+    if (!m_ResultData.isNewRecord) {
+        Util::Screenshot::Remove(m_ResultData.screenshotFilename);
     }
 }
 
