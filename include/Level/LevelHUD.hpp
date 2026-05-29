@@ -23,7 +23,7 @@ class LevelHUD {
     void Reset(const std::string& targetText, int strokeLimit);
 
     /// 更新筆劃限制顯示
-    void UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit);
+    void UpdateStrokeLimit(int usedStroke, int totalStrokeLimit);
 
     /// 更新接觸倒數計時器顯示
     void UpdateContactTimer(int contactCountDown);

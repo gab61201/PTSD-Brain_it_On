@@ -85,14 +85,14 @@ void LevelHUD::Reset(const std::string& targetText, int strokeLimit) {
     // 重置計時器
     SetText(m_TimerObject, "0.0", 26);
 
-    UpdateStrokeLimit(strokeLimit, strokeLimit);
+    UpdateStrokeLimit(0, strokeLimit);
 }
 
-void LevelHUD::UpdateStrokeLimit(int remainingStroke, int totalStrokeLimit) {
+void LevelHUD::UpdateStrokeLimit(int usedStroke, int totalStrokeLimit) {
     SetText(m_StrokeLimitObject,
-            std::to_string(remainingStroke) + "/" + std::to_string(totalStrokeLimit),
+            std::to_string(usedStroke) + "/" + std::to_string(totalStrokeLimit),
             24);
-    // if (remainingStroke > totalStrokeLimit) {
+    // if (usedStroke > totalStrokeLimit) {
     // 圖示變成半透明
     // }
 }
