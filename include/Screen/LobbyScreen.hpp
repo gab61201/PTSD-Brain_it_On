@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameWorld/PhysicalWorld.hpp"
 #include "Screen/UIScreen.hpp"
 
 namespace UI {
@@ -13,7 +14,8 @@ class LobbyScreen : public UIScreen {
     ScreenType GetScreenType() const override { return ScreenType::LOBBY; }
 
    private:
-    // 放需要設定偵測的物件
+    std::shared_ptr<GameWorld::PhysicalWorld> m_World;
+    void ResetPlayground();
 };
 
 }  // namespace UI
