@@ -3,12 +3,12 @@
 #include <iomanip>
 #include <sstream>
 
+#include "Constants.hpp"
 #include "Level/LevelData.hpp"
 #include "Screen/UIElement.hpp"
 #include "Util/Color.hpp"
 #include "Util/Input.hpp"
 #include "Util/Screenshot.hpp"
-#include "Constants.hpp"
 
 namespace {
 
@@ -152,6 +152,7 @@ ResultScreen::ResultScreen(LevelResult resultData)
     m_Renderer.AddChild(selectButton);
 
     auto retryButton = UI::Element::Button(Path::BtnRetry, [this]() {
+        m_NextLevelId = m_ResultData.levelId;
         m_NextScreenType = ScreenType::GAME;
     });
     retryButton->m_Transform.translation = {0.0f, -322.0f};
