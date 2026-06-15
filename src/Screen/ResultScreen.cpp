@@ -43,14 +43,14 @@ ResultScreen::ResultScreen(LevelResult resultData)
     auto panel = UI::Element::Image(
         Path::BlueSquare,
         {0.0f, -48.0f},
-        {1.72f, 0.98f},
+        {2.3f, 0.98f},
         Layer::UIBackground);
     m_Renderer.AddChild(panel);
 
     auto header = UI::Element::Image(
         Path::OrangeSquare,
         {0.0f, 156.0f},
-        {1.72f, 0.13f},
+        {2.3f, 0.13f},
         Layer::UIBackground);
     m_Renderer.AddChild(header);
 
@@ -111,8 +111,8 @@ ResultScreen::ResultScreen(LevelResult resultData)
 
     auto solvedStrip = UI::Element::Image(
         Path::WhiteSquare,
-        {statsCenterX, -152.0f},
-        {0.95f, 0.16f},
+        {statsCenterX - 30.0, -152.0f},
+        {1.2f, 0.16f},
         Layer::UIOutline);
     m_Renderer.AddChild(solvedStrip);
 
@@ -134,13 +134,6 @@ ResultScreen::ResultScreen(LevelResult resultData)
         {colRight.x, -152.0f},
         solvedStrokeColor,
         Layer::UIElement));
-
-    auto levelFrame = UI::Element::Image(
-        Path::LevelFrame,
-        {230.0f, -30.0f},
-        {0.38f, 0.38f},
-        Layer::UIOutline);
-    m_Renderer.AddChild(levelFrame);
 
     if (!m_ResultData.screenshotFilename.empty()) {
         auto screenshot = UI::Element::Image(
