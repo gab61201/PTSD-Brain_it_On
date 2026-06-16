@@ -20,7 +20,7 @@ void Rectangle::AttachToBody(b2BodyId body) {
     float halfHeight = PixelsToMeters(size.y / 2.0f);
 
     b2Vec2 center = PixelsToMeters(m_RelativePosition);
-    b2Polygon rectangleShape = b2MakeOffsetBox(halfWidth, halfHeight, center, b2Rot_identity);
+    b2Polygon rectangleShape = b2MakeOffsetBox(halfWidth, halfHeight, center, b2MakeRot(m_RelativeRotation));
 
     b2ShapeDef shapeDef = b2DefaultShapeDef();
     shapeDef.isSensor = m_IsSensor;
