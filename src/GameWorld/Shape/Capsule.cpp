@@ -11,8 +11,9 @@ Capsule::Capsule(
     const glm::vec2& pointA,
     const glm::vec2& pointB,
     bool isSensor,
-    bool outline)
-    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor, outline),
+    bool outline,
+    bool isForbidden)
+    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor, outline, isForbidden),
       m_PointA(pointA),
       m_PointB(pointB) {}
 
@@ -37,7 +38,11 @@ void Capsule::AttachToBody(b2BodyId body) {
 
     if (distance <= 1.0f) {
         // --- 情況 A：長度極短，顯示為純圓形 ---
-        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+        if (m_IsForbidden) {
+            m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircleTrans));
+        } else {
+            m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+        }
         m_Visual->m_Transform.scale = circleScale;
 
         if (m_OutlineVisual) {
@@ -48,7 +53,11 @@ void Capsule::AttachToBody(b2BodyId body) {
     } else {
         // --- 情況 B：正常膠囊形 ---
         // 1. 中間矩形主體（直接利用已存在的 m_Visual）
-        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+        if (m_IsForbidden) {
+            m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquareTrans));
+        } else {
+            m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+        }
         m_Visual->m_Transform.scale = glm::vec2(distance, diameter) / BASIC_SHAPE_IMAGE_SIZE;
 
         // 2. 中間矩形描邊（直接利用已存在的 m_OutlineVisual）
@@ -59,11 +68,15 @@ void Capsule::AttachToBody(b2BodyId body) {
         }
 
         // 3. 初始化兩端圓形主體 (白色)
-        m_CircleAVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::WhiteCircle), Layer::Shape);
+        m_CircleAVisual = std::make_shared<Util::GameObject>(
+            m_IsForbidden ? Util::ImageCache.Get(Path::RedCircleTrans) : Util::ImageCache.Get(Path::WhiteCircle),
+            Layer::Shape);
         m_CircleAVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleAVisual);
 
-        m_CircleBVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::WhiteCircle), Layer::Shape);
+        m_CircleBVisual = std::make_shared<Util::GameObject>(
+            m_IsForbidden ? Util::ImageCache.Get(Path::RedCircleTrans) : Util::ImageCache.Get(Path::WhiteCircle),
+            Layer::Shape);
         m_CircleBVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleBVisual);
 

@@ -3,15 +3,19 @@
 
 namespace GameWorld {
 
-Shape::Shape(std::variant<glm::vec2, float> m_Size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor, bool outline)
+Shape::Shape(std::variant<glm::vec2, float> m_Size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor, bool outline, bool isForbidden)
     : m_Size(m_Size),
       m_RelativePosition(relativePosition),
       m_RelativeRotation(relativeRotation),
-      m_IsSensor(isSensor) {
+      m_IsSensor(isSensor),
+      m_IsForbidden(isForbidden) {
         if (outline) {
             m_OutlineVisual = std::make_shared<Util::GameObject>();
             m_OutlineVisual->SetZIndex(Layer::ShapeOutLine);
             m_Visual->AddChild(m_OutlineVisual);
+            m_Visual->SetZIndex(Layer::Shape);
+        }
+        if (isForbidden) {
             m_Visual->SetZIndex(Layer::Shape);
         }
     }

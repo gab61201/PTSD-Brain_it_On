@@ -8,11 +8,23 @@ namespace {
 struct PointQueryContext {
     bool hit = false;
     b2Vec2 testPoint = {0.0f, 0.0f};
+    const std::vector<b2ShapeId>* forbiddenIds = nullptr;
 };
 
 bool ReportPointShape(b2ShapeId shapeId, void* context) {
     auto* queryContext = static_cast<PointQueryContext*>(context);
     if (b2Shape_IsSensor(shapeId)) {
+        if (queryContext->forbiddenIds) {
+            for (const auto& fid : *queryContext->forbiddenIds) {
+                if (B2_ID_EQUALS(shapeId, fid)) {
+                    if (b2Shape_TestPoint(shapeId, queryContext->testPoint)) {
+                        queryContext->hit = true;
+                        return false;
+                    }
+                    break;
+                }
+            }
+        }
         return true;
     }
     if (b2Shape_TestPoint(shapeId, queryContext->testPoint)) {
@@ -69,6 +81,15 @@ PhysicalWorld::PhysicalWorld(
     for (auto& obj : m_CompositeObject) {
         obj->AttachToWorld(m_b2WorldId);
     }
+
+    // 收集禁止繪畫區的 shape IDs
+    for (auto& obj : m_CompositeObject) {
+        for (auto& shape : obj->GetShapes()) {
+            if (shape->IsForbidden()) {
+                m_ForbiddenShapeIds.push_back(shape->Getb2ShapeId());
+            }
+        }
+    }
 }
 
 PhysicalWorld::~PhysicalWorld() {
@@ -82,10 +103,14 @@ void PhysicalWorld::DrawNewObject(glm::vec2 position) {
     if (m_Boundary != nullptr && !m_Boundary->IsPointInside(position)) {
         return;
     }
+    if (IsPointInForbiddenZone(position)) {
+        return;
+    }
     // 檢查點有沒有碰到其他東西
     PointQueryContext callback;
     b2Vec2 point = GameWorld::PixelsToMeters(position);
     callback.testPoint = point;
+    callback.forbiddenIds = &m_ForbiddenShapeIds;
 
     b2AABB aabb;
     b2Vec2 d = {0.001f, 0.001f};
@@ -108,6 +133,9 @@ void PhysicalWorld::DrawNewObject(glm::vec2 position) {
 
 void PhysicalWorld::DrawingObject(glm::vec2 position) {
     if (m_LastDrawingObject == nullptr) {
+        return;
+    }
+    if (IsPointInForbiddenZone(position)) {
         return;
     }
     // 檢查射線有沒有碰到其他東西
@@ -145,6 +173,16 @@ void PhysicalWorld::EndDrawing() {
     }
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
+}
+
+bool PhysicalWorld::IsPointInForbiddenZone(glm::vec2 position) const {
+    b2Vec2 point = GameWorld::PixelsToMeters(position);
+    for (const auto& shapeId : m_ForbiddenShapeIds) {
+        if (b2Shape_TestPoint(shapeId, point)) {
+            return true;
+        }
+    }
+    return false;
 }
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡

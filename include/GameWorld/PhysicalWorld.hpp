@@ -2,6 +2,7 @@
 
 #include <box2d/box2d.h>
 
+
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/CompositeObject/CompositeObject.hpp"
 #include "GameWorld/CompositeObject/DrawnObject.hpp"
@@ -26,6 +27,7 @@ class PhysicalWorld {
     int GetDrawnObjectCount() const { return m_DrawnObjectCount; }
     b2ContactEvents GetContactEvents() { return b2World_GetContactEvents(m_b2WorldId); }
     b2SensorEvents GetSensorEvents() { return b2World_GetSensorEvents(m_b2WorldId); }
+    bool IsPointInForbiddenZone(glm::vec2 position) const;
 
    private:
     b2WorldId m_b2WorldId;
@@ -37,6 +39,7 @@ class PhysicalWorld {
     std::shared_ptr<DrawnObject> m_LastDrawingObject;
     DrawingIndicator m_DrawingIndicator;
     bool m_IsActive = false;
+    std::vector<b2ShapeId> m_ForbiddenShapeIds;
 };
 
 }  // namespace GameWorld

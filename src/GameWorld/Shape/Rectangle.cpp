@@ -6,8 +6,8 @@
 
 namespace GameWorld {
 
-Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor, bool outline)
-    : Shape(size, relativePosition, relativeRotation, isSensor, outline) {}
+Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor, bool outline, bool isForbidden)
+    : Shape(size, relativePosition, relativeRotation, isSensor, outline, isForbidden) {}
 
 void Rectangle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
@@ -26,7 +26,11 @@ void Rectangle::AttachToBody(b2BodyId body) {
     shapeDef.isSensor = m_IsSensor;
     m_b2ShapeId = b2CreatePolygonShape(body, &shapeDef, &rectangleShape);
 
-    m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+    if (m_IsForbidden) {
+        m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquareTrans));
+    } else {
+        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+    }
     m_Visual->m_Transform.scale = glm::vec2(size.x, size.y) / BASIC_SHAPE_IMAGE_SIZE;
 
     if (m_OutlineVisual) {

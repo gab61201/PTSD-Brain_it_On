@@ -12,7 +12,8 @@ class Capsule : public Shape {
         const glm::vec2& pointA,
         const glm::vec2& pointB,
         bool isSensor = false,
-        bool outline = true);
+        bool outline = true,
+        bool isForbidden = false);
 
     // 建構子：中心點 + size(長，寬) + 方向角度
     // static std::shared_ptr<Capsule> CreateFromCenter(
