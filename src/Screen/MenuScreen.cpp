@@ -22,8 +22,8 @@ constexpr float STAR_SCALE = 0.16f;
 
 constexpr float CARD_X_START = -300.0f;
 constexpr float CARD_X_STEP = 150.0f;
-constexpr float CARD_Y_START = 100.0f;
-constexpr float CARD_Y_STEP = -235.0f;
+constexpr float CARD_Y_START = 130.0f;
+constexpr float CARD_Y_STEP = -160.0f;
 
 
 
