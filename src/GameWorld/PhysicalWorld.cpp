@@ -61,6 +61,9 @@ PhysicalWorld::PhysicalWorld(
       m_Boundary(boundary) {
     b2WorldDef worldDef = b2DefaultWorldDef();
     worldDef.gravity = {0.0f, -9.8f};
+    worldDef.frictionCallback = [](float, int, float, int) -> float {
+        return WORLD_FRICTION;
+    };
     m_b2WorldId = b2CreateWorld(&worldDef);
 
     for (auto& obj : m_CompositeObject) {

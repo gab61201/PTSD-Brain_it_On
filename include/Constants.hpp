@@ -8,6 +8,7 @@ inline constexpr int FPS = 60;
 inline constexpr float STROKE_WIDTH = 10.0F;
 inline constexpr float MIN_STROKE_LENGTH = 2.0F;
 inline constexpr float SHAPE_OUTLINE_WIDTH = 2.0F;
+inline constexpr float WORLD_FRICTION = 0.3F;
 
 inline constexpr const char* kCsvHeader = "level,timestamp,passed,within_time,within_stroke,remaining_time,used_strokes";
 inline constexpr const char* kBestRecordSavePath = "Resources/Save/BestRecord.csv";
