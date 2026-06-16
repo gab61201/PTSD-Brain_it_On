@@ -73,7 +73,7 @@ MenuScreen::MenuScreen() : UIScreen(ScreenType::MENU) {
             Path::LightBlueSquare,
             {cardPosition.x, cardPosition.y - 12.0f},
             {CARD_SCALE * 0.80f, CARD_SCALE * 0.80f},
-            Layer::UIBackground);
+            Layer::UIOutline);
         m_Renderer.AddChild(cardBackground);
 
         auto cardButton = UI::Element::Button(
