@@ -64,13 +64,11 @@ MenuScreen::MenuScreen() : UIScreen(ScreenType::MENU) {
     m_Buttons.push_back(backButton);
     m_Renderer.AddChild(backButton);
 
-    // 只顯示已註冊的關卡，避免點到未註冊的 LevelId 在 GetLevelConfig 中拋例外。
-    // 假設關卡 ID 從 LEVEL_1(0) 連續向上註冊。
-    const int menuCardCount = static_cast<int>(GetLevelRegistry().size());
-    for (int index = 0; index < menuCardCount; ++index) {
-        LevelId levelId = static_cast<LevelId>(index);
-        std::string levelNumberStr = std::to_string(index + 1);
-        const glm::vec2 cardPosition = GetCardPosition(index);
+    int uiIndex = 0;
+    for (auto const& [levelId, func] : GetLevelRegistry()) {
+        int levelNumber = static_cast<int>(levelId) + 1;
+        std::string levelNumberStr = std::to_string(levelNumber);
+        const glm::vec2 cardPosition = GetCardPosition(uiIndex);
         auto cardBackground = UI::Element::Image(
             Path::LightBlueSquare,
             {cardPosition.x, cardPosition.y - 12.0f},
@@ -80,8 +78,8 @@ MenuScreen::MenuScreen() : UIScreen(ScreenType::MENU) {
 
         auto cardButton = UI::Element::Button(
             Util::ProgressStore::GetScreenshotPath(levelId),
-            [this, index]() {
-                m_LevelId = static_cast<LevelId>(index);
+            [this, levelId]() {
+                m_LevelId = levelId;
                 m_NextScreenType = ScreenType::GAME;
             });
         cardButton->m_Transform.translation = cardPosition;
@@ -105,6 +103,7 @@ MenuScreen::MenuScreen() : UIScreen(ScreenType::MENU) {
                                              Layer::UIElementHUD);
             m_Renderer.AddChild(starImg);
         }
+        uiIndex++;
     }
 }
 
