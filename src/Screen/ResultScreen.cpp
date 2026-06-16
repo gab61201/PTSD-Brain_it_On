@@ -25,7 +25,8 @@ namespace UI {
 ResultScreen::ResultScreen(LevelResult resultData)
     : UIScreen(ScreenType::RESULT), m_ResultData(std::move(resultData)) {
     int nextLevel = static_cast<int>(m_ResultData.levelId) + 1;
-    m_NextLevelId = (nextLevel <= static_cast<int>(LevelId::LEVEL_5))
+    int maxLevelIndex = static_cast<int>(GetLevelRegistry().size()) - 1;
+    m_NextLevelId = (nextLevel <= maxLevelIndex)
                         ? static_cast<LevelId>(nextLevel)
                         : m_ResultData.levelId;
     const bool withinTimeLimit = (m_ResultData.solvedTime <= m_ResultData.goalTime);
