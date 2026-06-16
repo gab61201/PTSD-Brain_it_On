@@ -25,6 +25,7 @@ class PhysicalWorld {
     void Update();
     int GetDrawnObjectCount() const { return m_DrawnObjectCount; }
     b2ContactEvents GetContactEvents() { return b2World_GetContactEvents(m_b2WorldId); }
+    b2SensorEvents GetSensorEvents() { return b2World_GetSensorEvents(m_b2WorldId); }
 
    private:
     b2WorldId m_b2WorldId;

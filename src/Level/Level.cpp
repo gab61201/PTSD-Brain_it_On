@@ -36,7 +36,7 @@ void Level::Playing() {
     m_ElapsedTime += static_cast<float>(Util::Time::GetDeltaTimeMs()) / 1000.0f;
     int contactCountDown = m_PassCondition->GetContactCountDown();
     m_HUD->UpdateContactTimer(contactCountDown);
-    if (m_PassCondition->Check(m_World->GetContactEvents())) {
+    if (m_PassCondition->Check(m_World->GetContactEvents(), m_World->GetSensorEvents())) {
         m_State = State::FINISHED;
         m_World->Stop();
         Save();

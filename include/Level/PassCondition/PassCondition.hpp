@@ -22,7 +22,7 @@ class PassCondition {
     virtual ~PassCondition() = default;
 
     // 檢查是否達成通關條件
-    bool Check(b2ContactEvents events);
+    bool Check(b2ContactEvents contactEvents, b2SensorEvents sensorEvents);
 
     // 取得接觸倒數計時器的剩餘時間（無接觸回傳 0）
     int GetContactCountDown() const;
