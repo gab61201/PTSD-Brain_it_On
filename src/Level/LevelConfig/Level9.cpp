@@ -54,7 +54,7 @@ LevelConfig LevelConfig_9() {
 
     auto boundary = std::make_shared<GameWorld::Boundary>();
 
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {glassComp, boundary};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, glassComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
     data.passCondition = std::make_shared<GlassFallPass>(

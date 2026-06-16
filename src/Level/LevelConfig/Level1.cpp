@@ -52,8 +52,8 @@ LevelConfig LevelConfig_1() {
     // ==========================================
     // 4. 將所有組合件打包，並初始化物理世界
     // ==========================================
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
-        boxComp, circleComp, capsuleComp, boundary};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, 
+        boxComp, circleComp, capsuleComp};
 
     // 實例化物理世界 (建構子會自動將這些 objects 透過 AttachToWorld 掛載到 Box2D)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);

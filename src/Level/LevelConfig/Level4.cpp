@@ -30,8 +30,8 @@ LevelConfig LevelConfig_4() {
 
     auto boundary = std::make_shared<GameWorld::Boundary>();
 
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
-        magnetComp1, magnetComp2, boundary};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, 
+        magnetComp1, magnetComp2};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
     data.passCondition = std::make_shared<OneToOneContactPass>(

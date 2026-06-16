@@ -20,8 +20,8 @@ LevelConfig LevelConfig_2() {
 
     auto boundary = std::make_shared<GameWorld::Boundary>();
 
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
-        ballComp, boundary};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, 
+        ballComp};
 
     // 過關條件：小球碰到邊界的左牆 (index 0)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);

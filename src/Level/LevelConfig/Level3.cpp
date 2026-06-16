@@ -34,8 +34,8 @@ LevelConfig LevelConfig_3() {
 
     auto boundary = std::make_shared<GameWorld::Boundary>();
 
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
-        seesawComp, boundary};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, 
+        seesawComp};
 
     // Pass condition: rightTip touches the floor (boundary index 3 is bottom wall)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);

@@ -110,8 +110,8 @@ LevelConfig LevelConfig_10() {
 
     auto boundary = std::make_shared<GameWorld::Boundary>();
 
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {
-        platformComp, ballComp1, ballComp2, ballComp3, containerComp, boundary};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, 
+        platformComp, ballComp1, ballComp2, ballComp3, containerComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
 
