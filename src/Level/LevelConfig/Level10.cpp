@@ -2,68 +2,9 @@
 #include "GameWorld/Shape/Circle.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/PassCondition.hpp"
+#include "Level/PassCondition/CountObjectsInSensorPass.hpp"
 #include <algorithm>
 #include <vector>
-
-class TwoBallsInContainerPass : public PassCondition {
-   public:
-    TwoBallsInContainerPass(
-        std::vector<b2ShapeId> balls,
-        b2ShapeId containerSensor,
-        int duration)
-        : PassCondition(TriggerType::TOUCHING, duration),
-          m_Balls(balls),
-          m_Sensor(containerSensor) {
-        for (auto& b : balls) {
-            b2Shape_EnableSensorEvents(b, true);
-        }
-        b2Shape_EnableSensorEvents(containerSensor, true);
-    }
-
-   protected:
-    void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) override {
-        bool isSensor = B2_ID_EQUALS(shapeA, m_Sensor) || B2_ID_EQUALS(shapeB, m_Sensor);
-        if (!isSensor) return;
-
-        b2ShapeId visitor = B2_ID_EQUALS(shapeA, m_Sensor) ? shapeB : shapeA;
-
-        bool isBall = false;
-        for (const auto& b : m_Balls) {
-            if (B2_ID_EQUALS(visitor, b)) {
-                isBall = true;
-                break;
-            }
-        }
-        if (!isBall) return;
-
-        if (triggerType == TriggerType::TOUCHING) {
-            bool alreadyIn = false;
-            for (const auto& b : m_BallsInside) {
-                if (B2_ID_EQUALS(b, visitor)) {
-                    alreadyIn = true;
-                    break;
-                }
-            }
-            if (!alreadyIn) {
-                m_BallsInside.push_back(visitor);
-            }
-        } else if (triggerType == TriggerType::SEPARATED) {
-            auto it = std::find_if(m_BallsInside.begin(), m_BallsInside.end(),
-                                   [&](const b2ShapeId& id) { return B2_ID_EQUALS(id, visitor); });
-            if (it != m_BallsInside.end()) {
-                m_BallsInside.erase(it);
-            }
-        }
-
-        m_IsTriggered = (m_BallsInside.size() == 2);
-    }
-
-   private:
-    std::vector<b2ShapeId> m_Balls;
-    b2ShapeId m_Sensor;
-    std::vector<b2ShapeId> m_BallsInside;
-};
 
 LevelConfig LevelConfig_10() {
     LevelConfig data;
@@ -122,10 +63,10 @@ LevelConfig LevelConfig_10() {
     };
 
     data.passConditions = {
-        std::make_shared<TwoBallsInContainerPass>(
+        std::make_shared<CountObjectsInSensorPass>(
             balls,
             sensor->Getb2ShapeId(),
-            3)
+            2)
     };
 
     return data;

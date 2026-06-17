@@ -49,6 +49,8 @@ void Capsule::AttachToBody(b2BodyId body) {
                 case ShapeColor::Red:
                     m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircle));
                     break;
+                case ShapeColor::Transparent:
+                    break;
                 default:
                     m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
                     break;
@@ -56,7 +58,7 @@ void Capsule::AttachToBody(b2BodyId body) {
         }
         m_Visual->m_Transform.scale = circleScale;
 
-        if (m_OutlineVisual) {
+        if (m_OutlineVisual && m_Color != ShapeColor::Transparent) {
             m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackCircle));
             m_OutlineVisual->m_Transform.scale = 
                 glm::vec2(diameter + SHAPE_OUTLINE_WIDTH, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
@@ -74,6 +76,8 @@ void Capsule::AttachToBody(b2BodyId body) {
                 case ShapeColor::Red:
                     m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquare));
                     break;
+                case ShapeColor::Transparent:
+                    break;
                 default:
                     m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
                     break;
@@ -82,7 +86,7 @@ void Capsule::AttachToBody(b2BodyId body) {
         m_Visual->m_Transform.scale = glm::vec2(distance, diameter) / BASIC_SHAPE_IMAGE_SIZE;
 
         // 2. 中間矩形描邊（直接利用已存在的 m_OutlineVisual）
-        if (m_OutlineVisual) {
+        if (m_OutlineVisual && m_Color != ShapeColor::Transparent) {
             m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackSquare));
             m_OutlineVisual->m_Transform.scale = 
                 glm::vec2(distance, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
@@ -94,6 +98,7 @@ void Capsule::AttachToBody(b2BodyId body) {
             switch (m_Color) {
                 case ShapeColor::Orange: return Util::ImageCache.Get(Path::OrangeCircle);
                 case ShapeColor::Red: return Util::ImageCache.Get(Path::RedCircle);
+                case ShapeColor::Transparent: return nullptr;
                 default: return Util::ImageCache.Get(Path::WhiteCircle);
             }
         }();
@@ -106,7 +111,7 @@ void Capsule::AttachToBody(b2BodyId body) {
         m_Visual->AddChild(m_CircleBVisual);
 
         // 4. 初始化兩端圓形描邊 (黑色)
-        if (m_OutlineVisual) {
+        if (m_OutlineVisual && m_Color != ShapeColor::Transparent) {
             const glm::vec2 outlineCircleScale = 
                 glm::vec2(diameter + SHAPE_OUTLINE_WIDTH, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
 

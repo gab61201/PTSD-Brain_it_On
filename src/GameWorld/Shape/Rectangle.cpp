@@ -36,6 +36,8 @@ void Rectangle::AttachToBody(b2BodyId body) {
             case ShapeColor::Red:
                 m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquare));
                 break;
+            case ShapeColor::Transparent:
+                break;
             default:
                 m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
                 break;
@@ -43,7 +45,7 @@ void Rectangle::AttachToBody(b2BodyId body) {
     }
     m_Visual->m_Transform.scale = glm::vec2(size.x, size.y) / BASIC_SHAPE_IMAGE_SIZE;
 
-    if (m_OutlineVisual) {
+    if (m_OutlineVisual && m_Color != ShapeColor::Transparent) {
         m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackSquare));
         m_OutlineVisual->m_Transform.scale =
             glm::vec2(size.x + SHAPE_OUTLINE_WIDTH, size.y + SHAPE_OUTLINE_WIDTH) /
