@@ -22,6 +22,7 @@ namespace Layer {
         LevelBackGround,
         ShapeOutLine,
         Shape,
+        DrawnObject,
         UIBackground,
         UIOutline,
         UIElement,
