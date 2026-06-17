@@ -28,6 +28,7 @@ void Rectangle::AttachToBody(b2BodyId body) {
 
     if (m_IsForbidden) {
         m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquareTrans));
+        m_Visual->SetZIndex(Layer::ForbiddenZone);
     } else {
         switch (m_Color) {
             case ShapeColor::Orange:

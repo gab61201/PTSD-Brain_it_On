@@ -40,6 +40,7 @@ struct ShapeCastContext {
     float fraction = 1.0f;
     b2BodyId ignoreBody = b2_nullBodyId;
     b2Vec2 normal = {0.0f, 0.0f};
+    const std::vector<b2ShapeId>* forbiddenIds = nullptr;
 };
 
 float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float fraction, void* context) {
@@ -49,6 +50,19 @@ float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float f
         return -1.0f;
     }
     if (b2Shape_IsSensor(shapeId)) {
+        if (castContext->forbiddenIds) {
+            for (const auto& fid : *castContext->forbiddenIds) {
+                if (B2_ID_EQUALS(shapeId, fid)) {
+                    if (fraction < castContext->fraction) {
+                        castContext->hit = true;
+                        castContext->hitPoint = point;
+                        castContext->fraction = fraction;
+                        castContext->normal = normal;
+                    }
+                    return fraction;
+                }
+            }
+        }
         return -1.0f;
     }
 
@@ -103,10 +117,7 @@ void PhysicalWorld::DrawNewObject(glm::vec2 position) {
     if (m_Boundary != nullptr && !m_Boundary->IsPointInside(position)) {
         return;
     }
-    if (IsPointInForbiddenZone(position)) {
-        return;
-    }
-    // 檢查點有沒有碰到其他東西
+    // 檢查點有沒有碰到其他東西（包含禁止繪畫區）
     PointQueryContext callback;
     b2Vec2 point = GameWorld::PixelsToMeters(position);
     callback.testPoint = point;
@@ -135,10 +146,7 @@ void PhysicalWorld::DrawingObject(glm::vec2 position) {
     if (m_LastDrawingObject == nullptr) {
         return;
     }
-    if (IsPointInForbiddenZone(position)) {
-        return;
-    }
-    // 檢查射線有沒有碰到其他東西
+    // 檢查射線有沒有碰到其他東西（包含禁止繪畫區）
     auto p1 = m_LastDrawingObject->GetPoints().back();
     auto p2 = position;
     if (glm::distance(p1, p2) < MIN_STROKE_LENGTH) {
@@ -146,6 +154,7 @@ void PhysicalWorld::DrawingObject(glm::vec2 position) {
     }
     ShapeCastContext callback;
     callback.ignoreBody = m_LastDrawingObject->Getb2BodyId();
+    callback.forbiddenIds = &m_ForbiddenShapeIds;
     b2Vec2 startP = GameWorld::PixelsToMeters(p1);
     b2Vec2 endP = GameWorld::PixelsToMeters(p2);
     b2Vec2 translation = {endP.x - startP.x, endP.y - startP.y};
@@ -175,15 +184,6 @@ void PhysicalWorld::EndDrawing() {
     m_LastDrawingObject = nullptr;
 }
 
-bool PhysicalWorld::IsPointInForbiddenZone(glm::vec2 position) const {
-    b2Vec2 point = GameWorld::PixelsToMeters(position);
-    for (const auto& shapeId : m_ForbiddenShapeIds) {
-        if (b2Shape_TestPoint(shapeId, point)) {
-            return true;
-        }
-    }
-    return false;
-}
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
 // ==========================================

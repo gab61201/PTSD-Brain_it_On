@@ -20,6 +20,7 @@ namespace Layer {
     enum {
         Background,
         LevelBackGround,
+        ForbiddenZone,
         ShapeOutLine,
         Shape,
         DrawnObject,

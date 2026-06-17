@@ -41,6 +41,7 @@ void Capsule::AttachToBody(b2BodyId body) {
         // --- 情況 A：長度極短，顯示為純圓形 ---
         if (m_IsForbidden) {
             m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircleTrans));
+            m_Visual->SetZIndex(Layer::ForbiddenZone);
         } else {
             switch (m_Color) {
                 case ShapeColor::Orange:
@@ -68,6 +69,7 @@ void Capsule::AttachToBody(b2BodyId body) {
         // 1. 中間矩形主體（直接利用已存在的 m_Visual）
         if (m_IsForbidden) {
             m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquareTrans));
+            m_Visual->SetZIndex(Layer::ForbiddenZone);
         } else {
             switch (m_Color) {
                 case ShapeColor::Orange:
