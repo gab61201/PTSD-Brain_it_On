@@ -27,7 +27,8 @@ LevelConfig LevelConfig_1() {
     // ==========================================
     auto circlePart = std::make_shared<GameWorld::Circle>(
         50.0f,  // 直徑 50 像素 (半徑 25)
-        glm::vec2(0.0F, 0.0F));
+        glm::vec2(0.0F, 0.0F),
+        GameWorld::ShapeColor::Orange);
     auto circleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{circlePart},
         GameWorld::BodyType::DYNAMIC,  // 動態剛體 (會掉落)

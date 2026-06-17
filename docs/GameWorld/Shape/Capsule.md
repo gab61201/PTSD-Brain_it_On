@@ -6,10 +6,13 @@
 
 ```cpp
 Capsule(
-    float diameter,           // 直徑（像素）
-    const glm::vec2& pointA,  // 左端圓心相對位置
-    const glm::vec2& pointB,  // 右端圓心相對位置
-    bool isSensor = false
+    float diameter,                    // 直徑（像素）
+    const glm::vec2& pointA,           // 左端圓心相對位置
+    const glm::vec2& pointB,           // 右端圓心相對位置
+    ShapeColor color = ShapeColor::White,   // 形狀顏色
+    bool isSensor = false,             // 是否為感測器
+    bool outline = true,               // 是否顯示描邊
+    bool isForbidden = false           // 禁止繪畫區（優先於 color）
 );
 
 void AttachToBody(b2BodyId body) override;

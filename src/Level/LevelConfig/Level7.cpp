@@ -9,7 +9,7 @@ LevelConfig LevelConfig_7() {
     data.strokeLimit = 1;
     data.targetText = "Make the ball hit the left wall";
 
-    auto ballPart = std::make_shared<GameWorld::Circle>(50.0f, glm::vec2(0.0F, 0.0F));
+    auto ballPart = std::make_shared<GameWorld::Circle>(50.0f, glm::vec2(0.0F, 0.0F), GameWorld::ShapeColor::Orange);
     auto ballComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{ballPart},
         GameWorld::BodyType::DYNAMIC,

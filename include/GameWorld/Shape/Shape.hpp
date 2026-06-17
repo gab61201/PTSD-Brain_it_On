@@ -8,6 +8,12 @@
 
 namespace GameWorld {
 
+enum class ShapeColor {
+    White,
+    Orange,
+    Red,
+};
+
 class Shape {
    public:
     Shape() = default;
@@ -15,6 +21,7 @@ class Shape {
     Shape(std::variant<glm::vec2, float> m_Size,
           const glm::vec2& relativePosition,
           float relativeRotation,
+          ShapeColor color = ShapeColor::White,
           bool isSensor = false,
           bool outline = true,
           bool isForbidden = false);
@@ -35,6 +42,9 @@ class Shape {
 
     // 是否為禁止繪畫區
     bool IsForbidden() const { return m_IsForbidden; }
+
+    // 獲取顏色
+    ShapeColor GetColor() const { return m_Color; }
 
    protected:
     // 圖像表示 (Util::GameObject)
@@ -60,6 +70,9 @@ class Shape {
 
     // 是否為禁止繪畫區（是 sensor，且阻止玩家在該區域繪畫）
     bool m_IsForbidden;
+
+    // 形狀顏色
+    ShapeColor m_Color;
 
 };
 

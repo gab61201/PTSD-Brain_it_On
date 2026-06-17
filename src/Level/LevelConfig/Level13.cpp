@@ -10,7 +10,7 @@ LevelConfig LevelConfig_13() {
     data.targetText = "Lift the ball off the ground";
 
     // 建立圓球 (動態，置於地上)
-    auto ballPart = std::make_shared<GameWorld::Circle>(50.0f, glm::vec2(0.0F, 10.0F));
+    auto ballPart = std::make_shared<GameWorld::Circle>(50.0f, glm::vec2(0.0F, 10.0F), GameWorld::ShapeColor::Orange);
     auto ballComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{ballPart},
         GameWorld::BodyType::DYNAMIC,

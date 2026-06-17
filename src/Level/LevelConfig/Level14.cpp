@@ -25,7 +25,7 @@ LevelConfig LevelConfig_14() {
         glm::vec2(0.0F, -180.0F));
 
     // 2. Create the ball (dynamic, inside the container)
-    auto ballPart = std::make_shared<GameWorld::Circle>(50.0F, glm::vec2(0.0F, 0.0F));
+    auto ballPart = std::make_shared<GameWorld::Circle>(50.0F, glm::vec2(0.0F, 0.0F), GameWorld::ShapeColor::Orange);
     auto ballComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{ballPart},
         GameWorld::BodyType::DYNAMIC,

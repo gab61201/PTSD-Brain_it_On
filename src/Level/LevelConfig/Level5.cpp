@@ -21,7 +21,8 @@ LevelConfig LevelConfig_5() {
 
     auto circlePart = std::make_shared<GameWorld::Circle>(
         50.0f,
-        glm::vec2(0.0F, 0.0F));
+        glm::vec2(0.0F, 0.0F),
+        GameWorld::ShapeColor::Orange);
     auto circleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{circlePart},
         GameWorld::BodyType::DYNAMIC,

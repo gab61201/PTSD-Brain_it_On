@@ -79,19 +79,19 @@ LevelConfig LevelConfig_10() {
         glm::vec2(-200.0F, -50.0F));
 
     // 2. Three balls
-    auto ballShape1 = std::make_shared<GameWorld::Circle>(30.0F, glm::vec2(0.0F, 0.0F));
+    auto ballShape1 = std::make_shared<GameWorld::Circle>(30.0F, glm::vec2(0.0F, 0.0F), GameWorld::ShapeColor::Orange);
     auto ballComp1 = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{ballShape1},
         GameWorld::BodyType::DYNAMIC,
         glm::vec2(-240.0F, -27.0F));
 
-    auto ballShape2 = std::make_shared<GameWorld::Circle>(30.0F, glm::vec2(0.0F, 0.0F));
+    auto ballShape2 = std::make_shared<GameWorld::Circle>(30.0F, glm::vec2(0.0F, 0.0F), GameWorld::ShapeColor::Orange);
     auto ballComp2 = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{ballShape2},
         GameWorld::BodyType::DYNAMIC,
         glm::vec2(-200.0F, -27.0F));
 
-    auto ballShape3 = std::make_shared<GameWorld::Circle>(30.0F, glm::vec2(0.0F, 0.0F));
+    auto ballShape3 = std::make_shared<GameWorld::Circle>(30.0F, glm::vec2(0.0F, 0.0F), GameWorld::ShapeColor::Orange);
     auto ballComp3 = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{ballShape3},
         GameWorld::BodyType::DYNAMIC,
@@ -101,7 +101,7 @@ LevelConfig LevelConfig_10() {
     auto bottom = std::make_shared<GameWorld::Rectangle>(glm::vec2(160.0F, 20.0F), glm::vec2(0.0F, -90.0F));
     auto leftWall = std::make_shared<GameWorld::Rectangle>(glm::vec2(20.0F, 180.0F), glm::vec2(-85.0F, 0.0F), glm::radians(10.0F));
     auto rightWall = std::make_shared<GameWorld::Rectangle>(glm::vec2(20.0F, 180.0F), glm::vec2(85.0F, 0.0F), glm::radians(-10.0F));
-    auto sensor = std::make_shared<GameWorld::Rectangle>(glm::vec2(120.0F, 160.0F), glm::vec2(0.0F, 0.0F), 0.0F, true, false);
+    auto sensor = std::make_shared<GameWorld::Rectangle>(glm::vec2(120.0F, 160.0F), glm::vec2(0.0F, 0.0F), 0.0F, GameWorld::ShapeColor::White, true, false);
 
     auto containerComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{bottom, leftWall, rightWall, sensor},

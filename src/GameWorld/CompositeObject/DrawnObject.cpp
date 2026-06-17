@@ -8,7 +8,7 @@ namespace GameWorld {
 
 DrawnObject::DrawnObject(glm::vec2 position)
     : CompositeObject(std::vector<std::shared_ptr<Shape>>(), BodyType::STATIC) {
-    auto first_point = std::make_shared<Circle>(STROKE_WIDTH, position, false);
+    auto first_point = std::make_shared<Circle>(STROKE_WIDTH, position, ShapeColor::White, false);
     first_point->GetVisual()->SetZIndex(Layer::Shape + 0.1f);
     m_Shapes = {first_point};
     m_Points.push_back(position);
@@ -23,7 +23,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
         return;
     }
 
-    auto new_stroke = std::make_shared<Capsule>(STROKE_WIDTH, last_point, position, false);
+    auto new_stroke = std::make_shared<Capsule>(STROKE_WIDTH, last_point, position, ShapeColor::White, false);
     new_stroke->GetVisual()->SetZIndex(Layer::Shape + 0.1f + m_Shapes.size() * 0.0001f);
     new_stroke->AttachToBody(m_b2BodyId);
     m_Shapes.push_back(new_stroke);

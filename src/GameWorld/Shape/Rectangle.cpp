@@ -6,8 +6,8 @@
 
 namespace GameWorld {
 
-Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, bool isSensor, bool outline, bool isForbidden)
-    : Shape(size, relativePosition, relativeRotation, isSensor, outline, isForbidden) {}
+Rectangle::Rectangle(const glm::vec2& size, const glm::vec2& relativePosition, float relativeRotation, ShapeColor color, bool isSensor, bool outline, bool isForbidden)
+    : Shape(size, relativePosition, relativeRotation, color, isSensor, outline, isForbidden) {}
 
 void Rectangle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
@@ -29,7 +29,17 @@ void Rectangle::AttachToBody(b2BodyId body) {
     if (m_IsForbidden) {
         m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquareTrans));
     } else {
-        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+        switch (m_Color) {
+            case ShapeColor::Orange:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::OrangeSquare));
+                break;
+            case ShapeColor::Red:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquare));
+                break;
+            default:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+                break;
+        }
     }
     m_Visual->m_Transform.scale = glm::vec2(size.x, size.y) / BASIC_SHAPE_IMAGE_SIZE;
 

@@ -19,7 +19,7 @@ LevelConfig LevelConfig_11() {
         glm::vec2(-200.0F, -50.0F));
 
     // 2. Circle on the right
-    auto circleShape = std::make_shared<GameWorld::Circle>(50.0F, glm::vec2(0.0F, 0.0F));
+    auto circleShape = std::make_shared<GameWorld::Circle>(50.0F, glm::vec2(0.0F, 0.0F), GameWorld::ShapeColor::Orange);
     auto circleComp = std::make_shared<GameWorld::CompositeObject>(
         std::vector<std::shared_ptr<GameWorld::Shape>>{circleShape},
         GameWorld::BodyType::DYNAMIC,
@@ -30,6 +30,7 @@ LevelConfig LevelConfig_11() {
         glm::vec2(200.0F, 300.0F),
         glm::vec2(0.0F, 0.0F),
         0.0F,
+        GameWorld::ShapeColor::White,
         true,   // isSensor
         false,  // outline
         true    // isForbidden

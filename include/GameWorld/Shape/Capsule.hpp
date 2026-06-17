@@ -11,6 +11,7 @@ class Capsule : public Shape {
         float diameter,
         const glm::vec2& pointA,
         const glm::vec2& pointB,
+        ShapeColor color = ShapeColor::White,
         bool isSensor = false,
         bool outline = true,
         bool isForbidden = false);

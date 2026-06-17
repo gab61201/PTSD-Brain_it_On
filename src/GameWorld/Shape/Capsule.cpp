@@ -10,10 +10,11 @@ Capsule::Capsule(
     float diameter,
     const glm::vec2& pointA,
     const glm::vec2& pointB,
+    ShapeColor color,
     bool isSensor,
     bool outline,
     bool isForbidden)
-    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor, outline, isForbidden),
+    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), color, isSensor, outline, isForbidden),
       m_PointA(pointA),
       m_PointB(pointB) {}
 
@@ -41,7 +42,17 @@ void Capsule::AttachToBody(b2BodyId body) {
         if (m_IsForbidden) {
             m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircleTrans));
         } else {
-            m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+            switch (m_Color) {
+                case ShapeColor::Orange:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::OrangeCircle));
+                    break;
+                case ShapeColor::Red:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircle));
+                    break;
+                default:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+                    break;
+            }
         }
         m_Visual->m_Transform.scale = circleScale;
 
@@ -56,7 +67,17 @@ void Capsule::AttachToBody(b2BodyId body) {
         if (m_IsForbidden) {
             m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquareTrans));
         } else {
-            m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+            switch (m_Color) {
+                case ShapeColor::Orange:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::OrangeSquare));
+                    break;
+                case ShapeColor::Red:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquare));
+                    break;
+                default:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+                    break;
+            }
         }
         m_Visual->m_Transform.scale = glm::vec2(distance, diameter) / BASIC_SHAPE_IMAGE_SIZE;
 
@@ -67,16 +88,20 @@ void Capsule::AttachToBody(b2BodyId body) {
                 glm::vec2(distance, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
         }
 
-        // 3. 初始化兩端圓形主體 (白色)
-        m_CircleAVisual = std::make_shared<Util::GameObject>(
-            m_IsForbidden ? Util::ImageCache.Get(Path::RedCircleTrans) : Util::ImageCache.Get(Path::WhiteCircle),
-            Layer::Shape);
+        // 3. 初始化兩端圓形主體
+        auto circleDrawable = [&]() -> std::shared_ptr<Core::Drawable> {
+            if (m_IsForbidden) return Util::ImageCache.Get(Path::RedCircleTrans);
+            switch (m_Color) {
+                case ShapeColor::Orange: return Util::ImageCache.Get(Path::OrangeCircle);
+                case ShapeColor::Red: return Util::ImageCache.Get(Path::RedCircle);
+                default: return Util::ImageCache.Get(Path::WhiteCircle);
+            }
+        }();
+        m_CircleAVisual = std::make_shared<Util::GameObject>(circleDrawable, Layer::Shape);
         m_CircleAVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleAVisual);
 
-        m_CircleBVisual = std::make_shared<Util::GameObject>(
-            m_IsForbidden ? Util::ImageCache.Get(Path::RedCircleTrans) : Util::ImageCache.Get(Path::WhiteCircle),
-            Layer::Shape);
+        m_CircleBVisual = std::make_shared<Util::GameObject>(circleDrawable, Layer::Shape);
         m_CircleBVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleBVisual);
 

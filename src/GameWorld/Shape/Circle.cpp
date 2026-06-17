@@ -6,8 +6,8 @@
 
 namespace GameWorld {
 
-Circle::Circle(float diameter, const glm::vec2& relativePosition, bool isSensor, bool outline, bool isForbidden)
-    : Shape(diameter, relativePosition, 0.0f, isSensor, outline, isForbidden) {}
+Circle::Circle(float diameter, const glm::vec2& relativePosition, ShapeColor color, bool isSensor, bool outline, bool isForbidden)
+    : Shape(diameter, relativePosition, 0.0f, color, isSensor, outline, isForbidden) {}
 
 void Circle::AttachToBody(b2BodyId body) {
     if (B2_IS_NON_NULL(m_b2ShapeId)) {
@@ -25,7 +25,17 @@ void Circle::AttachToBody(b2BodyId body) {
     if (m_IsForbidden) {
         m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircleTrans));
     } else {
-        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+        switch (m_Color) {
+            case ShapeColor::Orange:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::OrangeCircle));
+                break;
+            case ShapeColor::Red:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircle));
+                break;
+            default:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+                break;
+        }
     }
     m_Visual->m_Transform.scale = glm::vec2(std::get<float>(m_Size), std::get<float>(m_Size)) / BASIC_SHAPE_IMAGE_SIZE;
 

@@ -6,7 +6,7 @@ namespace GameWorld {
 
 class Circle : public Shape {
    public:
-    Circle(float diameter, const glm::vec2& relativePosition, bool isSensor = false, bool outline = true, bool isForbidden = false);
+    Circle(float diameter, const glm::vec2& relativePosition, ShapeColor color = ShapeColor::White, bool isSensor = false, bool outline = true, bool isForbidden = false);
 
     void AttachToBody(b2BodyId body) override;
 };
