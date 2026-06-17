@@ -34,13 +34,12 @@ void Level::Playing() {
         m_World->EndDrawing();
     }
     m_ElapsedTime += static_cast<float>(Util::Time::GetDeltaTimeMs()) / 1000.0f;
-    int contactCountDown = m_PassCondition->GetContactCountDown();
-    m_HUD->UpdateContactTimer(contactCountDown);
     if (m_PassCondition->Check(m_World->GetContactEvents(), m_World->GetSensorEvents())) {
         m_State = State::FINISHED;
         m_World->Stop();
-        Save();
     }
+    int contactCountDown = m_PassCondition->GetContactCountDown();
+    m_HUD->UpdateContactTimer(contactCountDown);
 }
 
 void Level::Reset() {
@@ -55,12 +54,6 @@ void Level::Reset() {
 }
 
 void Level::Update() {
-    m_World->Update();
-
-    m_HUD->UpdateTimer(GetRemainingTime());
-    m_HUD->UpdateStrokeLimit(m_World->GetDrawnObjectCount(), m_StrokeLimit);
-    m_HUD->Update();
-
     switch (m_State) {
         case State::WAITING:
             Waiting();
@@ -71,6 +64,11 @@ void Level::Update() {
         case State::FINISHED:
             break;
     }
+    m_World->Update();
+    m_HUD->UpdateTimer(GetRemainingTime());
+    m_HUD->UpdateStrokeLimit(m_World->GetDrawnObjectCount(), m_StrokeLimit);
+    m_HUD->Update();
+
 }
 
 void Level::Save() {

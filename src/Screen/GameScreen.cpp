@@ -38,6 +38,7 @@ ScreenType GameScreen::Update() {
     m_Renderer.Update();
     m_Level.Update();
     if (m_Level.GetState() == Level::State::FINISHED) {
+        m_Level.Save();
         m_NextScreenType = ScreenType::RESULT;
     }
     for (auto button : m_Buttons) {
