@@ -2,7 +2,8 @@
 #include "GameWorld/CompositeObject/MagnetObject.hpp"
 #include "GameWorld/Shape/Circle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/OneToOneContactPass.hpp"
+#include "Level/PassCondition/ShapeToShapeContactPass.hpp"
+#include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 
 LevelConfig LevelConfig_4() {
     LevelConfig data;
@@ -34,7 +35,7 @@ LevelConfig LevelConfig_4() {
         magnetComp1, magnetComp2};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<OneToOneContactPass>(
+    data.passCondition = std::make_shared<ShapeToShapeContactPass>(
         magnetPart1->Getb2ShapeId(),
         magnetPart2->Getb2ShapeId(),
         TriggerType::SEPARATED, 3);

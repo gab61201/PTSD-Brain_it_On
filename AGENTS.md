@@ -33,7 +33,7 @@ PTSD-Brain_it_On/
 │   │   ├── Level.hpp
 │   │   ├── LevelData.hpp
 │   │   ├── LevelHUD.hpp
-│   │   └── PassCondition/   # PassCondition, OneToOneContactPass
+│   │   └── PassCondition/   # PassCondition, ShapeToShapeContactPass 等
 │   ├── Screen/              # UI 畫面系統
 │   │   ├── UIScreen.hpp
 │   │   ├── UIElement.hpp
@@ -99,7 +99,7 @@ LobbyScreen → MenuScreen → GameScreen → ResultScreen
 - `LevelData.hpp` 定義 `LevelId`（enum）、`LevelConfig`、`LevelResult`。
 - 每個關卡透過 **靜態自動註冊** 模式（`RegisterLevel()`）在 `src/Level/LevelConfig/LevelN.cpp` 中定義。
 - `Level` 類別管理關卡狀態機：`WAITING → DRAWING → PLAYING → FINISHED`。
-- `PassCondition`（抽象）及 `OneToOneContactPass` 定義過關碰撞條件。
+- `PassCondition`（抽象）及 `ShapeToShapeContactPass`、`ShapeToAnythingContactPass`、`GroupToShapeContactPass` 定義過關碰撞條件。
 
 ### 進度存檔（ProgressStore）
 

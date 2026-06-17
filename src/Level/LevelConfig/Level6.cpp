@@ -1,6 +1,7 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/OneToOneContactPass.hpp"
+#include "Level/PassCondition/ShapeToShapeContactPass.hpp"
+#include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 
 LevelConfig LevelConfig_6() {
     LevelConfig data;
@@ -13,7 +14,7 @@ LevelConfig LevelConfig_6() {
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<OneToOneContactPass>(
+    data.passCondition = std::make_shared<ShapeToAnythingContactPass>(
         boundary->GetBottomWall().Getb2ShapeId(),
         TriggerType::TOUCHING, 0);
 

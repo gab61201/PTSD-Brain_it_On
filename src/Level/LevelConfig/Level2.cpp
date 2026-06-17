@@ -1,7 +1,8 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/Shape/Circle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/OneToOneContactPass.hpp"
+#include "Level/PassCondition/ShapeToShapeContactPass.hpp"
+#include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 
 LevelConfig LevelConfig_2() {
     LevelConfig data;
@@ -26,7 +27,7 @@ LevelConfig LevelConfig_2() {
 
     // 過關條件：小球碰到邊界的左牆 (index 0)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<OneToOneContactPass>(ballPart->Getb2ShapeId(), boundary->GetLeftWall().Getb2ShapeId(), TriggerType::TOUCHING, 0);
+    data.passCondition = std::make_shared<ShapeToShapeContactPass>(ballPart->Getb2ShapeId(), boundary->GetLeftWall().Getb2ShapeId(), TriggerType::TOUCHING, 0);
 
     return data;
 }

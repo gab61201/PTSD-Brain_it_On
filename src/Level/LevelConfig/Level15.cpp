@@ -1,7 +1,7 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/AnyToOneContactPass.hpp"
+#include "Level/PassCondition/GroupToShapeContactPass.hpp"
 
 LevelConfig LevelConfig_15() {
     LevelConfig data;
@@ -36,7 +36,7 @@ LevelConfig LevelConfig_15() {
         baseComp, capComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<AnyToOneContactPass>(
+    data.passCondition = std::make_shared<GroupToShapeContactPass>(
         std::vector<b2ShapeId>{capLeft->Getb2ShapeId(), capRight->Getb2ShapeId()},
         block4->Getb2ShapeId(),
         TriggerType::SEPARATED, 3);

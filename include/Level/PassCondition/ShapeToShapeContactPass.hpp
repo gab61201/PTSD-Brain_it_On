@@ -2,18 +2,14 @@
 
 #include "Level/PassCondition/PassCondition.hpp"
 
-class OneToOneContactPass : public PassCondition {
+class ShapeToShapeContactPass : public PassCondition {
    public:
-    OneToOneContactPass(
+    ShapeToShapeContactPass(
         b2ShapeId shapeA,
         b2ShapeId shapeB,
         TriggerType triggerType,
         int duration);
-    OneToOneContactPass(
-        b2ShapeId shape,
-        TriggerType triggerType,
-        int duration);
-    ~OneToOneContactPass() = default;
+    ~ShapeToShapeContactPass() = default;
 
    private:
     void OnContactEvent(b2ShapeId shapeA, b2ShapeId shapeB, TriggerType triggerType) override;

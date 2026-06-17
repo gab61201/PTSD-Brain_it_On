@@ -1,7 +1,8 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/OneToOneContactPass.hpp"
+#include "Level/PassCondition/ShapeToShapeContactPass.hpp"
+#include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 
 LevelConfig LevelConfig_3() {
     LevelConfig data;
@@ -39,7 +40,7 @@ LevelConfig LevelConfig_3() {
 
     // Pass condition: rightTip touches the floor (boundary index 3 is bottom wall)
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<OneToOneContactPass>(rightTip->Getb2ShapeId(), boundary->GetBottomWall().Getb2ShapeId(), TriggerType::TOUCHING, 0);
+    data.passCondition = std::make_shared<ShapeToShapeContactPass>(rightTip->Getb2ShapeId(), boundary->GetBottomWall().Getb2ShapeId(), TriggerType::TOUCHING, 0);
 
     return data;
 }

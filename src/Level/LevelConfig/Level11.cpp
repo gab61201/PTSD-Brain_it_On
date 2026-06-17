@@ -2,7 +2,8 @@
 #include "GameWorld/Shape/Circle.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/OneToOneContactPass.hpp"
+#include "Level/PassCondition/ShapeToShapeContactPass.hpp"
+#include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 #include "Level/PassCondition/PassCondition.hpp"
 
 LevelConfig LevelConfig_11() {
@@ -48,7 +49,7 @@ LevelConfig LevelConfig_11() {
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
 
-    data.passCondition = std::make_shared<OneToOneContactPass>(
+    data.passCondition = std::make_shared<ShapeToShapeContactPass>(
         boxShape->Getb2ShapeId(),
         circleShape->Getb2ShapeId(),
         TriggerType::TOUCHING,
