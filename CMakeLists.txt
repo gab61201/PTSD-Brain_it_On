@@ -3,7 +3,7 @@ project(PTSD-Brain_it_On)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
+add_compile_definitions(GLEW_NO_GLU)
 cmake_policy(SET CMP0135 NEW)
 
 include(FetchContent)
