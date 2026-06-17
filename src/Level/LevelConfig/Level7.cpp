@@ -21,10 +21,12 @@ LevelConfig LevelConfig_7() {
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, ballComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<ShapeToShapeContactPass>(
-        ballPart->Getb2ShapeId(),
-        boundary->GetLeftWall().Getb2ShapeId(),
-        TriggerType::TOUCHING, 0);
+    data.passConditions = {
+        std::make_shared<ShapeToShapeContactPass>(
+            ballPart->Getb2ShapeId(),
+            boundary->GetLeftWall().Getb2ShapeId(),
+            TriggerType::TOUCHING, 0)
+    };
 
     return data;
 }

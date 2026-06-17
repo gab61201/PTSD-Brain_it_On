@@ -57,11 +57,13 @@ LevelConfig LevelConfig_9() {
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, glassComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<GlassFallPass>(
-        leftWall->Getb2ShapeId(),
-        rightWall->Getb2ShapeId(),
-        boundary->GetBottomWall().Getb2ShapeId(),
-        3);
+    data.passConditions = {
+        std::make_shared<GlassFallPass>(
+            leftWall->Getb2ShapeId(),
+            rightWall->Getb2ShapeId(),
+            boundary->GetBottomWall().Getb2ShapeId(),
+            3)
+    };
 
     return data;
 }

@@ -49,11 +49,13 @@ LevelConfig LevelConfig_11() {
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
 
-    data.passCondition = std::make_shared<ShapeToShapeContactPass>(
-        boxShape->Getb2ShapeId(),
-        circleShape->Getb2ShapeId(),
-        TriggerType::TOUCHING,
-        3);
+    data.passConditions = {
+        std::make_shared<ShapeToShapeContactPass>(
+            boxShape->Getb2ShapeId(),
+            circleShape->Getb2ShapeId(),
+            TriggerType::TOUCHING,
+            3)
+    };
 
     return data;
 }

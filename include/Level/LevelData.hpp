@@ -3,6 +3,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "GameWorld/PhysicalWorld.hpp"
 #include "Level/PassCondition/PassCondition.hpp"
@@ -30,7 +31,7 @@ struct LevelConfig {
     int strokeLimit = 3;
     std::string targetText = " ";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
-    std::shared_ptr<PassCondition> passCondition;
+    std::vector<std::shared_ptr<PassCondition>> passConditions;
 };
 
 struct LevelResult {

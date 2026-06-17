@@ -36,10 +36,12 @@ LevelConfig LevelConfig_15() {
         baseComp, capComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<GroupToShapeContactPass>(
-        std::vector<b2ShapeId>{capLeft->Getb2ShapeId(), capRight->Getb2ShapeId()},
-        block4->Getb2ShapeId(),
-        TriggerType::SEPARATED, 3);
+    data.passConditions = {
+        std::make_shared<GroupToShapeContactPass>(
+            std::vector<b2ShapeId>{capLeft->Getb2ShapeId(), capRight->Getb2ShapeId()},
+            block4->Getb2ShapeId(),
+            TriggerType::SEPARATED, 3)
+    };
 
     return data;
 }

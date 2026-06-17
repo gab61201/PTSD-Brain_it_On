@@ -121,10 +121,12 @@ LevelConfig LevelConfig_10() {
         ballShape3->Getb2ShapeId()
     };
 
-    data.passCondition = std::make_shared<TwoBallsInContainerPass>(
-        balls,
-        sensor->Getb2ShapeId(),
-        3);
+    data.passConditions = {
+        std::make_shared<TwoBallsInContainerPass>(
+            balls,
+            sensor->Getb2ShapeId(),
+            3)
+    };
 
     return data;
 }

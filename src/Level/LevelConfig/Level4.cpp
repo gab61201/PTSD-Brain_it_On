@@ -1,44 +1,38 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
-#include "GameWorld/CompositeObject/MagnetObject.hpp"
-#include "GameWorld/Shape/Circle.hpp"
+#include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/ShapeToShapeContactPass.hpp"
-#include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 
 LevelConfig LevelConfig_4() {
     LevelConfig data;
-    data.timeout = 60.0F;
-    data.strokeLimit = 3;
-    data.targetText = "Separate the magnets";
+    data.timeout = 10.0F;
+    data.strokeLimit = 1;
+    data.targetText = "Tip the glass onto the ground";
 
-    auto magnetPart1 = std::make_shared<GameWorld::Circle>(
-        60.0f, glm::vec2(0.0F, 0.0F));
-    auto magnetComp1 = std::make_shared<GameWorld::MagnetObject>(
-        std::vector<std::shared_ptr<GameWorld::Shape>>{magnetPart1},
-        GameWorld::BodyType::DYNAMIC,
-        glm::vec2(-30.0F, -260.0F),
-        0.0F,
-        -5.0F);
+    auto leftWall = std::make_shared<GameWorld::Rectangle>(glm::vec2(15.0F, 120.0F), glm::vec2(-50.0F, 0.0F));
+    auto rightWall = std::make_shared<GameWorld::Rectangle>(glm::vec2(15.0F, 120.0F), glm::vec2(50.0F, 0.0F));
+    auto bottom = std::make_shared<GameWorld::Rectangle>(glm::vec2(115.0F, 15.0F), glm::vec2(0.0F, -60.0F));
 
-    auto magnetPart2 = std::make_shared<GameWorld::Circle>(
-        60.0f, glm::vec2(0.0F, 0.0F));
-    auto magnetComp2 = std::make_shared<GameWorld::MagnetObject>(
-        std::vector<std::shared_ptr<GameWorld::Shape>>{magnetPart2},
+    auto glassComp = std::make_shared<GameWorld::CompositeObject>(
+        std::vector<std::shared_ptr<GameWorld::Shape>>{leftWall, rightWall, bottom},
         GameWorld::BodyType::DYNAMIC,
-        glm::vec2(30.0F, -260.0F),
-        0.0F,
-        5.0F);
+        glm::vec2(0.0F, -223.0F));
 
     auto boundary = std::make_shared<GameWorld::Boundary>();
 
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, 
-        magnetComp1, magnetComp2};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, glassComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<ShapeToShapeContactPass>(
-        magnetPart1->Getb2ShapeId(),
-        magnetPart2->Getb2ShapeId(),
-        TriggerType::SEPARATED, 3);
+    data.passConditions = {
+        std::make_shared<ShapeToShapeContactPass>(
+            leftWall->Getb2ShapeId(),
+            boundary->GetBottomWall().Getb2ShapeId(),
+            TriggerType::SEPARATED, 3),
+        std::make_shared<ShapeToShapeContactPass>(
+            rightWall->Getb2ShapeId(),
+            boundary->GetBottomWall().Getb2ShapeId(),
+            TriggerType::SEPARATED, 3)
+    };
 
     return data;
 }

@@ -40,10 +40,12 @@ LevelConfig LevelConfig_14() {
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
     
     // Pass condition: the ball touches the ground
-    data.passCondition = std::make_shared<ShapeToShapeContactPass>(
-        ballPart->Getb2ShapeId(),
-        boundary->GetBottomWall().Getb2ShapeId(),
-        TriggerType::TOUCHING, 3);
+    data.passConditions = {
+        std::make_shared<ShapeToShapeContactPass>(
+            ballPart->Getb2ShapeId(),
+            boundary->GetBottomWall().Getb2ShapeId(),
+            TriggerType::TOUCHING, 3)
+    };
 
     return data;
 }

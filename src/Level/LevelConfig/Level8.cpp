@@ -37,10 +37,12 @@ LevelConfig LevelConfig_8() {
         seesawComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<ShapeToShapeContactPass>(
-        rightTip->Getb2ShapeId(),
-        boundary->GetBottomWall().Getb2ShapeId(),
-        TriggerType::TOUCHING, 0);
+    data.passConditions = {
+        std::make_shared<ShapeToShapeContactPass>(
+            rightTip->Getb2ShapeId(),
+            boundary->GetBottomWall().Getb2ShapeId(),
+            TriggerType::TOUCHING, 0)
+    };
 
     return data;
 }

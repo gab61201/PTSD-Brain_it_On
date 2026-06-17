@@ -14,9 +14,11 @@ LevelConfig LevelConfig_6() {
     std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
-    data.passCondition = std::make_shared<ShapeToAnythingContactPass>(
-        boundary->GetBottomWall().Getb2ShapeId(),
-        TriggerType::TOUCHING, 0);
+    data.passConditions = {
+        std::make_shared<ShapeToAnythingContactPass>(
+            boundary->GetBottomWall().Getb2ShapeId(),
+            TriggerType::TOUCHING, 0)
+    };
 
     b2Shape_EnableContactEvents(boundary->GetBottomWall().Getb2ShapeId(), true);
 
