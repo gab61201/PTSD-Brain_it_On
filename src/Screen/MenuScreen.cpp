@@ -19,6 +19,7 @@ constexpr float PANEL_HEIGHT = 1.42f;
 constexpr float CARD_SCALE = 0.40f;
 constexpr float THUMB_SCALE = 0.15f;
 constexpr float STAR_SCALE = 0.16f;
+constexpr float STAR_DARK_SCALE = 0.12f;
 
 constexpr float CARD_X_START = -300.0f;
 constexpr float CARD_X_STEP = 150.0f;
@@ -97,9 +98,10 @@ MenuScreen::MenuScreen() : UIScreen(ScreenType::MENU) {
         for (int starIndex = 0; starIndex < 3; ++starIndex) {
             std::string starPath = stars.at(starIndex) ? Path::StarBright
                                                        : Path::StarDark;
+            float scale = stars.at(starIndex) ? STAR_SCALE : STAR_DARK_SCALE;
             auto starImg = UI::Element::Image(starPath,
                                              {cardPosition.x + starXOffsets[starIndex], cardPosition.y - 58.0f},
-                                             {STAR_SCALE, STAR_SCALE},
+                                             {scale, scale},
                                              Layer::UIElementHUD);
             m_Renderer.AddChild(starImg);
         }
