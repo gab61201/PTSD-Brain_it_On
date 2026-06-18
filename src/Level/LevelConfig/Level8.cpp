@@ -1,47 +1,32 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
-#include "GameWorld/Shape/Rectangle.hpp"
+#include "GameWorld/Shape/Circle.hpp"
 #include "Level/LevelData.hpp"
 #include "Level/PassCondition/ShapeToShapeContactPass.hpp"
 #include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 
 LevelConfig LevelConfig_8() {
     LevelConfig data;
-    data.timeout = 10.0F;
-    data.strokeLimit = 1;
-    data.targetText = "Tilt the shape to the right";
+    data.timeout = 8.0F;
+    data.strokeLimit = 2;
+    data.targetText = "Lift the ball off the ground";
 
-    // 1. 建立蹺蹺板 (Seesaw)
-    auto bar = std::make_shared<GameWorld::Rectangle>(
-        glm::vec2(400.0F, 20.0F),
-        glm::vec2(0.0F, 0.0F));
-    auto pivot1 = std::make_shared<GameWorld::Rectangle>(
-        glm::vec2(20.0F, 100.0F),
-        glm::vec2(0.0F, -60.0F)); // 置中
-    auto leftTip = std::make_shared<GameWorld::Rectangle>(
-        glm::vec2(20.0F, 20.0F),
-        glm::vec2(-190.0F, -20.0F));
-    auto rightTip = std::make_shared<GameWorld::Rectangle>(
-        glm::vec2(20.0F, 20.0F),
-        glm::vec2(190.0F, -20.0F));
-
-    // 起始位置偏高且稍微偏左傾斜 (角度 0.33 rad)，使其先靠在左邊
-    auto seesawComp = std::make_shared<GameWorld::CompositeObject>(
-        std::vector<std::shared_ptr<GameWorld::Shape>>{bar, pivot1, leftTip, rightTip},
+    // 建立圓球 (動態，置於地上)
+    auto ballPart = std::make_shared<GameWorld::Circle>(50.0f, glm::vec2(0.0F, 10.0F), GameWorld::ShapeColor::Orange);
+    auto ballComp = std::make_shared<GameWorld::CompositeObject>(
+        std::vector<std::shared_ptr<GameWorld::Shape>>{ballPart},
         GameWorld::BodyType::DYNAMIC,
-        glm::vec2(0.0F, -180.0F),
-        0.33F);
+        glm::vec2(0.0F, -275.0F));
 
     auto boundary = std::make_shared<GameWorld::Boundary>();
 
-    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, 
-        seesawComp};
+    std::vector<std::shared_ptr<GameWorld::CompositeObject>> objects = {boundary, ballComp};
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
     data.passConditions = {
         std::make_shared<ShapeToShapeContactPass>(
-            rightTip->Getb2ShapeId(),
+            ballPart->Getb2ShapeId(),
             boundary->GetBottomWall().Getb2ShapeId(),
-            TriggerType::TOUCHING, 0)
+            TriggerType::SEPARATED, 3)
     };
 
     return data;
