@@ -4,7 +4,7 @@ project(PTSD-Brain_it_On)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.28)
+if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
 endif()
 
@@ -37,7 +37,16 @@ FetchContent_Declare(
     GIT_SHALLOW     TRUE
 )
 
-FetchContent_MakeAvailable(ptsd)
+FetchContent_GetProperties(ptsd)
+if(NOT ptsd_POPULATED)
+    FetchContent_Populate(ptsd)
+    file(READ "${ptsd_SOURCE_DIR}/cmake/Dependencies.cmake" PTSD_DEPENDENCIES)
+    string(REPLACE "cmake_policy(SET CMP0135 NEW)"
+                   "if(POLICY CMP0135)\n    cmake_policy(SET CMP0135 NEW)\nendif()"
+                   PTSD_DEPENDENCIES "${PTSD_DEPENDENCIES}")
+    file(WRITE "${ptsd_SOURCE_DIR}/cmake/Dependencies.cmake" "${PTSD_DEPENDENCIES}")
+    add_subdirectory(${ptsd_SOURCE_DIR} ${ptsd_BINARY_DIR})
+endif()
 
 include(files.cmake)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
