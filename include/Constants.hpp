@@ -60,5 +60,7 @@ inline const std::string GrayCircle = "Resources/Images/BasicShapes/gray_circle.
 inline const std::string GraySquare = "Resources/Images/BasicShapes/gray_square.png";
 inline const std::string BlackCircle = "Resources/Images/BasicShapes/black_circle.png";
 inline const std::string BlackSquare = "Resources/Images/BasicShapes/black_square.png";
+inline const std::string MagnetPositive = "Resources/Images/BasicShapes/magnet_positive.png";
+inline const std::string MagnetNegative = "Resources/Images/BasicShapes/magnet_negative.png";
 
 }  // namespace Path

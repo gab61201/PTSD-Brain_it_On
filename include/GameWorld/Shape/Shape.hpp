@@ -14,6 +14,8 @@ enum class ShapeColor {
     Red,
     Gray,
     Transparent,
+    PositiveMagnet,
+    NegativeMagnet,
 };
 
 class Shape {

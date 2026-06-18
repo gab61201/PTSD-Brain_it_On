@@ -36,6 +36,12 @@ void Circle::AttachToBody(b2BodyId body) {
             case ShapeColor::Gray:
                 m_Visual->SetDrawable(Util::ImageCache.Get(Path::GrayCircle));
                 break;
+            case ShapeColor::PositiveMagnet:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::MagnetPositive));
+                break;
+            case ShapeColor::NegativeMagnet:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::MagnetNegative));
+                break;
             case ShapeColor::Transparent:
                 break;
             default:
