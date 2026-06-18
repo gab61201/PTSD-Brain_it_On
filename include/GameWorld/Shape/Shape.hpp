@@ -12,6 +12,7 @@ enum class ShapeColor {
     White,
     Orange,
     Red,
+    Gray,
     Transparent,
 };
 

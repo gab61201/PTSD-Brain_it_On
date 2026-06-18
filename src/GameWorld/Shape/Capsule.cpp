@@ -50,6 +50,9 @@ void Capsule::AttachToBody(b2BodyId body) {
                 case ShapeColor::Red:
                     m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircle));
                     break;
+                case ShapeColor::Gray:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::GrayCircle));
+                    break;
                 case ShapeColor::Transparent:
                     break;
                 default:
@@ -78,6 +81,9 @@ void Capsule::AttachToBody(b2BodyId body) {
                 case ShapeColor::Red:
                     m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquare));
                     break;
+                case ShapeColor::Gray:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::GraySquare));
+                    break;
                 case ShapeColor::Transparent:
                     break;
                 default:
@@ -100,6 +106,7 @@ void Capsule::AttachToBody(b2BodyId body) {
             switch (m_Color) {
                 case ShapeColor::Orange: return Util::ImageCache.Get(Path::OrangeCircle);
                 case ShapeColor::Red: return Util::ImageCache.Get(Path::RedCircle);
+                case ShapeColor::Gray: return Util::ImageCache.Get(Path::GrayCircle);
                 case ShapeColor::Transparent: return nullptr;
                 default: return Util::ImageCache.Get(Path::WhiteCircle);
             }

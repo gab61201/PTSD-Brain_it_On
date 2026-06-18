@@ -56,6 +56,8 @@ inline const std::string BtnBack = "Resources/Images/Btn_Back.png";
 inline const std::string BtnRetry = "Resources/Images/Btn_Retry.png";
 inline const std::string BtnNext = "Resources/Images/Btn_Next.png";
 inline const std::string BtnMainButtonGray = "Resources/Images/Btn_MainButton_Gray.png";
+inline const std::string GrayCircle = "Resources/Images/BasicShapes/gray_circle.png";
+inline const std::string GraySquare = "Resources/Images/BasicShapes/gray_square.png";
 inline const std::string BlackCircle = "Resources/Images/BasicShapes/black_circle.png";
 inline const std::string BlackSquare = "Resources/Images/BasicShapes/black_square.png";
 

@@ -13,6 +13,8 @@ class DrawnObject : public GameWorld::CompositeObject {
 
     void EndDrawing();
 
+    void AttachToWorld(b2WorldId world) override;
+
     const std::vector<glm::vec2>& GetPoints() const { return m_Points; }
 
    private:

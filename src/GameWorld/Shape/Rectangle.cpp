@@ -37,6 +37,9 @@ void Rectangle::AttachToBody(b2BodyId body) {
             case ShapeColor::Red:
                 m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquare));
                 break;
+            case ShapeColor::Gray:
+                m_Visual->SetDrawable(Util::ImageCache.Get(Path::GraySquare));
+                break;
             case ShapeColor::Transparent:
                 break;
             default:

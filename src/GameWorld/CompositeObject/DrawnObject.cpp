@@ -15,6 +15,13 @@ DrawnObject::DrawnObject(glm::vec2 position)
     m_Renderer.AddChild(first_point->GetVisual());
 }
 
+void DrawnObject::AttachToWorld(b2WorldId world) {
+    CompositeObject::AttachToWorld(world);
+    for (auto& shape : m_Shapes) {
+        b2Shape_EnableSensorEvents(shape->Getb2ShapeId(), true);
+    }
+}
+
 void DrawnObject::DrawNextPoint(glm::vec2 position) {
     // 如果新點與上一個點距離太近，則不繪製新點
     auto last_point = m_Points.back();
@@ -26,6 +33,7 @@ void DrawnObject::DrawNextPoint(glm::vec2 position) {
     auto new_stroke = std::make_shared<Capsule>(STROKE_WIDTH, last_point, position, ShapeColor::White, false);
     new_stroke->GetVisual()->SetZIndex(Layer::DrawnObject);
     new_stroke->AttachToBody(m_b2BodyId);
+    b2Shape_EnableSensorEvents(new_stroke->Getb2ShapeId(), true);
     m_Shapes.push_back(new_stroke);
     m_Renderer.AddChild(new_stroke->GetVisual());
     m_Points.push_back(position);
