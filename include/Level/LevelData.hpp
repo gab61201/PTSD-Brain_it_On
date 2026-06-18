@@ -3,6 +3,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "GameWorld/PhysicalWorld.hpp"
 #include "Level/PassCondition/PassCondition.hpp"
@@ -12,7 +13,17 @@ enum class LevelId {
     LEVEL_2,
     LEVEL_3,
     LEVEL_4,
-    LEVEL_5
+    LEVEL_5,
+    LEVEL_6,
+    LEVEL_7,
+    LEVEL_8,
+    LEVEL_9,
+    LEVEL_10,
+    LEVEL_11,
+    LEVEL_12,
+    LEVEL_13,
+    LEVEL_14,
+    LEVEL_15
 };
 
 struct LevelConfig {
@@ -20,7 +31,7 @@ struct LevelConfig {
     int strokeLimit = 3;
     std::string targetText = " ";
     std::shared_ptr<GameWorld::PhysicalWorld> world;
-    std::shared_ptr<PassCondition> passCondition;
+    std::vector<std::shared_ptr<PassCondition>> passConditions;
 };
 
 struct LevelResult {

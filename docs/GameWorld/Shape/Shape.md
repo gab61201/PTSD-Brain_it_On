@@ -4,6 +4,24 @@
 
 所有物理形狀的抽象基底類別。每個 `Shape` 同時持有 Box2D 碰撞形狀（`b2ShapeId`）與 PTSD 視覺物件（`Util::GameObject`）。
 
+#### ShapeColor 列舉
+
+形狀可選顏色。`isForbidden` 優先於 `color`：若 `isForbidden=true`，一律使用紅色半透明圖片，忽略 `color` 參數。
+
+```cpp
+enum class ShapeColor {
+    White,
+    Orange,
+    Red,
+};
+```
+
+| 值 | 矩形對應素材 | 圓形對應素材 |
+|----|-------------|-------------|
+| `White` | `white_square.png` | `white_circle.png` |
+| `Orange` | `orange_square.png` | `orange_circle.png` |
+| `Red` | `red_square.png` | `red_circle.png` |
+
 #### 建構子
 
 ```cpp
@@ -11,7 +29,10 @@ Shape(
     std::variant<glm::vec2, float> size,  // vec2=矩形(寬,高), float=圓形(直徑)
     const glm::vec2& relativePosition,     // 相對於父物件的偏移
     float relativeRotation,                // 相對旋轉角度（弧度）
-    bool isSensor = false                  // true 時只觸發事件、不產生碰撞
+    ShapeColor color = ShapeColor::White,  // 形狀顏色
+    bool isSensor = false,                 // true 時只觸發事件、不產生碰撞
+    bool outline = true,                   // 是否顯示描邊
+    bool isForbidden = false               // 禁止繪畫區（優先於 color）
 );
 ```
 
@@ -33,6 +54,7 @@ Shape(
 |------|--------|------|
 | `Getb2ShapeId` | `b2ShapeId` | 取得 Box2D 形狀 ID |
 | `GetVisual` | `std::shared_ptr<Util::GameObject>` | 取得視覺物件 |
+| `GetColor` | `ShapeColor` | 取得形狀顏色 |
 
 #### Protected 成員
 
@@ -44,4 +66,5 @@ Shape(
 | `m_RelativePosition` | `glm::vec2` | 相對位置 |
 | `m_RelativeRotation` | `float` | 相對旋轉（弧度） |
 | `m_IsSensor` | `bool` | 是否為感測器 |
+| `m_Color` | `ShapeColor` | 形狀顏色 |
 

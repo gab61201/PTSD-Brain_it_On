@@ -29,7 +29,9 @@
   - [Level](Level/Level.md)
   - [LevelHUD](Level/LevelHUD.md)
   - [PassCondition（基底類別）](Level/PassCondition/PassCondition.md)
-  - [OneToOneContactPass](Level/PassCondition/OneToOneContactPass.md)
+  - [ShapeToShapeContactPass](Level/PassCondition/ShapeToShapeContactPass.md)
+  - [ShapeToAnythingContactPass](Level/PassCondition/ShapeToAnythingContactPass.md)
+  - [GroupToShapeContactPass](Level/PassCondition/GroupToShapeContactPass.md)
   - [新增關卡範例](Level/Tutorial.md)
 - Screen 模組（UI）
   - [ScreenType](Screen/ScreenType.md)

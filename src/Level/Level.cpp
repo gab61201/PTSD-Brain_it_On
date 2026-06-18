@@ -9,7 +9,7 @@
 Level::Level(LevelId levelId) : m_LevelId(levelId) {
     LevelConfig data = GetLevelConfig(levelId);
     m_World = data.world;
-    m_PassCondition = data.passCondition;
+    m_PassConditions = data.passConditions;
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;
     m_HUD = std::make_unique<LevelHUD>(levelId, data.targetText,
@@ -34,20 +34,29 @@ void Level::Playing() {
         m_World->EndDrawing();
     }
     m_ElapsedTime += static_cast<float>(Util::Time::GetDeltaTimeMs()) / 1000.0f;
-    int contactCountDown = m_PassCondition->GetContactCountDown();
-    m_HUD->UpdateContactTimer(contactCountDown);
-    if (m_PassCondition->Check(m_World->GetContactEvents())) {
+    bool allPassed = true;
+    for (const auto& cond : m_PassConditions) {
+        if (!cond->Check(m_World->GetContactEvents(), m_World->GetSensorEvents())) {
+            allPassed = false;
+        }
+    }
+    if (allPassed) {
         m_State = State::FINISHED;
         m_World->Stop();
-        Save();
     }
+    int maxCountdown = 0;
+    for (const auto& cond : m_PassConditions) {
+        int cd = cond->GetContactCountDown();
+        if (cd > maxCountdown) maxCountdown = cd;
+    }
+    m_HUD->UpdateContactTimer(maxCountdown);
 }
 
 void Level::Reset() {
     m_State = State::WAITING;
     LevelConfig data = GetLevelConfig(m_LevelId);
     m_World = data.world;
-    m_PassCondition = data.passCondition;
+    m_PassConditions = data.passConditions;
     m_ElapsedTime = 0.0F;
     m_Timeout = data.timeout;
     m_StrokeLimit = data.strokeLimit;
@@ -55,12 +64,6 @@ void Level::Reset() {
 }
 
 void Level::Update() {
-    m_World->Update();
-
-    m_HUD->UpdateTimer(GetRemainingTime());
-    m_HUD->UpdateStrokeLimit(m_World->GetDrawnObjectCount(), m_StrokeLimit);
-    m_HUD->Update();
-
     switch (m_State) {
         case State::WAITING:
             Waiting();
@@ -71,6 +74,11 @@ void Level::Update() {
         case State::FINISHED:
             break;
     }
+    m_World->Update();
+    m_HUD->UpdateTimer(GetRemainingTime());
+    m_HUD->UpdateStrokeLimit(m_World->GetDrawnObjectCount(), m_StrokeLimit);
+    m_HUD->Update();
+
 }
 
 void Level::Save() {

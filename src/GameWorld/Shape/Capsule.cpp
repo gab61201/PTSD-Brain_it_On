@@ -10,9 +10,11 @@ Capsule::Capsule(
     float diameter,
     const glm::vec2& pointA,
     const glm::vec2& pointB,
+    ShapeColor color,
     bool isSensor,
-    bool outline)
-    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), isSensor, outline),
+    bool outline,
+    bool isForbidden)
+    : Shape(diameter, (pointA + pointB) * 0.5f, std::atan2(pointB.y - pointA.y, pointB.x - pointA.x), color, isSensor, outline, isForbidden),
       m_PointA(pointA),
       m_PointB(pointB) {}
 
@@ -37,10 +39,30 @@ void Capsule::AttachToBody(b2BodyId body) {
 
     if (distance <= 1.0f) {
         // --- 情況 A：長度極短，顯示為純圓形 ---
-        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+        if (m_IsForbidden) {
+            m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircleTrans));
+            m_Visual->SetZIndex(Layer::ForbiddenZone);
+        } else {
+            switch (m_Color) {
+                case ShapeColor::Orange:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::OrangeCircle));
+                    break;
+                case ShapeColor::Red:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedCircle));
+                    break;
+                case ShapeColor::Gray:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::GrayCircle));
+                    break;
+                case ShapeColor::Transparent:
+                    break;
+                default:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteCircle));
+                    break;
+            }
+        }
         m_Visual->m_Transform.scale = circleScale;
 
-        if (m_OutlineVisual) {
+        if (m_OutlineVisual && m_Color != ShapeColor::Transparent) {
             m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackCircle));
             m_OutlineVisual->m_Transform.scale = 
                 glm::vec2(diameter + SHAPE_OUTLINE_WIDTH, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
@@ -48,27 +70,57 @@ void Capsule::AttachToBody(b2BodyId body) {
     } else {
         // --- 情況 B：正常膠囊形 ---
         // 1. 中間矩形主體（直接利用已存在的 m_Visual）
-        m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+        if (m_IsForbidden) {
+            m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquareTrans));
+            m_Visual->SetZIndex(Layer::ForbiddenZone);
+        } else {
+            switch (m_Color) {
+                case ShapeColor::Orange:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::OrangeSquare));
+                    break;
+                case ShapeColor::Red:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::RedSquare));
+                    break;
+                case ShapeColor::Gray:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::GraySquare));
+                    break;
+                case ShapeColor::Transparent:
+                    break;
+                default:
+                    m_Visual->SetDrawable(Util::ImageCache.Get(Path::WhiteSquare));
+                    break;
+            }
+        }
         m_Visual->m_Transform.scale = glm::vec2(distance, diameter) / BASIC_SHAPE_IMAGE_SIZE;
 
         // 2. 中間矩形描邊（直接利用已存在的 m_OutlineVisual）
-        if (m_OutlineVisual) {
+        if (m_OutlineVisual && m_Color != ShapeColor::Transparent) {
             m_OutlineVisual->SetDrawable(Util::ImageCache.Get(Path::BlackSquare));
             m_OutlineVisual->m_Transform.scale = 
                 glm::vec2(distance, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
         }
 
-        // 3. 初始化兩端圓形主體 (白色)
-        m_CircleAVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::WhiteCircle), Layer::Shape);
+        // 3. 初始化兩端圓形主體
+        auto circleDrawable = [&]() -> std::shared_ptr<Core::Drawable> {
+            if (m_IsForbidden) return Util::ImageCache.Get(Path::RedCircleTrans);
+            switch (m_Color) {
+                case ShapeColor::Orange: return Util::ImageCache.Get(Path::OrangeCircle);
+                case ShapeColor::Red: return Util::ImageCache.Get(Path::RedCircle);
+                case ShapeColor::Gray: return Util::ImageCache.Get(Path::GrayCircle);
+                case ShapeColor::Transparent: return nullptr;
+                default: return Util::ImageCache.Get(Path::WhiteCircle);
+            }
+        }();
+        m_CircleAVisual = std::make_shared<Util::GameObject>(circleDrawable, Layer::Shape);
         m_CircleAVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleAVisual);
 
-        m_CircleBVisual = std::make_shared<Util::GameObject>(Util::ImageCache.Get(Path::WhiteCircle), Layer::Shape);
+        m_CircleBVisual = std::make_shared<Util::GameObject>(circleDrawable, Layer::Shape);
         m_CircleBVisual->m_Transform.scale = circleScale;
         m_Visual->AddChild(m_CircleBVisual);
 
         // 4. 初始化兩端圓形描邊 (黑色)
-        if (m_OutlineVisual) {
+        if (m_OutlineVisual && m_Color != ShapeColor::Transparent) {
             const glm::vec2 outlineCircleScale = 
                 glm::vec2(diameter + SHAPE_OUTLINE_WIDTH, diameter + SHAPE_OUTLINE_WIDTH) / BASIC_SHAPE_IMAGE_SIZE;
 

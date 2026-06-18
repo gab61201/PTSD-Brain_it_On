@@ -8,11 +8,23 @@ namespace {
 struct PointQueryContext {
     bool hit = false;
     b2Vec2 testPoint = {0.0f, 0.0f};
+    const std::vector<b2ShapeId>* forbiddenIds = nullptr;
 };
 
 bool ReportPointShape(b2ShapeId shapeId, void* context) {
     auto* queryContext = static_cast<PointQueryContext*>(context);
     if (b2Shape_IsSensor(shapeId)) {
+        if (queryContext->forbiddenIds) {
+            for (const auto& fid : *queryContext->forbiddenIds) {
+                if (B2_ID_EQUALS(shapeId, fid)) {
+                    if (b2Shape_TestPoint(shapeId, queryContext->testPoint)) {
+                        queryContext->hit = true;
+                        return false;
+                    }
+                    break;
+                }
+            }
+        }
         return true;
     }
     if (b2Shape_TestPoint(shapeId, queryContext->testPoint)) {
@@ -28,6 +40,7 @@ struct ShapeCastContext {
     float fraction = 1.0f;
     b2BodyId ignoreBody = b2_nullBodyId;
     b2Vec2 normal = {0.0f, 0.0f};
+    const std::vector<b2ShapeId>* forbiddenIds = nullptr;
 };
 
 float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float fraction, void* context) {
@@ -37,6 +50,19 @@ float ReportDrawingShape(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float f
         return -1.0f;
     }
     if (b2Shape_IsSensor(shapeId)) {
+        if (castContext->forbiddenIds) {
+            for (const auto& fid : *castContext->forbiddenIds) {
+                if (B2_ID_EQUALS(shapeId, fid)) {
+                    if (fraction < castContext->fraction) {
+                        castContext->hit = true;
+                        castContext->hitPoint = point;
+                        castContext->fraction = fraction;
+                        castContext->normal = normal;
+                    }
+                    return fraction;
+                }
+            }
+        }
         return -1.0f;
     }
 
@@ -61,10 +87,22 @@ PhysicalWorld::PhysicalWorld(
       m_Boundary(boundary) {
     b2WorldDef worldDef = b2DefaultWorldDef();
     worldDef.gravity = {0.0f, -9.8f};
+    worldDef.frictionCallback = [](float, int, float, int) -> float {
+        return WORLD_FRICTION;
+    };
     m_b2WorldId = b2CreateWorld(&worldDef);
 
     for (auto& obj : m_CompositeObject) {
         obj->AttachToWorld(m_b2WorldId);
+    }
+
+    // 收集禁止繪畫區的 shape IDs
+    for (auto& obj : m_CompositeObject) {
+        for (auto& shape : obj->GetShapes()) {
+            if (shape->IsForbidden()) {
+                m_ForbiddenShapeIds.push_back(shape->Getb2ShapeId());
+            }
+        }
     }
 }
 
@@ -79,10 +117,11 @@ void PhysicalWorld::DrawNewObject(glm::vec2 position) {
     if (m_Boundary != nullptr && !m_Boundary->IsPointInside(position)) {
         return;
     }
-    // 檢查點有沒有碰到其他東西
+    // 檢查點有沒有碰到其他東西（包含禁止繪畫區）
     PointQueryContext callback;
     b2Vec2 point = GameWorld::PixelsToMeters(position);
     callback.testPoint = point;
+    callback.forbiddenIds = &m_ForbiddenShapeIds;
 
     b2AABB aabb;
     b2Vec2 d = {0.001f, 0.001f};
@@ -107,7 +146,7 @@ void PhysicalWorld::DrawingObject(glm::vec2 position) {
     if (m_LastDrawingObject == nullptr) {
         return;
     }
-    // 檢查射線有沒有碰到其他東西
+    // 檢查射線有沒有碰到其他東西（包含禁止繪畫區）
     auto p1 = m_LastDrawingObject->GetPoints().back();
     auto p2 = position;
     if (glm::distance(p1, p2) < MIN_STROKE_LENGTH) {
@@ -115,6 +154,7 @@ void PhysicalWorld::DrawingObject(glm::vec2 position) {
     }
     ShapeCastContext callback;
     callback.ignoreBody = m_LastDrawingObject->Getb2BodyId();
+    callback.forbiddenIds = &m_ForbiddenShapeIds;
     b2Vec2 startP = GameWorld::PixelsToMeters(p1);
     b2Vec2 endP = GameWorld::PixelsToMeters(p2);
     b2Vec2 translation = {endP.x - startP.x, endP.y - startP.y};
@@ -143,6 +183,7 @@ void PhysicalWorld::EndDrawing() {
     m_LastDrawingObject->EndDrawing();
     m_LastDrawingObject = nullptr;
 }
+
 // ==========================================
 // 每一幀的更新 (Update) - 遊戲主迴圈會呼叫這裡
 // ==========================================

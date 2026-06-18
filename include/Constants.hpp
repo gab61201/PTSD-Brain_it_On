@@ -8,6 +8,7 @@ inline constexpr int FPS = 60;
 inline constexpr float STROKE_WIDTH = 10.0F;
 inline constexpr float MIN_STROKE_LENGTH = 2.0F;
 inline constexpr float SHAPE_OUTLINE_WIDTH = 2.0F;
+inline constexpr float WORLD_FRICTION = 0.3F;
 
 inline constexpr const char* kCsvHeader = "level,timestamp,passed,within_time,within_stroke,remaining_time,used_strokes";
 inline constexpr const char* kBestRecordSavePath = "Resources/Save/BestRecord.csv";
@@ -19,8 +20,10 @@ namespace Layer {
     enum {
         Background,
         LevelBackGround,
+        ForbiddenZone,
         ShapeOutLine,
         Shape,
+        DrawnObject,
         UIBackground,
         UIOutline,
         UIElement,
@@ -39,8 +42,12 @@ inline const std::string LightBlueSquare = "Resources/Images/BasicShapes/light_b
 inline const std::string OrangeSquare = "Resources/Images/BasicShapes/orange_square.png";
 inline const std::string WhiteSquare = "Resources/Images/BasicShapes/white_square.png";
 inline const std::string WhiteCircle = "Resources/Images/BasicShapes/white_circle.png";
+inline const std::string OrangeSquareTrans = "Resources/Images/BasicShapes/orange_square_trans.png";
 inline const std::string RedSquareTrans = "Resources/Images/BasicShapes/red_square_trans.png";
 inline const std::string RedCircleTrans = "Resources/Images/BasicShapes/red_circle_trans.png";
+inline const std::string RedSquare = "Resources/Images/BasicShapes/red_square.png";
+inline const std::string RedCircle = "Resources/Images/BasicShapes/red_circle.png";
+inline const std::string OrangeCircle = "Resources/Images/BasicShapes/orange_circle.png";
 inline const std::string RedLine = "Resources/Images/BasicShapes/red_line.png";
 inline const std::string StarBright = "Resources/Images/star_bright.png";
 inline const std::string StarDark = "Resources/Images/star_dark.png";
@@ -49,7 +56,11 @@ inline const std::string BtnBack = "Resources/Images/Btn_Back.png";
 inline const std::string BtnRetry = "Resources/Images/Btn_Retry.png";
 inline const std::string BtnNext = "Resources/Images/Btn_Next.png";
 inline const std::string BtnMainButtonGray = "Resources/Images/Btn_MainButton_Gray.png";
+inline const std::string GrayCircle = "Resources/Images/BasicShapes/gray_circle.png";
+inline const std::string GraySquare = "Resources/Images/BasicShapes/gray_square.png";
 inline const std::string BlackCircle = "Resources/Images/BasicShapes/black_circle.png";
 inline const std::string BlackSquare = "Resources/Images/BasicShapes/black_square.png";
+inline const std::string MagnetPositive = "Resources/Images/BasicShapes/magnet_positive.png";
+inline const std::string MagnetNegative = "Resources/Images/BasicShapes/magnet_negative.png";
 
 }  // namespace Path

@@ -10,14 +10,22 @@ PassCondition::PassCondition(
     : m_TriggerType(triggerType),
       m_Duration(duration) {}
 
-bool PassCondition::Check(b2ContactEvents events) {
-    for (int i = 0; i < events.beginCount; i++) {
-        const b2ContactBeginTouchEvent& event = events.beginEvents[i];
+bool PassCondition::Check(b2ContactEvents contactEvents, b2SensorEvents sensorEvents) {
+    for (int i = 0; i < contactEvents.beginCount; i++) {
+        const b2ContactBeginTouchEvent& event = contactEvents.beginEvents[i];
         OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::TOUCHING);
     }
-    for (int i = 0; i < events.endCount; i++) {
-        const b2ContactEndTouchEvent& event = events.endEvents[i];
+    for (int i = 0; i < contactEvents.endCount; i++) {
+        const b2ContactEndTouchEvent& event = contactEvents.endEvents[i];
         OnContactEvent(event.shapeIdA, event.shapeIdB, TriggerType::SEPARATED);
+    }
+    for (int i = 0; i < sensorEvents.beginCount; i++) {
+        const b2SensorBeginTouchEvent& event = sensorEvents.beginEvents[i];
+        OnContactEvent(event.visitorShapeId, event.sensorShapeId, TriggerType::TOUCHING);
+    }
+    for (int i = 0; i < sensorEvents.endCount; i++) {
+        const b2SensorEndTouchEvent& event = sensorEvents.endEvents[i];
+        OnContactEvent(event.visitorShapeId, event.sensorShapeId, TriggerType::SEPARATED);
     }
 
     if (m_IsTriggered) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "Level/LevelData.hpp"
 #include "Level/LevelHUD.hpp"
@@ -39,7 +40,7 @@ class Level {
     float m_Timeout;
     int m_StrokeLimit;
     std::shared_ptr<GameWorld::PhysicalWorld> m_World;
-    std::shared_ptr<PassCondition> m_PassCondition;
+    std::vector<std::shared_ptr<PassCondition>> m_PassConditions;
     std::unique_ptr<LevelHUD> m_HUD;
     LevelResult m_LastResult;
 };

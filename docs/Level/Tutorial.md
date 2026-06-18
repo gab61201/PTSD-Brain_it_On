@@ -7,7 +7,7 @@
 #include "GameWorld/Shape/Rectangle.hpp"
 #include "GameWorld/Shape/Circle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/OneToOneContactPass.hpp"
+#include "Level/PassCondition/ShapeToAnythingContactPass.hpp"
 
 LevelConfig LevelConfig_N() {
     LevelConfig data;
@@ -32,7 +32,7 @@ LevelConfig LevelConfig_N() {
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
 
     // 設定過關條件
-    data.passCondition = std::make_shared<OneToOneContactPass>(
+    data.passCondition = std::make_shared<ShapeToAnythingContactPass>(
         rect->Getb2ShapeId(), TriggerType::TOUCHING, 3);
 
     return data;

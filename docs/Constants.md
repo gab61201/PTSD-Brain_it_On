@@ -35,6 +35,9 @@
 | `Path::WhiteCircle` | `Resources/Images/BasicShapes/white_circle.png` |
 | `Path::RedSquareTrans` | `Resources/Images/BasicShapes/red_square_trans.png` |
 | `Path::RedCircleTrans` | `Resources/Images/BasicShapes/red_circle_trans.png` |
+| `Path::RedSquare` | `Resources/Images/BasicShapes/red_square.png` |
+| `Path::RedCircle` | `Resources/Images/BasicShapes/red_circle.png` |
+| `Path::OrangeCircle` | `Resources/Images/BasicShapes/orange_circle.png` |
 | `Path::RedLine` | `Resources/Images/BasicShapes/red_line.png` |
 | `Path::StarBright` | `Resources/Images/star_bright.png` |
 | `Path::StarDark` | `Resources/Images/star_dark.png` |
