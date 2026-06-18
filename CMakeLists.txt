@@ -4,7 +4,9 @@ project(PTSD-Brain_it_On)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-cmake_policy(SET CMP0135 NEW)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.28)
+    cmake_policy(SET CMP0135 NEW)
+endif()
 
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
