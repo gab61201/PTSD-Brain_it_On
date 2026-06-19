@@ -1,7 +1,7 @@
 #include "GameWorld/CompositeObject/Boundary.hpp"
 #include "GameWorld/Shape/Rectangle.hpp"
 #include "Level/LevelData.hpp"
-#include "Level/PassCondition/ShapeToShapeContactPass.hpp"
+#include "Level/PassCondition/GroupToShapeContactPass.hpp"
 
 LevelConfig LevelConfig_4() {
     LevelConfig data;
@@ -24,14 +24,10 @@ LevelConfig LevelConfig_4() {
 
     data.world = std::make_shared<GameWorld::PhysicalWorld>(objects, boundary);
     data.passConditions = {
-        std::make_shared<ShapeToShapeContactPass>(
-            leftWall->Getb2ShapeId(),
+        std::make_shared<GroupToShapeContactPass>(
+            std::vector<b2ShapeId>{leftWall->Getb2ShapeId(), rightWall->Getb2ShapeId()},
             boundary->GetBottomWall().Getb2ShapeId(),
-            TriggerType::SEPARATED, 3),
-        std::make_shared<ShapeToShapeContactPass>(
-            rightWall->Getb2ShapeId(),
-            boundary->GetBottomWall().Getb2ShapeId(),
-            TriggerType::SEPARATED, 3)
+            TriggerType::TOUCHING, 3)
     };
 
     return data;
