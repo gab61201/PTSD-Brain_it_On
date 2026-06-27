@@ -12,7 +12,7 @@ LevelConfig LevelConfig_14() {
 
     // Red sensor area at the top
     auto redArea = std::make_shared<GameWorld::Rectangle>(
-        glm::vec2(580.0F, 80.0F),
+        glm::vec2(585.0F, 80.0F),
         glm::vec2(0.0F, 0.0F),
         0.0F,
         GameWorld::ShapeColor::Red,
